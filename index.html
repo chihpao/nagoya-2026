@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nagoya 2026 | 我們的名古屋春日紀實</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS 動畫 -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sakura: '#F4C2C2',
+            'sakura-dark': '#e8a0a0',
+            matcha: '#A8BBA2',
+            wood: '#C4A484',
+            dark: '#2D3748',
+            paper: '#FAFAFA',
+          },
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ── 基礎 ── */
+    body {
+      background-color: #FAFAFA;
+      overflow-x: hidden;
+    }
+    /* 自訂捲動條 */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #FAFAFA; }
+    ::-webkit-scrollbar-thumb { background: #F4C2C2; border-radius: 3px; }
+
+    /* 視差英雄圖 */
+    .hero-bg {
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* 導覽列毛玻璃 */
+    .nav-blur {
+      backdrop-filter: blur(14px) saturate(180%);
+      -webkit-backdrop-filter: blur(14px) saturate(180%);
+      background-color: rgba(250,250,250,0.80);
+    }
+
+    /* 英雄區文字浮現動畫 */
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-text-1 { animation: heroFadeUp 1.2s ease-out 0.3s both; }
+    .hero-text-2 { animation: heroFadeUp 1.2s ease-out 0.7s both; }
+    .hero-text-3 { animation: heroFadeUp 1.2s ease-out 1.1s both; }
+    .hero-text-4 { animation: heroFadeUp 1.2s ease-out 1.5s both; }
+
+    /* 花瓣飄落動畫 */
+    @keyframes petalFall {
+      0%   { transform: translateY(-60px) rotate(0deg);   opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+    .petal {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: radial-gradient(circle at 40% 40%, #f9d5d5, #F4C2C2);
+      border-radius: 100% 0 100% 0;
+      animation: petalFall linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* 時間軸左線 */
+    .timeline-line::before {
+      content: '';
+      position: absolute;
+      left: -1px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, #F4C2C2, #A8BBA2, #C4A484);
+    }
+
+    /* 相簿 hover 遮罩 */
+    .gallery-overlay {
+      background: linear-gradient(to top, rgba(45,55,72,0.6) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+    /* 引言大字 */
+    .quote-mark {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 8rem;
+      line-height: 1;
+      color: #F4C2C2;
+      opacity: 0.3;
+      position: absolute;
+      top: -1.5rem;
+      left: -1rem;
+    }
+  </style>
+</head>
+
+<body class="font-sans text-dark antialiased selection:bg-sakura selection:text-white">
+
+  <!-- ════════════════════════════════════════
+       花瓣飄落裝飾（JS 動態產生）
+  ════════════════════════════════════════ -->
+  <div id="petals" aria-hidden="true"></div>
+
+  <!-- ════════════════════════════════════════
+       固定導覽列
+  ════════════════════════════════════════ -->
+  <nav class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-sakura/30">
+    <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+      <a href="#hero" class="font-serif italic text-dark text-lg tracking-wide hover:text-sakura-dark transition-colors">
+        Nagoya <span class="text-sakura">2026</span>
+      </a>
+      <div class="hidden md:flex gap-8 text-sm font-medium tracking-wider text-gray-500">
+        <a href="#journey" class="hover:text-sakura transition-colors">行程</a>
+        <a href="#gallery"  class="hover:text-sakura transition-colors">相簿</a>
+        <a href="#quote"   class="hover:text-sakura transition-colors">給妳</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════════
+       英雄首圖（滿版視差）
+  ════════════════════════════════════════ -->
+  <section id="hero"
+    class="hero-bg relative h-screen w-full flex flex-col items-center justify-center"
+    style="background-image: url('./images/hero-nagoya.jpg');">
+
+    <!-- 深色漸層遮罩 -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/20"></div>
+
+    <div class="relative z-10 text-center px-6">
+      <p class="hero-text-1 font-serif italic text-sakura text-xl md:text-2xl tracking-widest drop-shadow-lg mb-4">
+        Spring in Japan ✦ 2026
+      </p>
+      <h1 class="hero-text-2 text-white font-bold text-6xl md:text-9xl tracking-tight drop-shadow-2xl leading-none mb-4">
+        名古屋
+      </h1>
+      <p class="hero-text-3 text-gray-200 font-light text-lg md:text-2xl tracking-widest mb-2">
+        Nagoya &ensp;·&ensp; Aichi &ensp;·&ensp; Japan
+      </p>
+      <div class="hero-text-3 h-px w-24 bg-sakura mx-auto my-5 opacity-70"></div>
+      <p class="hero-text-4 text-gray-300 text-base md:text-lg font-light tracking-wide">
+        2026.04.01 — 2026.04.07 &ensp;|&ensp; 智保 × 孜仁 的七天春日紀實
+      </p>
+    </div>
+
+    <!-- 向下滾動提示 -->
+    <a href="#journey"
+       class="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/60 hover:text-sakura transition-colors animate-bounce z-10"
+       aria-label="向下捲動">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M19 9l-7 7-7-7" />
+      </svg>
+    </a>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       前言引言區
+  ════════════════════════════════════════ -->
+  <section class="py-28 px-6 bg-paper">
+    <div class="max-w-3xl mx-auto text-center" data-aos="fade-up" data-aos-duration="1200">
+      <p class="font-serif italic text-3xl md:text-4xl text-dark leading-relaxed mb-8">
+        "在最美的季節，去最美的地方，<br/>和最想在一起的人。"
+      </p>
+      <div class="h-px w-20 bg-sakura mx-auto mb-8 opacity-70"></div>
+      <p class="text-gray-500 font-light text-base md:text-lg leading-relaxed">
+        四月初的名古屋，是粉色與綠色交織的世界。<br/>
+        這七天，留下了我們最珍貴的春日記憶。
+      </p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       七天行程時間軸
+  ════════════════════════════════════════ -->
+  <section id="journey" class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-6 sm:px-10">
+
+      <div class="text-center mb-20" data-aos="fade-up">
+        <span class="text-xs font-semibold tracking-[0.3em] text-matcha uppercase">Travel Log</span>
+        <h2 class="font-serif text-4xl md:text-5xl text-dark mt-3 mb-4">Our Journey</h2>
+        <p class="text-gray-400 font-light tracking-wide">七天六夜的名古屋與愛知縣探索</p>
+      </div>
+
+      <!-- 時間軸容器 -->
+      <div class="relative border-l-2 border-sakura/30 ml-4 md:ml-10 timeline-line">
+
+        <!-- ── Day 1 ── -->
+        <div class="mb-16 ml-10 relative group" data-aos="fade-right" data-aos-duration="1000">
+          <span class="absolute -left-[49px] top-3 h-6 w-6 rounded-full bg-sakura border-4 border-white shadow-md
+                       group-hover:scale-125 transition-transform duration-300"></span>
+          <div class="bg-paper rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 overflow-hidden">
+            <time class="text-xs font-bold text-matcha tracking-[0.2em] uppercase">Day 1 · 2026.04.01</time>
+            <h3 class="font-serif text-2xl md:text-3xl text-dark mt-3 mb-4">啟程，名古屋城初見</h3>
+            <p class="text-gray-500 leading-relaxed font-light mb-6">
+              搭乘早晨班機抵達新特麗亞名古屋中部國際機場。
+              辦完入住後漫步前往名古屋城，宏偉的古老城牆伴隨初綻的粉嫩櫻花，
+              為我們的旅行揭開了浪漫序幕——微風拂過，花瓣落在妳的髮梢上。
+            </p>
+            <div class="overflow-hidden rounded-2xl">
+              <img src="./images/day1-castle.jpg" alt="名古屋城"
+                   class="w-full h-56 object-cover transform hover:scale-110 transition duration-700 ease-in-out" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Day 2 ── -->
+        <div class="mb-16 ml-10 relative group" data-aos="fade-left" data-aos-duration="1000">
+          <span class="absolute -left-[49px] top-3 h-6 w-6 rounded-full bg-sakura border-4 border-white shadow-md
+                       group-hover:scale-125 transition-transform duration-300"></span>
+          <div class="bg-paper rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 overflow-hidden">
+            <time class="text-xs font-bold text-matcha tracking-[0.2em] uppercase">Day 2 · 2026.04.02</time>
+            <h3 class="font-serif text-2xl md:text-3xl text-dark mt-3 mb-4">鶴舞公園，漫天櫻雪</h3>
+            <p class="text-gray-500 leading-relaxed font-light mb-6">
+              帶著野餐墊和抹茶點心，一早就前往名古屋最美的賞櫻勝地——鶴舞公園。
+              滿開的桜に包まれながら，我們鋪好墊子，靜靜地讓時間流過。
+              傍晚點燈後的夜櫻讓整座公園變成夢境，留下了整趟旅程最浪漫的畫面。
+            </p>
+            <div class="overflow-hidden rounded-2xl">
+              <img src="./images/day2-tsuruma.jpg" alt="鶴舞公園"
+                   class="w-full h-56 object-cover transform hover:scale-110 transition duration-700 ease-in-out" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Day 3 ── -->
+        <div class="mb-16 ml-10 relative group" data-aos="fade-right" data-aos-duration="1000">
+          <span class="absolute -left-[49px] top-3 h-6 w-6 rounded-full bg-matcha border-4 border-white shadow-md
+                       group-hover:scale-125 transition-transform duration-300"></span>
+          <div class="bg-paper rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 overflow-hidden">
+            <time class="text-xs font-bold text-matcha tracking-[0.2em] uppercase">Day 3 · 2026.04.03</time>
+            <h3 class="font-serif text-2xl md:text-3xl text-dark mt-3 mb-4">白鳥庭園與港口水族館</h3>
+            <p class="text-gray-500 leading-relaxed font-light mb-6">
+              上午走進池泉迴遊式的白鳥庭園，枯山水的寧靜讓城市的喧囂暫時消失。
+              下午轉往名古屋港水族館，看著蔚藍水槽中的白鯨悠游，
+              妳說那個白鯨的表情好像在微笑，我說牠一定是看到妳才笑的。
+            </p>
+            <div class="overflow-hidden rounded-2xl">
+              <img src="./images/day3-aquarium.jpg" alt="白鳥庭園&水族館"
+                   class="w-full h-56 object-cover transform hover:scale-110 transition duration-700 ease-in-out" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Day 4 ── -->
+        <div class="mb-16 ml-10 relative group" data-aos="fade-left" data-aos-duration="1000">
+          <span class="absolute -left-[49px] top-3 h-6 w-6 rounded-full bg-wood border-4 border-white shadow-md
+                       group-hover:scale-125 transition-transform duration-300"></span>
+          <div class="bg-paper rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 overflow-hidden">
+            <time class="text-xs font-bold text-wood tracking-[0.2em] uppercase">Day 4 · 2026.04.04</time>
+            <h3 class="font-serif text-2xl md:text-3xl text-dark mt-3 mb-4">大須觀音與味噌豬排</h3>
+            <p class="text-gray-500 leading-relaxed font-light mb-6">
+              早上參觀豐田產業技術紀念館，那些轉動的齒輪和老式紡織機讓人大開眼界。
+              下午走進大須觀音與周邊商圈，複古街道和咖啡店讓妳流連忘返。
+              晚餐終於吃到正宗的名古屋味噌豬排，那個濃郁的赤味噌讓我們沉默了三分鐘。
+            </p>
+            <div class="overflow-hidden rounded-2xl">
+              <img src="./images/day4-osu.jpg" alt="大須觀音"
+                   class="w-full h-56 object-cover transform hover:scale-110 transition duration-700 ease-in-out" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Day 5 ── -->
+        <div class="mb-16 ml-10 relative group" data-aos="fade-right" data-aos-duration="1000">
+          <span class="absolute -left-[49px] top-3 h-6 w-6 rounded-full bg-sakura border-4 border-white shadow-md
+                       group-hover:scale-125 transition-transform duration-300"></span>
+          <div class="bg-paper rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 overflow-hidden">
+            <time class="text-xs font-bold text-matcha tracking-[0.2em] uppercase">Day 5 · 2026.04.05</time>
+            <h3 class="font-serif text-2xl md:text-3xl text-dark mt-3 mb-4">德川園的武家庭園美學</h3>
+            <p class="text-gray-500 leading-relaxed font-light mb-6">
+              德川園的楓樹與晚開的八重桜共存，展現了名古屋最沉穩的美。
+              德川美術館裡那件源氏物語繪卷真跡讓我們屏住呼吸——
+              八百年前的人，也許也在春天和喜歡的人說了同樣的話。
+            </p>
+            <div class="overflow-hidden rounded-2xl">
+              <img src="./images/day5-tokugawa.jpg" alt="德川園"
+                   class="w-full h-56 object-cover transform hover:scale-110 transition duration-700 ease-in-out" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Day 6 ── -->
+        <div class="mb-16 ml-10 relative group" data-aos="fade-left" data-aos-duration="1000">
+          <span class="absolute -left-[49px] top-3 h-6 w-6 rounded-full bg-dark border-4 border-white shadow-md
+                       group-hover:scale-125 transition-transform duration-300"></span>
+          <div class="bg-paper rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 overflow-hidden">
+            <time class="text-xs font-bold text-gray-400 tracking-[0.2em] uppercase">Day 6 · 2026.04.06</time>
+            <h3 class="font-serif text-2xl md:text-3xl text-dark mt-3 mb-4">MIRAI TOWER 與城市夜景</h3>
+            <p class="text-gray-500 leading-relaxed font-light mb-6">
+              白天逛了榮區和名古屋電視塔旁的久屋大通公園，
+              傍晚登上中部電力 MIRAI TOWER，整座名古屋在夕陽染紅的光裡展開。
+              妳說妳從來沒有從這麼高的地方看過一座城市，我說我只看妳。
+            </p>
+            <div class="overflow-hidden rounded-2xl">
+              <img src="./images/day6-tower.jpg" alt="MIRAI TOWER"
+                   class="w-full h-56 object-cover transform hover:scale-110 transition duration-700 ease-in-out" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Day 7 ── -->
+        <div class="mb-4 ml-10 relative group" data-aos="fade-right" data-aos-duration="1000">
+          <span class="absolute -left-[49px] top-3 h-6 w-6 rounded-full bg-sakura border-4 border-white shadow-md
+                       group-hover:scale-125 transition-transform duration-300"></span>
+          <div class="bg-paper rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 overflow-hidden">
+            <time class="text-xs font-bold text-matcha tracking-[0.2em] uppercase">Day 7 · 2026.04.07</time>
+            <h3 class="font-serif text-2xl md:text-3xl text-dark mt-3 mb-4">最後一個早晨，然後回家</h3>
+            <p class="text-gray-500 leading-relaxed font-light mb-6">
+              最後一天的早晨，我們在飯店旁的小咖啡館吃了最後一頓日式早餐。
+              買了伴手禮，坐上電車往機場，窗外的風景快速後退——
+              名古屋，謝謝你。我們一定會再回來的。
+            </p>
+            <div class="overflow-hidden rounded-2xl">
+              <img src="./images/day7-departure.jpg" alt="離別"
+                   class="w-full h-56 object-cover transform hover:scale-110 transition duration-700 ease-in-out" />
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /timeline -->
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       滿版分隔圖（視差）
+  ════════════════════════════════════════ -->
+  <section class="hero-bg relative h-80 md:h-[500px] w-full"
+           style="background-image: url('./images/divider-sakura.jpg');">
+    <div class="absolute inset-0 bg-black/40"></div>
+    <div class="absolute inset-0 flex items-center justify-center z-10" data-aos="zoom-in" data-aos-duration="1200">
+      <p class="font-serif italic text-white text-3xl md:text-5xl text-center drop-shadow-2xl px-6 leading-relaxed">
+        "Every petal that falls<br/>holds a memory of us."
+      </p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       瀑布流相簿
+  ════════════════════════════════════════ -->
+  <section id="gallery" class="py-28 bg-paper px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center mb-16" data-aos="fade-up">
+        <span class="text-xs font-semibold tracking-[0.3em] text-sakura-dark uppercase">Photo Gallery</span>
+        <h2 class="font-serif text-4xl md:text-5xl text-dark mt-3 mb-4">Gallery of Memories</h2>
+        <p class="text-gray-400 font-light text-lg">定格在春風裡的每一瞬，都是我們最珍貴的寶藏。</p>
+      </div>
+
+      <!-- Masonry 瀑布流 -->
+      <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-5 space-y-5">
+
+        <!-- 你替換 src 的圖片即可，可增減 <div> 數量 -->
+        <div class="break-inside-avoid gallery-item relative overflow-hidden rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer" data-aos="fade-up" data-aos-delay="0">
+          <img src="./images/gallery-1.jpg" class="w-full h-auto object-cover group-hover:scale-105 transition duration-700" alt="名古屋旅遊 1" />
+          <div class="gallery-overlay absolute inset-0 rounded-3xl"></div>
+        </div>
+
+        <div class="break-inside-avoid gallery-item relative overflow-hidden rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer" data-aos="fade-up" data-aos-delay="80">
+          <img src="./images/gallery-2.jpg" class="w-full h-auto object-cover transition duration-700" alt="名古屋旅遊 2" />
+          <div class="gallery-overlay absolute inset-0 rounded-3xl"></div>
+        </div>
+
+        <div class="break-inside-avoid gallery-item relative overflow-hidden rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer" data-aos="fade-up" data-aos-delay="160">
+          <img src="./images/gallery-3.jpg" class="w-full h-auto object-cover transition duration-700" alt="名古屋旅遊 3" />
+          <div class="gallery-overlay absolute inset-0 rounded-3xl"></div>
+        </div>
+
+        <div class="break-inside-avoid gallery-item relative overflow-hidden rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer" data-aos="fade-up" data-aos-delay="240">
+          <img src="./images/gallery-4.jpg" class="w-full h-auto object-cover transition duration-700" alt="名古屋旅遊 4" />
+          <div class="gallery-overlay absolute inset-0 rounded-3xl"></div>
+        </div>
+
+        <div class="break-inside-avoid gallery-item relative overflow-hidden rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer" data-aos="fade-up" data-aos-delay="320">
+          <img src="./images/gallery-5.jpg" class="w-full h-auto object-cover transition duration-700" alt="名古屋旅遊 5" />
+          <div class="gallery-overlay absolute inset-0 rounded-3xl"></div>
+        </div>
+
+        <div class="break-inside-avoid gallery-item relative overflow-hidden rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer" data-aos="fade-up" data-aos-delay="400">
+          <img src="./images/gallery-6.jpg" class="w-full h-auto object-cover transition duration-700" alt="名古屋旅遊 6" />
+          <div class="gallery-overlay absolute inset-0 rounded-3xl"></div>
+        </div>
+
+        <div class="break-inside-avoid gallery-item relative overflow-hidden rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer" data-aos="fade-up" data-aos-delay="480">
+          <img src="./images/gallery-7.jpg" class="w-full h-auto object-cover transition duration-700" alt="名古屋旅遊 7" />
+          <div class="gallery-overlay absolute inset-0 rounded-3xl"></div>
+        </div>
+
+        <div class="break-inside-avoid gallery-item relative overflow-hidden rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer" data-aos="fade-up" data-aos-delay="560">
+          <img src="./images/gallery-8.jpg" class="w-full h-auto object-cover transition duration-700" alt="名古屋旅遊 8" />
+          <div class="gallery-overlay absolute inset-0 rounded-3xl"></div>
+        </div>
+
+        <!-- 可繼續複製貼上更多 gallery-N.jpg -->
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       給孜仁的信
+  ════════════════════════════════════════ -->
+  <section id="quote" class="py-32 bg-white">
+    <div class="max-w-2xl mx-auto px-8 text-center relative" data-aos="fade-up" data-aos-duration="1500">
+      <span class="quote-mark" aria-hidden="true">"</span>
+      <p class="font-serif italic text-2xl md:text-3xl text-dark leading-loose relative z-10 mb-10">
+        孜仁，謝謝妳願意和我一起去看那些花。<br/>
+        以後每一個春天，我都想和妳在一起。
+      </p>
+      <div class="h-px w-16 bg-sakura mx-auto mb-8 opacity-70"></div>
+      <p class="text-gray-400 font-light tracking-widest text-sm uppercase">
+        智保 &thinsp;·&thinsp; 2026.04.07 &thinsp;·&thinsp; Nagoya
+      </p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       頁尾
+  ════════════════════════════════════════ -->
+  <footer class="bg-dark text-white text-center py-16" data-aos="fade-in" data-aos-duration="1500">
+    <p class="font-serif italic text-sakura text-2xl mb-4">
+      "To travel is to live, and to love is to travel together."
+    </p>
+    <p class="text-xs text-gray-500 font-light tracking-widest uppercase">
+      © 2026 Nagoya Trip Log &nbsp;·&nbsp; 智保 × 孜仁 &nbsp;·&nbsp; Made with ❤️ on GitHub
+    </p>
+  </footer>
+
+  <!-- ════════════════════════════════════════
+       JS：花瓣 + AOS 初始化
+  ════════════════════════════════════════ -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // AOS 動畫引擎
+    AOS.init({
+      duration: 1000,
+      easing:   'ease-out-cubic',
+      once:     true,
+      offset:   100,
+      mirror:   false,
+    });
+
+    // 花瓣飄落（最多 18 片，隨機位置 & 速度）
+    const container = document.getElementById('petals');
+    const COUNT = 18;
+    for (let i = 0; i < COUNT; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      const size   = 8 + Math.random() * 10;
+      const left   = Math.random() * 100;
+      const delay  = Math.random() * 12;
+      const dur    = 8 + Math.random() * 10;
+      const rotate = Math.random() * 360;
+      p.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${left}vw;
+        animation-duration:${dur}s;
+        animation-delay:${delay}s;
+        opacity:${0.4 + Math.random() * 0.5};
+        transform: rotate(${rotate}deg);
+      `;
+      container.appendChild(p);
+    }
+  </script>
+</body>
+</html>
