@@ -1,0 +1,28 @@
+name: Compress Images – Nagoya Trip
+
+on:
+  push:
+    paths:
+      - '**.jpg'
+      - '**.jpeg'
+      - '**.png'
+      - '**.webp'
+
+jobs:
+  image-optimize:
+    name: Auto Image Optimizer
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Compress Images
+        uses: calibreapp/image-actions@main
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          jpegQuality: '80'
+          pngQuality:  '80'
+          webpQuality: '80'
+          ignorePaths: 'node_modules/**'
