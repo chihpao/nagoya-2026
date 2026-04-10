@@ -3,10 +3,10 @@ name: Compress Images – Nagoya Trip
 on:
   push:
     paths:
-      - '**.jpg'
-      - '**.jpeg'
-      - '**.png'
-      - '**.webp'
+      - 'images/**.jpg'
+      - 'images/**.jpeg'
+      - 'images/**.png'
+      - 'images/**.webp'
 
 jobs:
   image-optimize:
@@ -14,15 +14,38 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Compress Images
-        uses: calibreapp/image-actions@main
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          jpegQuality: '80'
-          pngQuality:  '80'
-          webpQuality: '80'
-          ignorePaths: 'node_modules/**'
+          node-version: '20'
+
+      - name: Install imagemin CLI tools
+        run: |
+          npm install -g imagemin-cli imagemin-mozjpeg imagemin-pngquant imagemin-webp
+
+      - name: Compress JPG / JPEG
+        run: |
+          find images -name "*.jpg" -o -name "*.jpeg" | while read f; do
+            imagemin "$f" --plugin=mozjpeg --plugin.mozjpeg.quality=80 --out-dir="$(dirname $f)"
+          done
+        continue-on-error: true
+
+      - name: Compress PNG
+        run: |
+          find images -name "*.png" | while read f; do
+            imagemin "$f" --plugin=pngquant --plugin.pngquant.quality=0.7-0.85 --out-dir="$(dirname $f)"
+          done
+        continue-on-error: true
+
+      - name: Commit compressed images
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --staged --quiet || git commit -m "chore: auto compress images [skip ci]"
+          git push
