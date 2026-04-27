@@ -1,2 +1,6 @@
 # Local raw photo backup (not needed for site publish)
 Nagoya_photo/
+
+# Generated artifacts and local secrets
+build/
+.env

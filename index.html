@@ -338,9 +338,7 @@
       container.appendChild(p);
     }
 
-    // 你未來有 100+ 張時，只要在這裡補檔名。
-    // 建議命名：./images/day1-001.jpg、day1-002.jpg ...（每一天各自往下加）
-    const albumData = {
+    const fallbackAlbumData = {
       1: ['./images/day1-castle.jpg', './images/day1-sakura.jpg', './images/gallery-1.jpg', './images/gallery-2.jpg'],
       2: ['./images/day2-tsuruma.jpg', './images/day2-mountain.jpg', './images/gallery-3.jpg'],
       3: ['./images/day3-aquarium.jpg', './images/day3-street.jpg', './images/gallery-4.jpg'],
@@ -349,6 +347,8 @@
       6: ['./images/day6-tower.jpg', './images/gallery-6.jpg'],
       7: ['./images/day7-departure.jpg', './images/gallery-7.jpg', './images/divider-sakura.jpg'],
     };
+    let albumData = { ...fallbackAlbumData };
+    const days = [1, 2, 3, 4, 5, 6, 7];
 
     const BATCH_SIZE = 24;
     const dayPreviewGrid = document.getElementById('day-preview-grid');
@@ -370,13 +370,34 @@
     const lightboxPrev = document.getElementById('lightbox-prev');
     const lightboxNext = document.getElementById('lightbox-next');
 
-    const days = [1, 2, 3, 4, 5, 6, 7];
     let currentDay = 1;
     let currentPhotos = [];
     let rendered = 0;
 
     let lightboxPhotos = [];
     let lightboxIndex = 0;
+
+    function normalizeAlbumData(raw) {
+      const normalized = {};
+      days.forEach((day) => {
+        const key = String(day);
+        const list = raw?.[key] ?? raw?.[day] ?? [];
+        normalized[day] = Array.isArray(list) ? list : [];
+      });
+      return normalized;
+    }
+
+    async function loadAlbumData() {
+      try {
+        const res = await fetch('./data/manifest.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error(`manifest fetch failed: ${res.status}`);
+        const remoteData = await res.json();
+        albumData = normalizeAlbumData(remoteData);
+      } catch (err) {
+        console.warn('Use fallback album data:', err);
+        albumData = { ...fallbackAlbumData };
+      }
+    }
 
     function renderDayPreviewCards() {
       const frag = document.createDocumentFragment();
@@ -534,7 +555,9 @@
       }
     });
 
-    renderDayPreviewCards();
+    loadAlbumData().finally(() => {
+      renderDayPreviewCards();
+    });
   </script>
 </body>
 </html>
