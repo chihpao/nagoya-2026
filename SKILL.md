@@ -8,6 +8,9 @@ This document defines a focused maintenance skill for this repository:
 - Keep gallery interactions smooth with large image sets
 - Keep image assets and naming predictable
 
+Authoritative guardrails are defined in `AGENTS.md`.
+When this file and `AGENTS.md` overlap, treat `AGENTS.md` as the UI/product requirement source of truth.
+
 ## Scope
 
 - `index.html`
@@ -19,12 +22,18 @@ This document defines a focused maintenance skill for this repository:
 
 1. Do not remove full-bleed image sections unless explicitly requested.
 2. Do not place hero headline text directly over the hero image unless explicitly requested.
-3. Keep gallery architecture as:
+3. Keep UI copy and labels in Traditional Chinese (`zh-Hant`) unless explicitly requested.
+4. Keep navbar architecture as:
+   - Fixed top navigation
+   - Journey link (`#journey`)
+   - Album link (`#album`)
+   - Preserve agreed navigation behavior (including smooth scroll)
+5. Keep gallery architecture as:
    - Day preview cards on home
    - Full album modal for all photos
    - Day-based filtering (Day 1-7)
    - Batch rendering for performance
-4. Keep keyboard support in lightbox:
+6. Keep keyboard support in lightbox:
    - `ArrowLeft`: previous
    - `ArrowRight`: next
    - `Escape`: close
