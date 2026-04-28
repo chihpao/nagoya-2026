@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>名古屋 2026</title>
+  <title>名古屋 2026 · 旅程</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@500;700;900&display=swap"
     rel="stylesheet" />
 
   <script>
@@ -16,7 +16,7 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Inter"', '"Noto Sans TC"', 'sans-serif'],
+            sans: ['"Manrope"', '"Noto Sans TC"', 'sans-serif'],
             serif: ['"Noto Serif TC"', 'serif']
           }
         }
@@ -26,31 +26,29 @@
 
   <style>
     :root {
-      --bg-light: #faf8f5;
-      --bg-alt: #f3f0eb;
-      --bg-white: #ffffff;
-      --text-main: #1a1a1a;
-      --text-secondary: #4a4a4a;
-      --text-muted: #8a8578;
-      --accent: #c4703c;
-      --accent-dark: #a85d30;
-      --line: rgba(0, 0, 0, 0.06);
+      --bg-main: #f6f2ea;
+      --bg-card: #fffdfa;
+      --bg-deep: #2b251e;
+      --text-main: #251f18;
+      --text-sub: #61584b;
+      --text-mute: #8d806f;
+      --line: rgba(43, 37, 30, 0.12);
+      --accent: #b15f2e;
+      --accent-dark: #874619;
     }
 
     body {
-      background: var(--bg-light);
+      background: var(--bg-main);
       color: var(--text-main);
       overflow-x: hidden;
     }
 
-    /* ── Navbar ── */
     .top-nav {
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      background: rgba(250, 248, 245, 0.82);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-      transform: translateY(0);
-      transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(246, 242, 234, 0.9);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: transform 320ms ease;
     }
 
     .top-nav.hidden-nav {
@@ -59,245 +57,139 @@
 
     .nav-link {
       border-radius: 999px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      color: var(--text-muted);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--text-mute);
       transition: all 200ms ease;
     }
 
     .nav-link:hover,
-    .nav-link:focus-visible {
-      color: var(--bg-light);
-      background: var(--text-main);
+    .nav-link:focus-visible,
+    .nav-link.active {
+      background: var(--bg-deep);
+      color: #fff;
     }
 
-    /* ── Full-bleed images ── */
+    .hero-photo img,
     .photo-bleed img {
       width: 100%;
-      height: 60vh;
-      object-fit: cover;
       display: block;
-    }
-
-    @media (min-width: 768px) {
-      .photo-bleed img {
-        height: min(85vh, 920px);
-      }
+      object-fit: cover;
     }
 
     .hero-photo img {
-      height: 65vh;
+      height: 66vh;
+    }
+
+    .photo-bleed img {
+      height: 60vh;
     }
 
     @media (min-width: 768px) {
       .hero-photo img {
-        height: min(90vh, 980px);
+        height: min(90vh, 960px);
+      }
+
+      .photo-bleed img {
+        height: min(84vh, 920px);
       }
     }
 
-    /* ── Day story card ── */
+    .hero-intro {
+      padding: 3rem 1.5rem 3.5rem;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #faf7f1 0%, #f1ebe0 100%);
+    }
+
+    @media (min-width: 768px) {
+      .hero-intro {
+        padding: 4rem 2.5rem 4.5rem;
+      }
+    }
+
     .day-story {
       position: relative;
-      padding: 2rem 1.5rem 2.5rem;
-      cursor: pointer;
-      transition: background 250ms ease;
+      padding: 2rem 1.5rem 2.7rem;
+      background: var(--bg-card);
+      border-left: 3px solid transparent;
+      transition: background 220ms ease, border-color 220ms ease;
+    }
+
+    .day-story:hover {
+      border-left-color: var(--accent);
+      background: #fbf5eb;
     }
 
     @media (min-width: 768px) {
       .day-story {
-        padding: 2.5rem 3rem 3rem;
+        padding: 2.6rem 2.8rem 3rem;
       }
     }
 
-    .day-story:hover {
-      background: var(--bg-alt);
+    .story-link {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: color 220ms ease, border-color 220ms ease;
+    }
+
+    .story-link:hover,
+    .story-link:focus-visible {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
     }
 
     .day-story::after {
       content: '';
       position: absolute;
-      bottom: 0;
       left: 1.5rem;
       right: 1.5rem;
+      bottom: 0;
       height: 1px;
       background: var(--line);
     }
 
     @media (min-width: 768px) {
       .day-story::after {
-        left: 3rem;
-        right: 3rem;
+        left: 2.8rem;
+        right: 2.8rem;
       }
     }
 
-    .day-title-link {
-      display: inline-block;
-      position: relative;
-      text-decoration: none;
-      color: inherit;
-      transition: color 300ms ease;
-    }
-
-    .day-title-link::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: -4px;
-      width: 0;
-      height: 2px;
-      background: var(--accent);
-      transition: width 400ms cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .day-story:hover .day-title-link {
-      color: var(--accent);
-    }
-
-    .day-story:hover .day-title-link::after {
-      width: 100%;
-    }
-
-    .album-hint {
-      display: block;
-      margin-top: 0.5rem;
-      font-size: 0.8rem;
-      font-family: 'Inter', sans-serif;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      color: var(--accent);
-      opacity: 0;
-      transform: translateY(-6px);
-      transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .day-story:hover .album-hint {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 767px) {
-      .album-hint {
-        opacity: 0.5;
-        transform: translateY(0);
-        font-size: 0.75rem;
-      }
-    }
-
-    /* ── Hero intro ── */
-    .hero-intro {
-      padding: 3rem 1.5rem 3.5rem;
-    }
-
-    @media (min-width: 768px) {
-      .hero-intro {
-        padding: 4rem 3rem 4.5rem;
-      }
-    }
-
-    /* ── Album home section ── */
-    .album-home {
-      background: var(--bg-alt);
+    .album-entry {
+      background: radial-gradient(circle at top left, #fdf9f2 0%, #efe8dc 100%);
       border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
     }
 
-    .home-day-card {
-      background: var(--bg-white);
+    .home-card {
+      background: #fff;
       border: 1px solid var(--line);
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
-      transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
+      transition: transform 220ms ease, box-shadow 220ms ease;
     }
 
-    .home-day-card:hover {
+    .home-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.07);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.1);
     }
 
-    /* ── Album modal ── */
-    .album-shell,
-    .lightbox-shell {
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 250ms ease, visibility 250ms ease;
+    .jump-btn {
+      border-radius: 999px;
+      background: var(--bg-deep);
+      color: #fff;
+      transition: background 180ms ease;
     }
 
-    .album-shell.open,
-    .lightbox-shell.open {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .album-panel {
-      transform: translateY(20px) scale(0.98);
-      transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
-      border: 1px solid var(--line);
-      background: var(--bg-light);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.15);
-    }
-
-    .album-shell.open .album-panel {
-      transform: translateY(0) scale(1);
-    }
-
-    .day-tab {
-      border: 1px solid var(--line);
-      color: var(--text-muted);
-      background: var(--bg-alt);
-      transition: all 200ms ease;
-    }
-
-    .day-tab.active,
-    .day-tab:hover,
-    .day-tab:focus-visible {
-      color: white;
-      border-color: var(--text-main);
-      background: var(--text-main);
-    }
-
-    .album-thumb {
-      border: 1px solid var(--line);
-      background: var(--bg-alt);
-      transition: all 250ms ease;
-    }
-
-    .album-thumb:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-    }
-
-    /* ── Lightbox ── */
-    .lightbox-shell {
-      background: rgba(0, 0, 0, 0.94);
-      backdrop-filter: blur(8px);
-    }
-
-    .lightbox-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      transition: all 200ms ease;
-    }
-
-    .lightbox-btn:hover,
-    .lightbox-btn:focus-visible {
-      background: rgba(255, 255, 255, 0.2);
-      transform: scale(1.05);
-    }
-
-    /* ── Utilities ── */
-    .back-top {
-      transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .back-top.hidden-btn {
-      opacity: 0;
-      transform: translateY(20px) scale(0.9);
-      pointer-events: none;
+    .jump-btn:hover,
+    .jump-btn:focus-visible {
+      background: #000;
     }
 
     .reveal {
       opacity: 0;
       transform: translateY(24px);
-      transition: all 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: opacity 550ms ease, transform 550ms ease;
     }
 
     .reveal.show {
@@ -305,58 +197,56 @@
       transform: translateY(0);
     }
 
-    .hide-scrollbar::-webkit-scrollbar {
-      display: none;
+    .back-top {
+      transition: opacity 240ms ease, transform 240ms ease;
     }
 
-    .hide-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+    .back-top.hidden-btn {
+      opacity: 0;
+      transform: translateY(16px);
+      pointer-events: none;
     }
 
     ::-webkit-scrollbar {
-      width: 6px;
+      width: 7px;
     }
 
     ::-webkit-scrollbar-track {
-      background: var(--bg-alt);
+      background: #ece4d8;
     }
 
     ::-webkit-scrollbar-thumb {
-      background: #c9c3b8;
+      background: #b5a48c;
       border-radius: 999px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #a39d92;
     }
   </style>
 </head>
 
 <body class="font-sans antialiased selection:bg-black selection:text-white">
   <nav id="navbar" class="top-nav fixed top-0 left-0 w-full z-40 px-4 py-3 md:px-6 md:py-4">
-    <div class="max-w-6xl mx-auto flex items-center justify-between">
-      <a href="#top" class="font-serif text-lg md:text-2xl font-bold tracking-wider text-black flex items-center gap-2">
-        Nagoya <span class="text-gray-400 font-sans font-light text-base md:text-lg">2026</span>
-      </a>
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-2">
+      <a href="#top" class="font-serif text-lg md:text-2xl font-bold tracking-wide text-black">Nagoya 2026</a>
       <div class="flex items-center gap-1 md:gap-4 text-sm md:text-base">
-        <a href="#journey" class="nav-link px-3 py-1.5 md:px-4 md:py-2">旅程</a>
-        <a href="#album" class="nav-link px-3 py-1.5 md:px-4 md:py-2">相簿</a>
+        <a href="#journey" class="nav-link active px-3 py-1.5 md:px-4 md:py-2">旅程</a>
+        <a href="./album.html#album" class="nav-link px-3 py-1.5 md:px-4 md:py-2">相簿</a>
       </div>
     </div>
   </nav>
 
   <header id="top">
-    <div class="photo-bleed hero-photo">
+    <div class="hero-photo">
       <img src="./images/hero-nagoya.jpg" alt="名古屋街景" loading="eager" />
     </div>
-    <div class="max-w-5xl mx-auto hero-intro reveal">
-      <p class="text-[10px] md:text-xs tracking-[0.25em] uppercase font-bold font-sans" style="color:var(--text-muted)">
-        Nagoya Travel Journal</p>
-      <h1 class="mt-3 font-serif text-4xl md:text-6xl lg:text-7xl tracking-wide" style="color:var(--text-main)">名古屋 2026
-      </h1>
-      <p class="mt-3 text-base md:text-lg font-light" style="color:var(--text-secondary)">2026.04.01 — 2026.04.07　七天旅行紀錄
-      </p>
+    <div class="hero-intro">
+      <div class="max-w-5xl mx-auto reveal">
+        <p class="text-[10px] md:text-xs tracking-[0.22em] uppercase font-bold" style="color:var(--text-mute)">Nagoya Travel Journal</p>
+        <h1 class="mt-3 font-serif text-4xl md:text-6xl lg:text-7xl">名古屋 2026</h1>
+        <p class="mt-4 text-base md:text-xl font-light" style="color:var(--text-sub)">2026.04.01 - 2026.04.07 七天旅行紀錄</p>
+        <div class="mt-7 flex flex-wrap items-center gap-3">
+          <a href="#journey" class="jump-btn px-6 py-3 text-sm md:text-base font-semibold">開始看旅程</a>
+          <a href="./album.html#album" class="rounded-full border border-black/20 px-6 py-3 text-sm md:text-base font-semibold hover:bg-black hover:text-white transition-colors">直接看相簿</a>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -367,14 +257,10 @@
       </div>
       <div class="max-w-5xl mx-auto">
         <article class="day-story reveal" data-day="1">
-          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold font-sans"
-            style="color:var(--text-muted)">Day 1 · 2026.04.01</p>
-          <h2 class="mt-2 font-serif text-2xl md:text-4xl">
-            <button class="day-title-link day-open-trigger" data-day="1">抵達名古屋</button>
-          </h2>
-          <span class="album-hint">開啟相簿</span>
-          <p class="mt-2 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-secondary)">
-            桃園機場喝星巴克、抵達名古屋、居酒屋</p>
+          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 1 · 2026.04.01</p>
+          <h2 class="mt-2 font-serif text-2xl md:text-4xl">抵達名古屋</h2>
+          <p class="mt-3 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-sub)">桃園機場喝星巴克、抵達名古屋、居酒屋。</p>
+          <a href="./album.html?day=1#album" class="story-link mt-4 inline-flex items-center gap-2 text-sm md:text-base font-semibold">進入第 1 天相簿 <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -385,14 +271,10 @@
       </div>
       <div class="max-w-5xl mx-auto">
         <article class="day-story reveal" data-day="2">
-          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold font-sans"
-            style="color:var(--text-muted)">Day 2 · 2026.04.02</p>
-          <h2 class="mt-2 font-serif text-2xl md:text-4xl">
-            <button class="day-title-link day-open-trigger" data-day="2">榮區與夜櫻</button>
-          </h2>
-          <span class="album-hint">開啟相簿</span>
-          <p class="mt-2 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-secondary)">
-            榮區逛街、神奇寶貝中心、鰻魚飯、名古屋城、夜櫻。</p>
+          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 2 · 2026.04.02</p>
+          <h2 class="mt-2 font-serif text-2xl md:text-4xl">榮區與夜櫻</h2>
+          <p class="mt-3 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-sub)">榮區逛街、神奇寶貝中心、鰻魚飯、名古屋城、夜櫻。</p>
+          <a href="./album.html?day=2#album" class="story-link mt-4 inline-flex items-center gap-2 text-sm md:text-base font-semibold">進入第 2 天相簿 <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -403,14 +285,10 @@
       </div>
       <div class="max-w-5xl mx-auto">
         <article class="day-story reveal" data-day="3">
-          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold font-sans"
-            style="color:var(--text-muted)">Day 3 · 2026.04.03</p>
-          <h2 class="mt-2 font-serif text-2xl md:text-4xl">
-            <button class="day-title-link day-open-trigger" data-day="3">山景與夜景</button>
-          </h2>
-          <span class="album-hint">開啟相簿</span>
-          <p class="mt-2 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-secondary)">
-            飛驒山、合掌村、大採購、中部電力塔，宵夜拉麵收尾。</p>
+          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 3 · 2026.04.03</p>
+          <h2 class="mt-2 font-serif text-2xl md:text-4xl">山景與夜景</h2>
+          <p class="mt-3 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-sub)">飛驒山、合掌村、大採購、中部電力塔，宵夜拉麵收尾。</p>
+          <a href="./album.html?day=3#album" class="story-link mt-4 inline-flex items-center gap-2 text-sm md:text-base font-semibold">進入第 3 天相簿 <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -421,14 +299,10 @@
       </div>
       <div class="max-w-5xl mx-auto">
         <article class="day-story reveal" data-day="4">
-          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold font-sans"
-            style="color:var(--text-muted)">Day 4 · 2026.04.04</p>
-          <h2 class="mt-2 font-serif text-2xl md:text-4xl">
-            <button class="day-title-link day-open-trigger" data-day="4">大須散策</button>
-          </h2>
-          <span class="album-hint">開啟相簿</span>
-          <p class="mt-2 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-secondary)">
-            定食早餐、熱田神宮、大須商店街、太鼓表演與夜晚小酌。</p>
+          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 4 · 2026.04.04</p>
+          <h2 class="mt-2 font-serif text-2xl md:text-4xl">大須散策</h2>
+          <p class="mt-3 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-sub)">定食早餐、熱田神宮、大須商店街、太鼓表演與夜晚小酌。</p>
+          <a href="./album.html?day=4#album" class="story-link mt-4 inline-flex items-center gap-2 text-sm md:text-base font-semibold">進入第 4 天相簿 <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -439,14 +313,10 @@
       </div>
       <div class="max-w-5xl mx-auto">
         <article class="day-story reveal" data-day="5">
-          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold font-sans"
-            style="color:var(--text-muted)">Day 5 · 2026.04.05</p>
-          <h2 class="mt-2 font-serif text-2xl md:text-4xl">
-            <button class="day-title-link day-open-trigger" data-day="5">犬山祭日</button>
-          </h2>
-          <span class="album-hint">開啟相簿</span>
-          <p class="mt-2 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-secondary)">
-            犬山城與祭典、神社祈福、商店街散步，晚上吃台灣滷肉飯。</p>
+          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 5 · 2026.04.05</p>
+          <h2 class="mt-2 font-serif text-2xl md:text-4xl">犬山祭日</h2>
+          <p class="mt-3 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-sub)">犬山城與祭典、神社祈福、商店街散步，晚上吃台灣滷肉飯。</p>
+          <a href="./album.html?day=5#album" class="story-link mt-4 inline-flex items-center gap-2 text-sm md:text-base font-semibold">進入第 5 天相簿 <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -457,14 +327,10 @@
       </div>
       <div class="max-w-5xl mx-auto">
         <article class="day-story reveal" data-day="6">
-          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold font-sans"
-            style="color:var(--text-muted)">Day 6 · 2026.04.06</p>
-          <h2 class="mt-2 font-serif text-2xl md:text-4xl">
-            <button class="day-title-link day-open-trigger" data-day="6">市區爆走</button>
-          </h2>
-          <span class="album-hint">開啟相簿</span>
-          <p class="mt-2 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-secondary)">
-            吉卜力商店、女僕咖啡、圓頓寺商店街、綠洲21、卡拉 OK。</p>
+          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 6 · 2026.04.06</p>
+          <h2 class="mt-2 font-serif text-2xl md:text-4xl">市區爆走</h2>
+          <p class="mt-3 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-sub)">吉卜力商店、女僕咖啡、圓頓寺商店街、綠洲21、卡拉 OK。</p>
+          <a href="./album.html?day=6#album" class="story-link mt-4 inline-flex items-center gap-2 text-sm md:text-base font-semibold">進入第 6 天相簿 <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -475,100 +341,31 @@
       </div>
       <div class="max-w-5xl mx-auto">
         <article class="day-story reveal" data-day="7">
-          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold font-sans"
-            style="color:var(--text-muted)">Day 7 · 2026.04.07</p>
-          <h2 class="mt-2 font-serif text-2xl md:text-4xl">
-            <button class="day-title-link day-open-trigger" data-day="7">回台灣</button>
-          </h2>
-          <span class="album-hint">開啟相簿</span>
-          <p class="mt-2 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-secondary)">
-            中部國際機場早餐、返台，晚上開箱戰利品。</p>
+          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 7 · 2026.04.07</p>
+          <h2 class="mt-2 font-serif text-2xl md:text-4xl">回台灣</h2>
+          <p class="mt-3 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-sub)">中部國際機場早餐、返台，晚上開箱戰利品。</p>
+          <a href="./album.html?day=7#album" class="story-link mt-4 inline-flex items-center gap-2 text-sm md:text-base font-semibold">進入第 7 天相簿 <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
   </main>
 
-  <section id="album" class="album-home py-16 md:py-32">
-    <div class="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
-      <div class="reveal text-center md:text-left">
-        <p class="text-[10px] md:text-xs tracking-[0.25em] uppercase font-bold font-sans"
-          style="color:var(--text-muted)">Gallery</p>
-        <h2 class="mt-3 font-serif text-4xl md:text-6xl">相簿</h2>
-        <p class="mt-4 text-base md:text-lg text-gray-600 font-light">7 天分頁，點任一天進入完整相簿。</p>
+  <section id="album" class="album-entry py-16 md:py-24">
+    <div class="max-w-6xl mx-auto px-5 md:px-8">
+      <div class="reveal flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p class="text-[10px] md:text-xs tracking-[0.22em] uppercase font-bold" style="color:var(--text-mute)">Album Entry</p>
+          <h2 class="mt-3 font-serif text-4xl md:text-6xl">相簿入口</h2>
+          <p class="mt-3 text-base md:text-lg font-light" style="color:var(--text-sub)">直接點任一天，跳到獨立相簿頁，不再長距離捲動。</p>
+        </div>
+        <a href="./album.html#album" class="jump-btn px-6 py-3 text-sm md:text-base font-semibold self-start md:self-auto">開啟完整相簿</a>
       </div>
       <div id="home-day-grid" class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"></div>
     </div>
   </section>
 
-  <div id="album-shell" class="album-shell fixed inset-0 z-[80] bg-black/60 p-0 md:p-6 backdrop-blur-sm" role="dialog"
-    aria-modal="true" aria-label="每日相簿">
-    <div class="album-panel w-full h-full max-w-7xl mx-auto md:rounded-3xl overflow-hidden flex flex-col bg-white">
-      <header
-        class="px-5 md:px-10 py-4 md:py-5 border-b border-black/5 bg-white flex items-center justify-between gap-4">
-        <div>
-          <p id="album-day-chip"
-            class="text-[10px] md:text-xs uppercase tracking-[0.15em] font-bold text-gray-500 font-sans">Day 1</p>
-          <h3 id="album-title" class="font-serif text-2xl md:text-4xl leading-tight mt-1">第 1 天相簿</h3>
-        </div>
-        <button id="album-close"
-          class="w-10 h-10 rounded-full border border-black/10 hover:border-black/30 hover:bg-black/5 transition-all flex items-center justify-center"
-          aria-label="關閉相簿">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </header>
-      <div class="px-5 md:px-10 py-3 md:py-4 border-b border-black/5 bg-white/60">
-        <div id="album-day-tabs" class="flex overflow-x-auto gap-2 md:gap-3 pb-1 -mb-1 hide-scrollbar"></div>
-      </div>
-      <div class="px-5 md:px-10 py-3 text-sm md:text-base text-gray-500 border-b border-black/5 bg-white/60 font-light">
-        <span id="album-count">0 張照片</span>
-      </div>
-      <div class="flex-1 overflow-y-auto px-5 md:px-10 py-6 md:py-8 bg-white/40">
-        <div id="album-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-6"></div>
-        <p id="album-empty" class="hidden text-center text-gray-400 py-12 font-light">這一天目前沒有照片。</p>
-        <div class="pt-8 pb-4 text-center">
-          <button id="album-load-more"
-            class="hidden rounded-full border border-black bg-white px-8 py-3 text-sm md:text-base font-semibold text-black hover:bg-black hover:text-white transition-colors">
-            載入更多照片
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="lightbox-shell" class="lightbox-shell fixed inset-0 z-[95] p-3 md:p-8" role="dialog" aria-modal="true"
-    aria-label="照片檢視">
-    <button id="lightbox-close"
-      class="lightbox-btn absolute top-3 right-3 md:top-6 md:right-8 w-10 h-10 md:w-11 md:h-11 rounded-full text-white"
-      aria-label="關閉照片">
-      <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
-    <button id="lightbox-prev"
-      class="lightbox-btn absolute left-2 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full text-white"
-      aria-label="上一張">
-      <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 19l-7-7 7-7" />
-      </svg>
-    </button>
-    <button id="lightbox-next"
-      class="lightbox-btn absolute right-2 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full text-white"
-      aria-label="下一張">
-      <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5l7 7-7 7" />
-      </svg>
-    </button>
-    <figure class="w-full h-full flex flex-col items-center justify-center gap-4 md:gap-5">
-      <img id="lightbox-image" src="" alt=""
-        class="max-w-full md:max-w-[94vw] max-h-[80vh] md:max-h-[82vh] object-contain rounded-lg shadow-2xl" />
-      <figcaption id="lightbox-meta" class="text-white/80 text-sm md:text-base tracking-wide font-light"></figcaption>
-    </figure>
-  </div>
-
   <button id="back-top"
-    class="back-top hidden-btn fixed bottom-8 right-8 z-30 w-12 h-12 rounded-full text-white shadow-2xl transition-colors"
+    class="back-top hidden-btn fixed bottom-7 right-7 z-30 w-12 h-12 rounded-full text-white shadow-xl"
     style="background:var(--accent)" onmouseover="this.style.background='var(--accent-dark)'"
     onmouseout="this.style.background='var(--accent)'" aria-label="回到頂部">
     <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -598,31 +395,11 @@
       7: ['./images/day7-departure.jpg', './images/gallery-7.jpg']
     };
 
-    const BATCH_SIZE = 36;
-
-    const backTop = document.getElementById('back-top');
     const homeDayGrid = document.getElementById('home-day-grid');
-    const albumShell = document.getElementById('album-shell');
-    const albumClose = document.getElementById('album-close');
-    const albumDayChip = document.getElementById('album-day-chip');
-    const albumTitle = document.getElementById('album-title');
-    const albumCount = document.getElementById('album-count');
-    const albumTabs = document.getElementById('album-day-tabs');
-    const albumGrid = document.getElementById('album-grid');
-    const albumEmpty = document.getElementById('album-empty');
-    const albumLoadMore = document.getElementById('album-load-more');
-    const lightboxShell = document.getElementById('lightbox-shell');
-    const lightboxClose = document.getElementById('lightbox-close');
-    const lightboxPrev = document.getElementById('lightbox-prev');
-    const lightboxNext = document.getElementById('lightbox-next');
-    const lightboxImage = document.getElementById('lightbox-image');
-    const lightboxMeta = document.getElementById('lightbox-meta');
+    const backTop = document.getElementById('back-top');
 
     const state = {
-      albumData: {},
-      currentDay: 1,
-      visibleCount: BATCH_SIZE,
-      lightboxIndex: 0
+      albumData: {}
     };
 
     function mergeUnique(items) {
@@ -635,11 +412,6 @@
       });
     }
 
-    function getDayCover(day) {
-      const meta = dayMeta.find((entry) => entry.day === day);
-      return meta ? meta.cover : './images/hero-nagoya.jpg';
-    }
-
     function buildAlbumData() {
       const source = typeof window.NAGOYA_ALBUM_DATA === 'object' && window.NAGOYA_ALBUM_DATA !== null
         ? window.NAGOYA_ALBUM_DATA
@@ -648,8 +420,8 @@
 
       dayMeta.forEach((meta) => {
         const sourcePhotos = Array.isArray(source[meta.day]) ? source[meta.day] : [];
-        const dayFallback = Array.isArray(fallbackAlbumData[meta.day]) ? fallbackAlbumData[meta.day] : [];
-        const merged = mergeUnique([meta.cover, ...sourcePhotos, ...dayFallback]);
+        const fallbackPhotos = Array.isArray(fallbackAlbumData[meta.day]) ? fallbackAlbumData[meta.day] : [];
+        const merged = mergeUnique([meta.cover, ...sourcePhotos, ...fallbackPhotos]);
         normalized[meta.day] = merged.length ? merged : [meta.cover];
       });
 
@@ -657,14 +429,11 @@
     }
 
     function bindImageFallback(img, day) {
-      const fallback = getDayCover(day);
+      const cover = dayMeta.find((entry) => entry.day === day)?.cover || './images/hero-nagoya.jpg';
       img.addEventListener('error', () => {
-        if (img.dataset.fallbackApplied === '1') {
-          img.closest('button, article')?.remove();
-          return;
-        }
+        if (img.dataset.fallbackApplied === '1') return;
         img.dataset.fallbackApplied = '1';
-        img.src = fallback;
+        img.src = cover;
       });
     }
 
@@ -678,9 +447,9 @@
         const third = photos[2] || meta.cover;
 
         const card = document.createElement('article');
-        card.className = 'home-day-card rounded-2xl overflow-hidden';
+        card.className = 'home-card rounded-2xl overflow-hidden';
         card.innerHTML = `
-          <button class="w-full text-left" data-day="${meta.day}">
+          <a href="./album.html?day=${meta.day}#album" class="block">
             <div class="grid grid-cols-6 gap-[2px] bg-black/5">
               <img src="${first}" alt="第${meta.day}天精選1" class="col-span-4 h-40 object-cover" loading="lazy" />
               <div class="col-span-2 grid grid-rows-2 gap-[2px]">
@@ -689,120 +458,18 @@
               </div>
             </div>
             <div class="px-6 py-5">
-              <p class="text-[10px] tracking-[0.14em] uppercase font-bold text-gray-400 font-sans">Day ${meta.day}</p>
+              <p class="text-[10px] tracking-[0.14em] uppercase font-bold" style="color:var(--text-mute)">Day ${meta.day}</p>
               <p class="font-serif text-2xl mt-1 text-gray-900">第 ${meta.day} 天</p>
-              <p class="text-sm text-gray-500 mt-2 font-light">${meta.date} · ${photos.length} 張照片</p>
+              <p class="text-sm mt-2 font-light" style="color:var(--text-sub)">${meta.date} · ${photos.length} 張照片</p>
             </div>
-          </button>
+          </a>
         `;
 
         card.querySelectorAll('img').forEach((img) => bindImageFallback(img, meta.day));
-        card.querySelector('button')?.addEventListener('click', () => openAlbum(meta.day));
         fragment.appendChild(card);
       });
 
       homeDayGrid.replaceChildren(fragment);
-    }
-
-    function renderTabs() {
-      const frag = document.createDocumentFragment();
-      dayMeta.forEach((meta) => {
-        const tab = document.createElement('button');
-        tab.className = `day-tab rounded-full px-5 py-2.5 text-sm md:text-base font-medium ${meta.day === state.currentDay ? 'active' : ''}`;
-        tab.textContent = `第 ${meta.day} 天`;
-        tab.addEventListener('click', () => switchDay(meta.day));
-        frag.appendChild(tab);
-      });
-      albumTabs.replaceChildren(frag);
-    }
-
-    function updateAlbumHeader(total) {
-      albumDayChip.textContent = `Day ${state.currentDay}`;
-      albumTitle.textContent = `第 ${state.currentDay} 天相簿`;
-      albumCount.textContent = `${total} 張照片`;
-    }
-
-    function renderAlbumGrid() {
-      const day = state.currentDay;
-      const photos = state.albumData[day] || [];
-      const visible = photos.slice(0, state.visibleCount);
-      updateAlbumHeader(photos.length);
-
-      albumGrid.innerHTML = '';
-      albumEmpty.classList.toggle('hidden', photos.length !== 0);
-      albumLoadMore.classList.toggle('hidden', state.visibleCount >= photos.length || photos.length === 0);
-
-      const frag = document.createDocumentFragment();
-      visible.forEach((src, index) => {
-        const item = document.createElement('button');
-        item.className = 'album-thumb group rounded-xl overflow-hidden text-left relative';
-        item.innerHTML = `
-          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors z-10"></div>
-          <img src="${src}" alt="第${day}天照片${index + 1}" class="w-full aspect-square object-cover" loading="lazy" />
-        `;
-        const img = item.querySelector('img');
-        bindImageFallback(img, day);
-        item.addEventListener('click', () => openLightbox(index));
-        frag.appendChild(item);
-      });
-
-      albumGrid.appendChild(frag);
-    }
-
-    function switchDay(day) {
-      state.currentDay = day;
-      state.visibleCount = BATCH_SIZE;
-      renderTabs();
-      renderAlbumGrid();
-    }
-
-    function openAlbum(day) {
-      switchDay(day);
-      albumShell.classList.add('open');
-      syncBodyLock();
-    }
-
-    function closeAlbum() {
-      albumShell.classList.remove('open');
-      closeLightbox();
-      syncBodyLock();
-    }
-
-    function updateLightbox() {
-      const photos = state.albumData[state.currentDay] || [];
-      if (!photos.length) return;
-
-      const total = photos.length;
-      const nextIndex = (state.lightboxIndex + total) % total;
-      state.lightboxIndex = nextIndex;
-
-      const src = photos[nextIndex];
-      lightboxImage.dataset.fallbackApplied = '0';
-      lightboxImage.src = src;
-      lightboxImage.alt = `第${state.currentDay}天照片 ${nextIndex + 1}`;
-      lightboxMeta.textContent = `第 ${state.currentDay} 天 · ${nextIndex + 1} / ${total}`;
-    }
-
-    function openLightbox(index) {
-      state.lightboxIndex = index;
-      lightboxShell.classList.add('open');
-      updateLightbox();
-      syncBodyLock();
-    }
-
-    function closeLightbox() {
-      lightboxShell.classList.remove('open');
-      syncBodyLock();
-    }
-
-    function shiftLightbox(delta) {
-      state.lightboxIndex += delta;
-      updateLightbox();
-    }
-
-    function syncBodyLock() {
-      const locked = albumShell.classList.contains('open') || lightboxShell.classList.contains('open');
-      document.body.style.overflow = locked ? 'hidden' : '';
     }
 
     function initReveal() {
@@ -818,60 +485,6 @@
       document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
     }
 
-    document.querySelectorAll('.day-open-trigger').forEach((button) => {
-      button.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const day = Number(button.dataset.day);
-        openAlbum(day);
-      });
-    });
-
-    document.querySelectorAll('.day-story').forEach((article) => {
-      article.addEventListener('click', () => {
-        const day = Number(article.dataset.day);
-        if (day) openAlbum(day);
-      });
-    });
-
-    albumClose.addEventListener('click', closeAlbum);
-    albumShell.addEventListener('click', (event) => {
-      if (event.target === albumShell) closeAlbum();
-    });
-
-    albumLoadMore.addEventListener('click', () => {
-      state.visibleCount += BATCH_SIZE;
-      renderAlbumGrid();
-    });
-
-    lightboxClose.addEventListener('click', closeLightbox);
-    lightboxPrev.addEventListener('click', () => shiftLightbox(-1));
-    lightboxNext.addEventListener('click', () => shiftLightbox(1));
-    lightboxShell.addEventListener('click', (event) => {
-      if (event.target === lightboxShell) closeLightbox();
-    });
-
-    lightboxImage.addEventListener('error', () => {
-      if (lightboxImage.dataset.fallbackApplied === '1') return;
-      lightboxImage.dataset.fallbackApplied = '1';
-      lightboxImage.src = getDayCover(state.currentDay);
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        if (lightboxShell.classList.contains('open')) {
-          closeLightbox();
-          return;
-        }
-        if (albumShell.classList.contains('open')) {
-          closeAlbum();
-        }
-      }
-
-      if (!lightboxShell.classList.contains('open')) return;
-      if (event.key === 'ArrowLeft') shiftLightbox(-1);
-      if (event.key === 'ArrowRight') shiftLightbox(1);
-    });
-
     const navbar = document.getElementById('navbar');
     let lastScrollY = window.scrollY;
     let navHideTimeout;
@@ -879,15 +492,9 @@
     window.addEventListener('scroll', () => {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY > window.innerHeight * 0.45) {
-        backTop.classList.remove('hidden-btn');
-      } else {
-        backTop.classList.add('hidden-btn');
-      }
+      backTop.classList.toggle('hidden-btn', currentScrollY <= window.innerHeight * 0.4);
 
-      if (currentScrollY <= 50) {
-        navbar.classList.remove('hidden-nav');
-      } else if (currentScrollY < lastScrollY) {
+      if (currentScrollY <= 50 || currentScrollY < lastScrollY) {
         navbar.classList.remove('hidden-nav');
       } else {
         navbar.classList.add('hidden-nav');
@@ -897,9 +504,7 @@
 
       clearTimeout(navHideTimeout);
       if (currentScrollY > 50) {
-        navHideTimeout = setTimeout(() => {
-          navbar.classList.add('hidden-nav');
-        }, 800);
+        navHideTimeout = setTimeout(() => navbar.classList.add('hidden-nav'), 900);
       }
     }, { passive: true });
 
@@ -909,8 +514,6 @@
 
     state.albumData = buildAlbumData();
     renderHomeCards();
-    renderTabs();
-    renderAlbumGrid();
     initReveal();
   </script>
 </body>

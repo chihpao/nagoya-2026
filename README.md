@@ -1,29 +1,52 @@
 # nagoya-2026
-2026/04/01-04/07 名古屋旅行
+
+2026/04/01-2026/04/07 名古屋旅行紀錄網站
+
+## 目前網站架構
+
+- 首頁旅程頁: `index.html`
+  - 保留 Day 1-7 全版圖片旅程段落
+  - 保留首頁 Day 預覽卡（相簿入口）
+  - Navbar `相簿` 直接導向獨立相簿頁 `album.html#album`
+- 相簿頁: `album.html`
+  - Day 1-7 分頁切換
+  - 批次載入（Load More）
+  - Lightbox 鍵盤操作 (`ArrowLeft` / `ArrowRight` / `Escape`)
+- 相簿資料來源: `data/album.manifest.js`
+  - 若 manifest 不可用，頁面會用內建 fallback 圖片清單
+
+## 本機預覽
+
+```powershell
+python -m http.server 8000
+```
+
+打開 `http://localhost:8000/index.html` 與 `http://localhost:8000/album.html`
 
 ## Album Pipeline (WebP + R2 + manifest.json)
 
-1. Install dependencies:
+1. 安裝依賴
 
 ```powershell
 python -m pip install -r requirements-r2.txt
 ```
 
-2. Fill R2 env vars (copy from `.env.r2.example`).
+2. 填入 R2 環境變數（可從 `.env.r2.example` 複製）
 
-3. Convert and generate manifest only:
+3. 只做轉檔與 manifest 產出
 
 ```powershell
 python scripts/build_album_manifest_and_upload.py
 ```
 
-4. Convert + upload to R2 + update `data/manifest.json`:
+4. 轉檔 + 上傳 R2 + 更新 `data/manifest.json`
 
 ```powershell
 python scripts/build_album_manifest_and_upload.py --upload
 ```
 
-Notes:
-- Source images: `images/album`
-- Converted images: `build/album-webp`
-- Manifest output: `data/manifest.json`
+## 部署注意事項（GitHub Actions / GitHub Pages）
+
+- `.github/workflows/deploy-pages.yml` 使用 `path: '.'` 上傳整個 repo 當部署內容。
+- 因此新增 `album.html` 會自動一起部署，不需額外調整 workflow。
+- 圖片路徑請維持相對路徑（例如 `./images/...`、`./data/...`）以確保 Pages 正常載入。

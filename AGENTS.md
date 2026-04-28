@@ -7,7 +7,7 @@ Any AI or contributor modifying this repo must follow these rules unless the use
 
 ## Source Of Truth
 
-- Primary page: `index.html`
+- Primary pages: `index.html` and `album.html`
 - Album data source: `data/album.manifest.js` (fallback allowed only when manifest is unavailable)
 
 ## Non-Negotiable UI Requirements
@@ -21,7 +21,7 @@ Any AI or contributor modifying this repo must follow these rules unless the use
 
 1. Album must be organized by Day 1 to Day 7.
 2. Keep day preview cards on the home/album entry area.
-3. Keep a full album modal with day switching tabs (Day 1-7).
+3. Keep a dedicated album page (`album.html`) with day switching tabs (Day 1-7).
 4. Keep batch rendering / load-more behavior for performance.
 5. Keep lightbox viewer with keyboard support:
    - `ArrowLeft`: previous
@@ -32,10 +32,11 @@ Any AI or contributor modifying this repo must follow these rules unless the use
 
 1. Navbar stays fixed at top and works on desktop and mobile.
 2. Navbar must include at least:
-   - Journey link (`#journey`)
-   - Album link (`#album`)
-3. Do not remove smooth-scroll navigation behavior.
-4. Do not redesign or remove agreed navbar behavior without explicit user request.
+   - Journey link (`#journey` or `index.html#journey`)
+   - Album link (`album.html#album` or `#album` on album page)
+3. Keep smooth-scroll behavior for in-page anchor navigation.
+4. From `index.html`, clicking navbar `相簿` must enter the dedicated album page (`album.html`) instead of long-page scrolling.
+5. Do not redesign or remove agreed navbar behavior without explicit user request.
 
 ## Change Control Rules For AI
 
@@ -48,5 +49,6 @@ Any AI or contributor modifying this repo must follow these rules unless the use
 1. Full-bleed image sections still exist.
 2. No unintended text-over-image regression.
 3. UI is Traditional Chinese.
-4. Album still supports Day 1-7 preview + modal + tabs + load more + lightbox keyboard control.
-5. Navbar links and behavior still work.
+4. Home still has Day 1-7 preview cards and each day can open the dedicated album page.
+5. Album page still supports Day 1-7 tabs + load more + lightbox keyboard control.
+6. Navbar links and behavior still work on both pages.

@@ -14,6 +14,7 @@ When this file and `AGENTS.md` overlap, treat `AGENTS.md` as the UI/product requ
 ## Scope
 
 - `index.html`
+- `album.html`
 - `images/`
 - `.github/workflows/image-optimization.yml`
 - `README.md`
@@ -25,12 +26,12 @@ When this file and `AGENTS.md` overlap, treat `AGENTS.md` as the UI/product requ
 3. Keep UI copy and labels in Traditional Chinese (`zh-Hant`) unless explicitly requested.
 4. Keep navbar architecture as:
    - Fixed top navigation
-   - Journey link (`#journey`)
-   - Album link (`#album`)
-   - Preserve agreed navigation behavior (including smooth scroll)
+   - Journey link (`#journey` on index, `index.html#journey` on album page)
+   - Album link (`album.html#album` from index, `#album` on album page)
+   - Preserve agreed navigation behavior (including smooth scroll for in-page anchors)
 5. Keep gallery architecture as:
    - Day preview cards on home
-   - Full album modal for all photos
+   - Dedicated album page for all photos
    - Day-based filtering (Day 1-7)
    - Batch rendering for performance
 6. Keep keyboard support in lightbox:
@@ -54,7 +55,8 @@ When adding new photos:
 1. Put files into `images/album/day1` ... `images/album/day7`
 2. Run `powershell -ExecutionPolicy Bypass -File .\scripts\generate-album-manifest.ps1`
 3. Ensure `data/album.manifest.js` is regenerated
-4. Verify day switch + load more + lightbox navigation
+4. Verify day switch + load more + lightbox navigation on `album.html`
+5. Verify home day preview cards still render on `index.html`
 
 ## Performance Checklist
 
@@ -64,6 +66,6 @@ When adding new photos:
 
 ## Content Checklist
 
-- README reflects latest gallery behavior and file conventions
+- README reflects latest page architecture and file conventions
 - Workflow description matches `.github/workflows/image-optimization.yml`
-- No broken image paths in `index.html`
+- No broken image paths in `index.html` and `album.html`

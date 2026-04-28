@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>名古屋 2026 · 相簿</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@500;700;900&display=swap"
+    rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Manrope"', '"Noto Sans TC"', 'sans-serif'],
+            serif: ['"Noto Serif TC"', 'serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --bg-main: #f4efe5;
+      --bg-card: #fffdf9;
+      --bg-panel: #f7f1e6;
+      --bg-deep: #221d16;
+      --text-main: #221d16;
+      --text-sub: #605547;
+      --text-mute: #8d7f6f;
+      --line: rgba(34, 29, 22, 0.12);
+      --accent: #af612d;
+      --accent-dark: #7f461d;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    .top-nav {
+      background: rgba(244, 239, 229, 0.9);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: transform 300ms ease;
+    }
+
+    .top-nav.hidden-nav {
+      transform: translateY(-100%);
+    }
+
+    .nav-link {
+      border-radius: 999px;
+      font-weight: 600;
+      color: var(--text-mute);
+      transition: all 200ms ease;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link.active {
+      color: #fff;
+      background: var(--bg-deep);
+    }
+
+    .hero-photo img {
+      width: 100%;
+      height: 56vh;
+      object-fit: cover;
+      display: block;
+    }
+
+    @media (min-width: 768px) {
+      .hero-photo img {
+        height: min(70vh, 760px);
+      }
+    }
+
+    .album-head {
+      background: linear-gradient(180deg, #fbf8f2 0%, #efe7db 100%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .album-layout {
+      background: var(--bg-panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.08);
+    }
+
+    .day-tab {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--text-mute);
+      white-space: nowrap;
+      transition: all 180ms ease;
+    }
+
+    .day-tab.active,
+    .day-tab:hover,
+    .day-tab:focus-visible {
+      background: var(--bg-deep);
+      color: #fff;
+      border-color: var(--bg-deep);
+    }
+
+    .album-thumb {
+      border: 1px solid var(--line);
+      background: #f3ece0;
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+
+    .album-thumb:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 24px rgba(0, 0, 0, 0.11);
+    }
+
+    .jump-btn {
+      border-radius: 999px;
+      background: var(--bg-deep);
+      color: #fff;
+      transition: background 180ms ease;
+    }
+
+    .jump-btn:hover,
+    .jump-btn:focus-visible {
+      background: #000;
+    }
+
+    .lightbox-shell {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 220ms ease, visibility 220ms ease;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(8px);
+    }
+
+    .lightbox-shell.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      transition: transform 160ms ease, background 160ms ease;
+    }
+
+    .lightbox-btn:hover,
+    .lightbox-btn:focus-visible {
+      transform: scale(1.06);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 540ms ease, transform 540ms ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .back-top {
+      transition: opacity 240ms ease, transform 240ms ease;
+    }
+
+    .back-top.hidden-btn {
+      opacity: 0;
+      transform: translateY(16px);
+      pointer-events: none;
+    }
+
+    ::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #ece2d3;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #b6a38b;
+      border-radius: 999px;
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased selection:bg-black selection:text-white">
+  <nav id="navbar" class="top-nav fixed top-0 left-0 w-full z-40 px-4 py-3 md:px-6 md:py-4">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-2">
+      <a href="./index.html#top" class="font-serif text-lg md:text-2xl font-bold tracking-wide text-black">Nagoya 2026</a>
+      <div class="flex items-center gap-1 md:gap-4 text-sm md:text-base">
+        <a href="./index.html#journey" class="nav-link px-3 py-1.5 md:px-4 md:py-2">旅程</a>
+        <a href="#album" class="nav-link active px-3 py-1.5 md:px-4 md:py-2">相簿</a>
+      </div>
+    </div>
+  </nav>
+
+  <header id="top">
+    <div class="hero-photo">
+      <img src="./images/divider-sakura.jpg" alt="名古屋旅程相簿封面" loading="eager" />
+    </div>
+    <div class="album-head px-5 md:px-8 py-10 md:py-14">
+      <div class="max-w-6xl mx-auto reveal">
+        <p class="text-[10px] md:text-xs tracking-[0.22em] uppercase font-bold" style="color:var(--text-mute)">Album</p>
+        <h1 class="mt-3 font-serif text-4xl md:text-6xl">名古屋相簿</h1>
+        <p class="mt-3 text-base md:text-lg font-light" style="color:var(--text-sub)">現在會直接進入相簿分頁，不再在首頁長距離捲動畫面。</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="./index.html#journey" class="jump-btn px-6 py-3 text-sm md:text-base font-semibold">回到旅程</a>
+          <button id="jump-current-day" class="rounded-full border border-black/20 px-6 py-3 text-sm md:text-base font-semibold hover:bg-black hover:text-white transition-colors">定位到目前天數</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="album" class="max-w-6xl mx-auto px-5 md:px-8 py-10 md:py-14">
+    <section class="album-layout p-4 md:p-8 reveal">
+      <div class="flex flex-col gap-5 md:gap-6">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p id="album-day-chip" class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 1</p>
+            <h2 id="album-title" class="mt-2 font-serif text-3xl md:text-5xl">第 1 天相簿</h2>
+            <p id="album-count" class="mt-2 text-sm md:text-base font-light" style="color:var(--text-sub)">0 張照片</p>
+          </div>
+          <a href="./index.html#album" class="rounded-full border border-black/15 bg-white px-5 py-2.5 text-sm md:text-base font-semibold hover:bg-black hover:text-white transition-colors">回首頁相簿入口</a>
+        </div>
+
+        <div id="album-day-tabs" class="flex gap-2 md:gap-3 overflow-x-auto hide-scrollbar pb-1"></div>
+
+        <div id="album-grid" class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-5"></div>
+        <p id="album-empty" class="hidden text-center py-12 font-light" style="color:var(--text-mute)">這一天目前沒有照片。</p>
+
+        <div class="text-center pt-4">
+          <button id="album-load-more" class="hidden jump-btn px-7 py-3 text-sm md:text-base font-semibold">載入更多照片</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="lightbox-shell" class="lightbox-shell fixed inset-0 z-[95] p-3 md:p-8" role="dialog" aria-modal="true" aria-label="照片檢視">
+    <button id="lightbox-close" class="lightbox-btn absolute top-3 right-3 md:top-6 md:right-8 w-10 h-10 md:w-11 md:h-11 text-white" aria-label="關閉照片">
+      <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+    <button id="lightbox-prev" class="lightbox-btn absolute left-2 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 text-white" aria-label="上一張">
+      <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+    <button id="lightbox-next" class="lightbox-btn absolute right-2 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 text-white" aria-label="下一張">
+      <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+    <figure class="w-full h-full flex flex-col items-center justify-center gap-4 md:gap-5">
+      <img id="lightbox-image" src="" alt="" class="max-w-full md:max-w-[94vw] max-h-[80vh] md:max-h-[82vh] object-contain rounded-lg shadow-2xl" />
+      <figcaption id="lightbox-meta" class="text-white/80 text-sm md:text-base tracking-wide font-light"></figcaption>
+    </figure>
+  </div>
+
+  <button id="back-top" class="back-top hidden-btn fixed bottom-7 right-7 z-30 w-12 h-12 rounded-full text-white shadow-xl"
+    style="background:var(--accent)" onmouseover="this.style.background='var(--accent-dark)'"
+    onmouseout="this.style.background='var(--accent)'" aria-label="回到頂部">
+    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+    </svg>
+  </button>
+
+  <script src="./data/album.manifest.js"></script>
+  <script>
+    const dayMeta = [
+      { day: 1, date: '2026.04.01', cover: './images/day1-castle.jpg' },
+      { day: 2, date: '2026.04.02', cover: './images/day2-tsuruma.jpg' },
+      { day: 3, date: '2026.04.03', cover: './images/day3-aquarium.jpg' },
+      { day: 4, date: '2026.04.04', cover: './images/day4-osu.jpg' },
+      { day: 5, date: '2026.04.05', cover: './images/day5-tokugawa.jpg' },
+      { day: 6, date: '2026.04.06', cover: './images/day6-tower.jpg' },
+      { day: 7, date: '2026.04.07', cover: './images/day7-departure.jpg' }
+    ];
+
+    const fallbackAlbumData = {
+      1: ['./images/day1-castle.jpg', './images/day1-sakura.jpg', './images/gallery-1.jpg', './images/gallery-2.jpg'],
+      2: ['./images/day2-tsuruma.jpg', './images/day2-mountain.jpg', './images/gallery-3.jpg'],
+      3: ['./images/day3-aquarium.jpg', './images/day3-street.jpg', './images/gallery-4.jpg'],
+      4: ['./images/day4-osu.jpg', './images/day4-street.jpg', './images/gallery-5.jpg'],
+      5: ['./images/day5-tokugawa.jpg', './images/gallery-8.jpg'],
+      6: ['./images/day6-tower.jpg', './images/gallery-6.jpg'],
+      7: ['./images/day7-departure.jpg', './images/gallery-7.jpg']
+    };
+
+    const BATCH_SIZE = 36;
+
+    const albumDayChip = document.getElementById('album-day-chip');
+    const albumTitle = document.getElementById('album-title');
+    const albumCount = document.getElementById('album-count');
+    const albumTabs = document.getElementById('album-day-tabs');
+    const albumGrid = document.getElementById('album-grid');
+    const albumEmpty = document.getElementById('album-empty');
+    const albumLoadMore = document.getElementById('album-load-more');
+    const jumpCurrentDay = document.getElementById('jump-current-day');
+    const lightboxShell = document.getElementById('lightbox-shell');
+    const lightboxClose = document.getElementById('lightbox-close');
+    const lightboxPrev = document.getElementById('lightbox-prev');
+    const lightboxNext = document.getElementById('lightbox-next');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxMeta = document.getElementById('lightbox-meta');
+    const backTop = document.getElementById('back-top');
+
+    const state = {
+      albumData: {},
+      currentDay: 1,
+      visibleCount: BATCH_SIZE,
+      lightboxIndex: 0
+    };
+
+    function mergeUnique(items) {
+      const seen = new Set();
+      return items.filter((item) => {
+        if (typeof item !== 'string' || !item.trim()) return false;
+        if (seen.has(item)) return false;
+        seen.add(item);
+        return true;
+      });
+    }
+
+    function getDayCover(day) {
+      const meta = dayMeta.find((entry) => entry.day === day);
+      return meta ? meta.cover : './images/hero-nagoya.jpg';
+    }
+
+    function buildAlbumData() {
+      const source = typeof window.NAGOYA_ALBUM_DATA === 'object' && window.NAGOYA_ALBUM_DATA !== null
+        ? window.NAGOYA_ALBUM_DATA
+        : {};
+      const normalized = {};
+
+      dayMeta.forEach((meta) => {
+        const sourcePhotos = Array.isArray(source[meta.day]) ? source[meta.day] : [];
+        const dayFallback = Array.isArray(fallbackAlbumData[meta.day]) ? fallbackAlbumData[meta.day] : [];
+        const merged = mergeUnique([meta.cover, ...sourcePhotos, ...dayFallback]);
+        normalized[meta.day] = merged.length ? merged : [meta.cover];
+      });
+
+      return normalized;
+    }
+
+    function bindImageFallback(img, day) {
+      const fallback = getDayCover(day);
+      img.addEventListener('error', () => {
+        if (img.dataset.fallbackApplied === '1') {
+          img.closest('button')?.remove();
+          return;
+        }
+        img.dataset.fallbackApplied = '1';
+        img.src = fallback;
+      });
+    }
+
+    function parseInitialDay() {
+      const params = new URLSearchParams(window.location.search);
+      const day = Number(params.get('day'));
+      if (Number.isInteger(day) && day >= 1 && day <= 7) return day;
+      return 1;
+    }
+
+    function updateURLDay(day) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('day', String(day));
+      if (!url.hash) url.hash = 'album';
+      window.history.replaceState({}, '', url);
+    }
+
+    function renderTabs() {
+      const frag = document.createDocumentFragment();
+      dayMeta.forEach((meta) => {
+        const tab = document.createElement('button');
+        tab.className = `day-tab px-5 py-2.5 text-sm md:text-base font-semibold ${meta.day === state.currentDay ? 'active' : ''}`;
+        tab.textContent = `第 ${meta.day} 天`;
+        tab.addEventListener('click', () => switchDay(meta.day));
+        frag.appendChild(tab);
+      });
+      albumTabs.replaceChildren(frag);
+    }
+
+    function updateHeader(total) {
+      albumDayChip.textContent = `Day ${state.currentDay}`;
+      albumTitle.textContent = `第 ${state.currentDay} 天相簿`;
+      albumCount.textContent = `${total} 張照片`;
+    }
+
+    function renderAlbumGrid() {
+      const day = state.currentDay;
+      const photos = state.albumData[day] || [];
+      const visible = photos.slice(0, state.visibleCount);
+      updateHeader(photos.length);
+
+      albumGrid.innerHTML = '';
+      albumEmpty.classList.toggle('hidden', photos.length !== 0);
+      albumLoadMore.classList.toggle('hidden', state.visibleCount >= photos.length || photos.length === 0);
+
+      const frag = document.createDocumentFragment();
+      visible.forEach((src, index) => {
+        const item = document.createElement('button');
+        item.className = 'album-thumb group text-left relative';
+        item.innerHTML = `
+          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors z-10"></div>
+          <img src="${src}" alt="第${day}天照片${index + 1}" class="w-full aspect-square object-cover" loading="lazy" />
+        `;
+        const img = item.querySelector('img');
+        bindImageFallback(img, day);
+        item.addEventListener('click', () => openLightbox(index));
+        frag.appendChild(item);
+      });
+
+      albumGrid.appendChild(frag);
+    }
+
+    function switchDay(day) {
+      state.currentDay = day;
+      state.visibleCount = BATCH_SIZE;
+      renderTabs();
+      renderAlbumGrid();
+      updateURLDay(day);
+    }
+
+    function updateLightbox() {
+      const photos = state.albumData[state.currentDay] || [];
+      if (!photos.length) return;
+
+      const total = photos.length;
+      const nextIndex = (state.lightboxIndex + total) % total;
+      state.lightboxIndex = nextIndex;
+
+      const src = photos[nextIndex];
+      lightboxImage.dataset.fallbackApplied = '0';
+      lightboxImage.src = src;
+      lightboxImage.alt = `第${state.currentDay}天照片 ${nextIndex + 1}`;
+      lightboxMeta.textContent = `第 ${state.currentDay} 天 · ${nextIndex + 1} / ${total}`;
+    }
+
+    function openLightbox(index) {
+      state.lightboxIndex = index;
+      lightboxShell.classList.add('open');
+      updateLightbox();
+      syncBodyLock();
+    }
+
+    function closeLightbox() {
+      lightboxShell.classList.remove('open');
+      syncBodyLock();
+    }
+
+    function shiftLightbox(delta) {
+      state.lightboxIndex += delta;
+      updateLightbox();
+    }
+
+    function syncBodyLock() {
+      document.body.style.overflow = lightboxShell.classList.contains('open') ? 'hidden' : '';
+    }
+
+    function initReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.16 });
+
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    }
+
+    albumLoadMore.addEventListener('click', () => {
+      state.visibleCount += BATCH_SIZE;
+      renderAlbumGrid();
+    });
+
+    jumpCurrentDay.addEventListener('click', () => {
+      document.getElementById('album')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightboxPrev.addEventListener('click', () => shiftLightbox(-1));
+    lightboxNext.addEventListener('click', () => shiftLightbox(1));
+    lightboxShell.addEventListener('click', (event) => {
+      if (event.target === lightboxShell) closeLightbox();
+    });
+
+    lightboxImage.addEventListener('error', () => {
+      if (lightboxImage.dataset.fallbackApplied === '1') return;
+      lightboxImage.dataset.fallbackApplied = '1';
+      lightboxImage.src = getDayCover(state.currentDay);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && lightboxShell.classList.contains('open')) {
+        closeLightbox();
+        return;
+      }
+
+      if (!lightboxShell.classList.contains('open')) return;
+      if (event.key === 'ArrowLeft') shiftLightbox(-1);
+      if (event.key === 'ArrowRight') shiftLightbox(1);
+    });
+
+    const navbar = document.getElementById('navbar');
+    let lastScrollY = window.scrollY;
+    let navHideTimeout;
+
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+
+      backTop.classList.toggle('hidden-btn', currentScrollY <= window.innerHeight * 0.45);
+
+      if (currentScrollY <= 50 || currentScrollY < lastScrollY) {
+        navbar.classList.remove('hidden-nav');
+      } else {
+        navbar.classList.add('hidden-nav');
+      }
+
+      lastScrollY = currentScrollY;
+
+      clearTimeout(navHideTimeout);
+      if (currentScrollY > 50) {
+        navHideTimeout = setTimeout(() => navbar.classList.add('hidden-nav'), 900);
+      }
+    }, { passive: true });
+
+    backTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    state.albumData = buildAlbumData();
+    state.currentDay = parseInitialDay();
+    renderTabs();
+    renderAlbumGrid();
+    updateURLDay(state.currentDay);
+    initReveal();
+  </script>
+</body>
+
+</html>
