@@ -8,7 +8,7 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@500;700;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Nunito:wght@500;700;800;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
     rel="stylesheet" />
 
   <script>
@@ -16,8 +16,8 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Manrope"', '"Noto Sans TC"', 'sans-serif'],
-            serif: ['"Noto Serif TC"', 'serif']
+            sans: ['"Nunito"', '"Noto Sans TC"', 'sans-serif'],
+            display: ['"Amatic SC"', '"Noto Sans TC"', 'cursive']
           }
         }
       }
@@ -26,48 +26,361 @@
 
   <style>
     :root {
-      --bg-main: #f6f2ea;
-      --bg-card: #fffdfa;
-      --bg-deep: #2b251e;
-      --text-main: #251f18;
-      --text-sub: #61584b;
-      --text-mute: #8d806f;
-      --line: rgba(43, 37, 30, 0.12);
-      --accent: #b15f2e;
-      --accent-dark: #874619;
+      --bg-main: #fef5dc;
+      --bg-panel: #fff8e9;
+      --bg-card: #fffdf7;
+      --ink: #1f2937;
+      --ink-soft: #4b5563;
+      --line: #172554;
+      --accent: #ef4444;
+      --accent-2: #0ea5e9;
+      --accent-3: #f59e0b;
+      --shadow: 0 12px 0 #172554;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
-      background: var(--bg-main);
-      color: var(--text-main);
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 12%, rgba(14, 165, 233, 0.18) 0%, rgba(14, 165, 233, 0) 34%),
+        radial-gradient(circle at 92% 8%, rgba(245, 158, 11, 0.22) 0%, rgba(245, 158, 11, 0) 38%),
+        linear-gradient(180deg, #fff3d6 0%, #ffe9b8 56%, #ffdca0 100%);
       overflow-x: hidden;
+      background-attachment: fixed;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(31, 41, 55, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31, 41, 55, 0.04) 1px, transparent 1px);
+      background-size: 34px 34px;
+      z-index: -1;
+      opacity: 0.55;
     }
 
     .top-nav {
-      background: rgba(246, 242, 234, 0.9);
-      border-bottom: 1px solid var(--line);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: transform 320ms ease;
+      background: rgba(255, 249, 232, 0.9);
+      border-bottom: 3px solid var(--line);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform 260ms ease;
     }
 
     .top-nav.hidden-nav {
       transform: translateY(-100%);
     }
 
+    .nav-shell {
+      border: 3px solid var(--line);
+      border-radius: 999px;
+      background: #fffef9;
+      box-shadow: 0 5px 0 rgba(23, 37, 84, 0.2);
+      padding: 0.2rem;
+    }
+
     .nav-link {
       border-radius: 999px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      color: var(--text-mute);
-      transition: all 200ms ease;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      color: #475569;
+      transition: transform 160ms ease, background 160ms ease, color 160ms ease;
     }
 
     .nav-link:hover,
     .nav-link:focus-visible,
     .nav-link.active {
-      background: var(--bg-deep);
+      background: var(--line);
       color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .world-lite {
+      padding: 6.2rem 1rem 1.2rem;
+    }
+
+    @media (min-width: 768px) {
+      .world-lite {
+        padding: 7rem 2rem 1.8rem;
+      }
+    }
+
+    .world-stage {
+      position: relative;
+      width: 100%;
+      height: clamp(520px, 88vh, 760px);
+      border: 3px solid var(--line);
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: linear-gradient(180deg, #93c5fd 0%, #dbeafe 45%, #fef3c7 100%);
+      isolation: isolate;
+    }
+
+    .world-stage::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+      background-size: 42px 42px;
+      z-index: 0;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    #world-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+    }
+
+    .world-overlay {
+      position: absolute;
+      left: 1rem;
+      right: 1rem;
+      top: 1rem;
+      z-index: 3;
+      pointer-events: none;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .world-panel {
+      pointer-events: auto;
+      max-width: 540px;
+      border: 3px solid #0f172a;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 8px 0 rgba(15, 23, 42, 0.28);
+      padding: 0.9rem 1rem;
+    }
+
+    .world-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.65rem;
+    }
+
+    .world-chip {
+      border: 2px solid #0f172a;
+      border-radius: 999px;
+      background: #fff;
+      padding: 0.25rem 0.55rem;
+      font-size: 0.74rem;
+      font-weight: 900;
+      color: #334155;
+    }
+
+    .world-actions {
+      margin-top: 0.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+
+    .world-btn {
+      pointer-events: auto;
+      border-radius: 999px;
+      border: 2px solid #0f172a;
+      background: #fff;
+      color: #0f172a;
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      padding: 0.45rem 0.85rem;
+      transition: transform 150ms ease, background 150ms ease, color 150ms ease;
+    }
+
+    .world-btn:hover,
+    .world-btn:focus-visible {
+      transform: translateY(-1px);
+      background: #0f172a;
+      color: #fff;
+    }
+
+    .world-btn.primary {
+      border-color: #1d4ed8;
+      background: #1d4ed8;
+      color: #fff;
+    }
+
+    .world-btn.primary:hover,
+    .world-btn.primary:focus-visible {
+      background: #1e40af;
+      border-color: #1e40af;
+    }
+
+    .world-status {
+      position: absolute;
+      left: 1rem;
+      bottom: 1rem;
+      z-index: 3;
+      border: 2px solid #0f172a;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.95);
+      font-size: 0.78rem;
+      font-weight: 900;
+      color: #334155;
+      padding: 0.4rem 0.75rem;
+      max-width: calc(100% - 2rem);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .world-help {
+      position: absolute;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 3;
+      border: 2px solid #7f1d1d;
+      border-radius: 999px;
+      background: rgba(254, 242, 242, 0.95);
+      font-size: 0.74rem;
+      font-weight: 900;
+      color: #7f1d1d;
+      padding: 0.35rem 0.65rem;
+    }
+
+    .world-mobile-controls {
+      position: absolute;
+      left: 1rem;
+      right: 1rem;
+      bottom: 3.7rem;
+      z-index: 4;
+      display: none;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 0.8rem;
+      pointer-events: none;
+    }
+
+    .world-joystick-wrap {
+      pointer-events: auto;
+      width: 122px;
+      height: 122px;
+      border-radius: 999px;
+      border: 2px solid #0f172a;
+      background: rgba(255, 255, 255, 0.78);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 6px 0 rgba(15, 23, 42, 0.24);
+      touch-action: none;
+      user-select: none;
+    }
+
+    .world-joystick-base {
+      width: 84px;
+      height: 84px;
+      border-radius: 999px;
+      border: 2px dashed #1e3a8a;
+      background: rgba(219, 234, 254, 0.9);
+      display: grid;
+      place-items: center;
+    }
+
+    .world-joystick-stick {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 2px solid #1e3a8a;
+      background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+      box-shadow: 0 3px 0 rgba(30, 58, 138, 0.35);
+      transform: translate(0px, 0px);
+      transition: transform 70ms linear;
+    }
+
+    .world-touch-actions {
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.42rem;
+      align-items: flex-end;
+      touch-action: none;
+    }
+
+    .world-touch-btn {
+      min-width: 106px;
+      border: 2px solid #0f172a;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #0f172a;
+      font-size: 0.75rem;
+      font-weight: 900;
+      padding: 0.33rem 0.65rem;
+      text-align: center;
+      box-shadow: 0 4px 0 rgba(15, 23, 42, 0.28);
+      transition: transform 120ms ease, background 120ms ease, color 120ms ease;
+    }
+
+    .world-touch-btn.active,
+    .world-touch-btn:active {
+      transform: translateY(1px);
+      background: #0f172a;
+      color: #fff;
+    }
+
+    .world-touch-btn.emerald {
+      border-color: #14532d;
+      background: rgba(74, 222, 128, 0.94);
+      color: #14532d;
+    }
+
+    .world-touch-btn.crimson {
+      border-color: #7f1d1d;
+      background: rgba(252, 165, 165, 0.95);
+      color: #7f1d1d;
+    }
+
+    .world-touch-btn.slate {
+      border-color: #1e293b;
+      background: rgba(226, 232, 240, 0.95);
+      color: #1e293b;
+    }
+
+    .world-fallback {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.86);
+    }
+
+    .world-fallback.show {
+      display: flex;
+    }
+
+    @media (max-width: 767px) {
+      .world-stage {
+        height: min(76vh, 620px);
+      }
+
+      .world-help {
+        display: none;
+      }
+
+      .world-mobile-controls {
+        display: flex;
+      }
     }
 
     .hero-photo img,
@@ -77,156 +390,363 @@
       object-fit: cover;
     }
 
+    .hero-photo {
+      border-bottom: 3px solid var(--line);
+    }
+
     .hero-photo img {
-      height: 66vh;
+      height: min(88vh, 980px);
+    }
+
+    .photo-bleed {
+      border-top: 3px solid var(--line);
+      border-bottom: 3px solid var(--line);
     }
 
     .photo-bleed img {
-      height: 60vh;
-    }
-
-    @media (min-width: 768px) {
-      .hero-photo img {
-        height: min(90vh, 960px);
-      }
-
-      .photo-bleed img {
-        height: min(84vh, 920px);
-      }
+      height: min(76vh, 860px);
     }
 
     .hero-intro {
-      padding: 3rem 1.5rem 3.5rem;
-      border-bottom: 1px solid var(--line);
-      background: linear-gradient(180deg, #faf7f1 0%, #f1ebe0 100%);
+      padding: 2rem 1rem 3rem;
     }
 
     @media (min-width: 768px) {
       .hero-intro {
-        padding: 4rem 2.5rem 4.5rem;
+        padding: 3rem 2rem 3.5rem;
       }
     }
 
-    .day-story {
+    .intro-shell {
       position: relative;
-      padding: 2rem 1.5rem 2.7rem;
-      background: var(--bg-card);
-      border-left: 3px solid transparent;
-      transition: background 220ms ease, border-color 220ms ease;
+      border: 3px solid var(--line);
+      background: var(--bg-panel);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 1.4rem;
+      overflow: hidden;
     }
 
-    .day-story:hover {
-      border-left-color: var(--accent);
-      background: #fbf5eb;
-    }
-
-    @media (min-width: 768px) {
-      .day-story {
-        padding: 2.6rem 2.8rem 3rem;
-      }
-    }
-
-    .story-link {
-      color: inherit;
-      text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: color 220ms ease, border-color 220ms ease;
-    }
-
-    .story-link:hover,
-    .story-link:focus-visible {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
-
-    .day-story::after {
+    .intro-shell::before {
       content: '';
       position: absolute;
-      left: 1.5rem;
-      right: 1.5rem;
-      bottom: 0;
-      height: 1px;
-      background: var(--line);
+      top: 0;
+      right: 0;
+      width: 170px;
+      height: 170px;
+      background: radial-gradient(circle at center, rgba(14, 165, 233, 0.32) 0%, rgba(14, 165, 233, 0) 68%);
+      pointer-events: none;
     }
 
     @media (min-width: 768px) {
-      .day-story::after {
-        left: 2.8rem;
-        right: 2.8rem;
+      .intro-shell {
+        padding: 2.2rem;
       }
     }
 
-    .album-entry {
-      background: radial-gradient(circle at top left, #fdf9f2 0%, #efe8dc 100%);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .home-card {
+    .stamp {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      border: 2px solid var(--line);
       background: #fff;
-      border: 1px solid var(--line);
-      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
-      transition: transform 220ms ease, box-shadow 220ms ease;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      line-height: 1;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 900;
+      padding: 0.5rem 0.85rem;
+      color: #334155;
     }
 
-    .home-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.1);
+    .display-title {
+      font-family: 'Amatic SC', 'Noto Sans TC', cursive;
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      font-size: clamp(3rem, 12vw, 6.9rem);
+      color: #0f172a;
+      text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.55);
+    }
+
+    .control-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    @media (min-width: 768px) {
+      .control-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    .control-chip {
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      padding: 0.65rem 0.7rem;
+      box-shadow: 0 5px 0 rgba(23, 37, 84, 0.2);
+    }
+
+    .control-chip b {
+      display: block;
+      font-size: 0.8rem;
+      color: #0f172a;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+    }
+
+    .control-chip span {
+      font-size: 0.78rem;
+      color: #475569;
     }
 
     .jump-btn {
       border-radius: 999px;
-      background: var(--bg-deep);
+      border: 3px solid #082f49;
+      background: linear-gradient(180deg, #0ea5e9 0%, #0369a1 100%);
       color: #fff;
-      transition: background 180ms ease;
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      box-shadow: 0 6px 0 rgba(8, 47, 73, 0.45);
+      transition: transform 140ms ease, box-shadow 140ms ease;
     }
 
     .jump-btn:hover,
     .jump-btn:focus-visible {
-      background: #000;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 rgba(8, 47, 73, 0.45);
+    }
+
+    .ghost-btn {
+      border-radius: 999px;
+      border: 3px solid var(--line);
+      background: #fff;
+      color: var(--line);
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      transition: transform 140ms ease, background 140ms ease, color 140ms ease;
+    }
+
+    .ghost-btn:hover,
+    .ghost-btn:focus-visible {
+      transform: translateY(-2px);
+      background: var(--line);
+      color: #fff;
+    }
+
+    .day-shell {
+      padding: 1rem 0 3.2rem;
+    }
+
+    .day-story {
+      position: relative;
+      border: 3px solid var(--line);
+      border-radius: 28px;
+      background: var(--bg-card);
+      box-shadow: var(--shadow);
+      padding: 1.25rem;
+      transform: rotate(-0.6deg);
+      transform-style: preserve-3d;
+      transition: transform 220ms ease;
+      will-change: transform;
+    }
+
+    .day-story.alt {
+      transform: rotate(0.75deg);
+    }
+
+    .day-story:hover {
+      transform: translateY(-5px) rotate(-0.4deg);
+    }
+
+    .day-story.alt:hover {
+      transform: translateY(-5px) rotate(0.55deg);
+    }
+
+    .day-story::before {
+      content: '';
+      position: absolute;
+      right: 1rem;
+      top: -0.85rem;
+      width: 82px;
+      height: 22px;
+      border-radius: 999px;
+      background: rgba(239, 68, 68, 0.94);
+      border: 2px solid #7f1d1d;
+      transform: rotate(-9deg);
+    }
+
+    @media (min-width: 768px) {
+      .day-shell {
+        padding: 1.5rem 0 4rem;
+      }
+
+      .day-story {
+        padding: 2rem 2.1rem 2.2rem;
+      }
+    }
+
+    .day-badge {
+      display: inline-flex;
+      align-items: center;
+      border: 2px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      padding: 0.38rem 0.75rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #334155;
+    }
+
+    .day-title {
+      font-size: clamp(1.75rem, 4vw, 2.95rem);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      color: #0f172a;
+    }
+
+    .story-link {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      color: #0c4a6e;
+      border-bottom: 2px solid transparent;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+
+    .story-link:hover,
+    .story-link:focus-visible {
+      color: #b91c1c;
+      border-bottom-color: #b91c1c;
+    }
+
+    .album-entry {
+      border-top: 3px solid var(--line);
+      border-bottom: 3px solid var(--line);
+      padding: 3.5rem 0;
+      background:
+        radial-gradient(circle at 86% 14%, rgba(239, 68, 68, 0.25) 0%, rgba(239, 68, 68, 0) 42%),
+        radial-gradient(circle at 8% 83%, rgba(14, 165, 233, 0.25) 0%, rgba(14, 165, 233, 0) 46%),
+        #ffeec8;
+    }
+
+    .entry-head {
+      border: 3px solid var(--line);
+      background: #fffdf7;
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 1.3rem;
+    }
+
+    @media (min-width: 768px) {
+      .entry-head {
+        padding: 1.85rem 2rem;
+      }
+    }
+
+    .home-card {
+      border: 3px solid var(--line);
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 9px 0 rgba(23, 37, 84, 0.26);
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform 200ms ease;
+      will-change: transform;
+    }
+
+    .home-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .home-card-top {
+      position: relative;
+    }
+
+    .home-card-top::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.2) 100%);
+      pointer-events: none;
+    }
+
+    .home-count {
+      display: inline-flex;
+      border: 2px solid #fff;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.78);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.55rem;
     }
 
     .reveal {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 550ms ease, transform 550ms ease;
+      transform: translateY(30px) scale(0.99);
+      transition: opacity 540ms ease, transform 540ms ease;
     }
 
     .reveal.show {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
 
     .back-top {
-      transition: opacity 240ms ease, transform 240ms ease;
+      border: 3px solid #7f1d1d;
+      background: linear-gradient(180deg, #f87171 0%, #dc2626 100%);
+      transition: opacity 220ms ease, transform 220ms ease;
+      box-shadow: 0 7px 0 rgba(127, 29, 29, 0.46);
     }
 
     .back-top.hidden-btn {
       opacity: 0;
-      transform: translateY(16px);
+      transform: translateY(18px);
       pointer-events: none;
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
     ::-webkit-scrollbar {
-      width: 7px;
+      width: 9px;
     }
 
     ::-webkit-scrollbar-track {
-      background: #ece4d8;
+      background: #f7e4ba;
     }
 
     ::-webkit-scrollbar-thumb {
-      background: #b5a48c;
+      background: #f97316;
       border-radius: 999px;
+      border: 2px solid #f7e4ba;
     }
   </style>
 </head>
 
-<body class="font-sans antialiased selection:bg-black selection:text-white">
+<body class="font-sans antialiased selection:bg-sky-900 selection:text-white">
   <nav id="navbar" class="top-nav fixed top-0 left-0 w-full z-40 px-4 py-3 md:px-6 md:py-4">
-    <div class="max-w-6xl mx-auto flex items-center justify-between gap-2">
-      <a href="#top" class="font-serif text-lg md:text-2xl font-bold tracking-wide text-black">Nagoya 2026</a>
-      <div class="flex items-center gap-1 md:gap-4 text-sm md:text-base">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
+      <a href="#top" class="font-display text-4xl md:text-5xl text-slate-900 leading-none">Nagoya 2026</a>
+      <div class="nav-shell flex items-center gap-1 md:gap-2 text-sm md:text-base">
         <a href="#journey" class="nav-link active px-3 py-1.5 md:px-4 md:py-2">旅程</a>
         <a href="./album.html#album" class="nav-link px-3 py-1.5 md:px-4 md:py-2">相簿</a>
       </div>
@@ -234,33 +754,109 @@
   </nav>
 
   <header id="top">
+    <section id="world-lite" class="world-lite">
+      <div class="max-w-6xl mx-auto">
+        <div class="world-stage reveal">
+          <canvas id="world-canvas" aria-label="3D 互動首屏"></canvas>
+          <div id="world-fallback" class="world-fallback" role="status" aria-live="polite">
+            <div class="world-panel">
+              <p class="text-xs font-black tracking-[0.15em] uppercase text-slate-500">3D-Lite</p>
+              <p class="mt-2 text-xl md:text-2xl font-black text-slate-900">你的瀏覽器目前無法顯示 3D 場景</p>
+              <p class="mt-2 text-sm font-bold text-slate-600">可直接繼續往下瀏覽旅程與相簿，不影響主要內容。</p>
+            </div>
+          </div>
+
+          <div class="world-overlay">
+            <div class="world-panel">
+              <p class="text-xs font-black tracking-[0.15em] uppercase text-slate-500">Three.js 3D-Lite 首屏</p>
+              <h2 class="mt-2 text-2xl md:text-3xl font-black text-slate-900">先在名古屋街區暖身一圈</h2>
+              <p class="mt-2 text-xs md:text-sm font-bold text-slate-600">WASD / 方向鍵移動、Shift 加速、空白鍵小跳、滑鼠拖曳可看角度。</p>
+
+              <div class="world-chip-row">
+                <span class="world-chip">7 個站點</span>
+                <span class="world-chip">可點擊站點跳到當天</span>
+                <span class="world-chip">手機可滑動視角</span>
+              </div>
+
+              <div class="world-actions">
+                <button id="world-reset" type="button" class="world-btn">重置車輛</button>
+                <button id="world-auto-jump-toggle" type="button" class="world-btn">自動跳轉：開</button>
+                <a href="#journey" class="world-btn primary">跳到旅程</a>
+              </div>
+            </div>
+          </div>
+
+          <p id="world-status" class="world-status">目前站點：起點廣場</p>
+          <p class="world-help">靠近 Day 站點會自動提示，觸碰可自動跳轉，點擊站點也可直接跳轉</p>
+
+          <div class="world-mobile-controls">
+            <div id="world-joystick" class="world-joystick-wrap">
+              <div class="world-joystick-base">
+                <div id="world-joystick-stick" class="world-joystick-stick"></div>
+              </div>
+            </div>
+            <div class="world-touch-actions">
+              <button id="world-touch-boost" type="button" class="world-touch-btn emerald">加速</button>
+              <button id="world-touch-jump" type="button" class="world-touch-btn crimson">跳躍</button>
+              <button id="world-touch-auto" type="button" class="world-touch-btn slate">自動跳轉：開</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <div class="hero-photo">
       <img src="./images/hero-nagoya.jpg" alt="名古屋街景" loading="eager" />
     </div>
+
     <div class="hero-intro">
-      <div class="max-w-5xl mx-auto reveal">
-        <p class="text-[10px] md:text-xs tracking-[0.22em] uppercase font-bold" style="color:var(--text-mute)">Nagoya Travel Journal</p>
-        <h1 class="mt-3 font-serif text-4xl md:text-6xl lg:text-7xl">名古屋 2026</h1>
-        <p class="mt-4 text-base md:text-xl font-light" style="color:var(--text-sub)">2026.04.01 - 2026.04.07 七天旅行紀錄</p>
-        <div class="mt-7 flex flex-wrap items-center gap-3">
-          <a href="#journey" class="jump-btn px-6 py-3 text-sm md:text-base font-semibold">開始看旅程</a>
-          <a href="./album.html#album" class="rounded-full border border-black/20 px-6 py-3 text-sm md:text-base font-semibold hover:bg-black hover:text-white transition-colors">直接看相簿</a>
+      <div class="max-w-6xl mx-auto intro-shell reveal">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <span class="stamp">Roadbook · 2026</span>
+          <span class="stamp">7 Days / 1 City / 1 Team</span>
+        </div>
+
+        <h1 class="display-title mt-5">名古屋 2026</h1>
+        <p class="mt-4 text-sm md:text-lg font-bold text-slate-600">2026.04.01 - 2026.04.07 七天旅行紀錄，像闖關一樣把城市玩到滿。</p>
+
+        <div class="mt-6 control-grid">
+          <div class="control-chip">
+            <b>MODE</b>
+            <span>旅程地圖</span>
+          </div>
+          <div class="control-chip">
+            <b>CHECKPOINT</b>
+            <span>Day 1 - Day 7</span>
+          </div>
+          <div class="control-chip">
+            <b>GALLERY</b>
+            <span>獨立相簿頁</span>
+          </div>
+          <div class="control-chip">
+            <b>STATUS</b>
+            <span>完成紀錄</span>
+          </div>
+        </div>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="#journey" class="jump-btn px-6 py-3 text-sm md:text-base">開始看旅程</a>
+          <a href="./album.html#album" class="ghost-btn px-6 py-3 text-sm md:text-base">直接看相簿</a>
         </div>
       </div>
     </div>
   </header>
 
-  <main id="journey" class="pb-16 md:pb-24">
+  <main id="journey" class="pb-18 md:pb-24">
     <section id="day-1" class="day-section">
       <div class="photo-bleed">
         <img src="./images/day1-castle.jpg" alt="第1天名古屋城" loading="lazy" />
       </div>
-      <div class="max-w-5xl mx-auto">
-        <article class="day-story reveal" data-day="1">
-          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 1 · 2026.04.01</p>
-          <h2 class="mt-2 font-serif text-2xl md:text-4xl">抵達名古屋</h2>
-          <p class="mt-3 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-sub)">桃園機場喝星巴克、抵達名古屋、居酒屋。</p>
-          <a href="./album.html?day=1#album" class="story-link mt-4 inline-flex items-center gap-2 text-sm md:text-base font-semibold">進入第 1 天相簿 <span aria-hidden="true">→</span></a>
+      <div class="max-w-6xl mx-auto px-5 md:px-8 day-shell">
+        <article class="day-story reveal" data-day="1" data-tilt>
+          <p class="day-badge">Day 1 · 2026.04.01</p>
+          <h2 class="day-title mt-3">抵達名古屋</h2>
+          <p class="mt-3 text-sm md:text-lg font-bold text-slate-600 leading-relaxed">桃園機場喝星巴克、抵達名古屋、居酒屋。</p>
+          <a href="./album.html?day=1#album" class="story-link mt-5 text-sm md:text-base">進入第 1 天相簿 <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -269,12 +865,12 @@
       <div class="photo-bleed">
         <img src="./images/day2-tsuruma.jpg" alt="第2天鶴舞公園" loading="lazy" />
       </div>
-      <div class="max-w-5xl mx-auto">
-        <article class="day-story reveal" data-day="2">
-          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 2 · 2026.04.02</p>
-          <h2 class="mt-2 font-serif text-2xl md:text-4xl">榮區與夜櫻</h2>
-          <p class="mt-3 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-sub)">榮區逛街、神奇寶貝中心、鰻魚飯、名古屋城、夜櫻。</p>
-          <a href="./album.html?day=2#album" class="story-link mt-4 inline-flex items-center gap-2 text-sm md:text-base font-semibold">進入第 2 天相簿 <span aria-hidden="true">→</span></a>
+      <div class="max-w-6xl mx-auto px-5 md:px-8 day-shell">
+        <article class="day-story alt reveal" data-day="2" data-tilt>
+          <p class="day-badge">Day 2 · 2026.04.02</p>
+          <h2 class="day-title mt-3">榮區與夜櫻</h2>
+          <p class="mt-3 text-sm md:text-lg font-bold text-slate-600 leading-relaxed">榮區逛街、神奇寶貝中心、鰻魚飯、名古屋城、夜櫻。</p>
+          <a href="./album.html?day=2#album" class="story-link mt-5 text-sm md:text-base">進入第 2 天相簿 <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -283,12 +879,12 @@
       <div class="photo-bleed">
         <img src="./images/day3-aquarium.jpg" alt="第3天水族館" loading="lazy" />
       </div>
-      <div class="max-w-5xl mx-auto">
-        <article class="day-story reveal" data-day="3">
-          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 3 · 2026.04.03</p>
-          <h2 class="mt-2 font-serif text-2xl md:text-4xl">山景與夜景</h2>
-          <p class="mt-3 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-sub)">飛驒山、合掌村、大採購、中部電力塔，宵夜拉麵收尾。</p>
-          <a href="./album.html?day=3#album" class="story-link mt-4 inline-flex items-center gap-2 text-sm md:text-base font-semibold">進入第 3 天相簿 <span aria-hidden="true">→</span></a>
+      <div class="max-w-6xl mx-auto px-5 md:px-8 day-shell">
+        <article class="day-story reveal" data-day="3" data-tilt>
+          <p class="day-badge">Day 3 · 2026.04.03</p>
+          <h2 class="day-title mt-3">山景與夜景</h2>
+          <p class="mt-3 text-sm md:text-lg font-bold text-slate-600 leading-relaxed">飛驒山、合掌村、大採購、中部電力塔，宵夜拉麵收尾。</p>
+          <a href="./album.html?day=3#album" class="story-link mt-5 text-sm md:text-base">進入第 3 天相簿 <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -297,12 +893,12 @@
       <div class="photo-bleed">
         <img src="./images/day4-osu.jpg" alt="第4天大須商店街" loading="lazy" />
       </div>
-      <div class="max-w-5xl mx-auto">
-        <article class="day-story reveal" data-day="4">
-          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 4 · 2026.04.04</p>
-          <h2 class="mt-2 font-serif text-2xl md:text-4xl">大須散策</h2>
-          <p class="mt-3 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-sub)">定食早餐、熱田神宮、大須商店街、太鼓表演與夜晚小酌。</p>
-          <a href="./album.html?day=4#album" class="story-link mt-4 inline-flex items-center gap-2 text-sm md:text-base font-semibold">進入第 4 天相簿 <span aria-hidden="true">→</span></a>
+      <div class="max-w-6xl mx-auto px-5 md:px-8 day-shell">
+        <article class="day-story alt reveal" data-day="4" data-tilt>
+          <p class="day-badge">Day 4 · 2026.04.04</p>
+          <h2 class="day-title mt-3">大須散策</h2>
+          <p class="mt-3 text-sm md:text-lg font-bold text-slate-600 leading-relaxed">定食早餐、熱田神宮、大須商店街、太鼓表演與夜晚小酌。</p>
+          <a href="./album.html?day=4#album" class="story-link mt-5 text-sm md:text-base">進入第 4 天相簿 <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -311,12 +907,12 @@
       <div class="photo-bleed">
         <img src="./images/day5-tokugawa.jpg" alt="第5天犬山城" loading="lazy" />
       </div>
-      <div class="max-w-5xl mx-auto">
-        <article class="day-story reveal" data-day="5">
-          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 5 · 2026.04.05</p>
-          <h2 class="mt-2 font-serif text-2xl md:text-4xl">犬山祭日</h2>
-          <p class="mt-3 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-sub)">犬山城與祭典、神社祈福、商店街散步，晚上吃台灣滷肉飯。</p>
-          <a href="./album.html?day=5#album" class="story-link mt-4 inline-flex items-center gap-2 text-sm md:text-base font-semibold">進入第 5 天相簿 <span aria-hidden="true">→</span></a>
+      <div class="max-w-6xl mx-auto px-5 md:px-8 day-shell">
+        <article class="day-story reveal" data-day="5" data-tilt>
+          <p class="day-badge">Day 5 · 2026.04.05</p>
+          <h2 class="day-title mt-3">犬山祭日</h2>
+          <p class="mt-3 text-sm md:text-lg font-bold text-slate-600 leading-relaxed">犬山城與祭典、神社祈福、商店街散步，晚上吃台灣滷肉飯。</p>
+          <a href="./album.html?day=5#album" class="story-link mt-5 text-sm md:text-base">進入第 5 天相簿 <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -325,12 +921,12 @@
       <div class="photo-bleed">
         <img src="./images/day6-tower.jpg" alt="第6天綠洲21與名古屋塔" loading="lazy" />
       </div>
-      <div class="max-w-5xl mx-auto">
-        <article class="day-story reveal" data-day="6">
-          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 6 · 2026.04.06</p>
-          <h2 class="mt-2 font-serif text-2xl md:text-4xl">市區爆走</h2>
-          <p class="mt-3 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-sub)">吉卜力商店、女僕咖啡、圓頓寺商店街、綠洲21、卡拉 OK。</p>
-          <a href="./album.html?day=6#album" class="story-link mt-4 inline-flex items-center gap-2 text-sm md:text-base font-semibold">進入第 6 天相簿 <span aria-hidden="true">→</span></a>
+      <div class="max-w-6xl mx-auto px-5 md:px-8 day-shell">
+        <article class="day-story alt reveal" data-day="6" data-tilt>
+          <p class="day-badge">Day 6 · 2026.04.06</p>
+          <h2 class="day-title mt-3">市區爆走</h2>
+          <p class="mt-3 text-sm md:text-lg font-bold text-slate-600 leading-relaxed">吉卜力商店、女僕咖啡、圓頓寺商店街、綠洲21、卡拉 OK。</p>
+          <a href="./album.html?day=6#album" class="story-link mt-5 text-sm md:text-base">進入第 6 天相簿 <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -339,39 +935,629 @@
       <div class="photo-bleed">
         <img src="./images/day7-departure.jpg" alt="第7天回程" loading="lazy" />
       </div>
-      <div class="max-w-5xl mx-auto">
-        <article class="day-story reveal" data-day="7">
-          <p class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 7 · 2026.04.07</p>
-          <h2 class="mt-2 font-serif text-2xl md:text-4xl">回台灣</h2>
-          <p class="mt-3 text-sm md:text-base font-light leading-relaxed" style="color:var(--text-sub)">中部國際機場早餐、返台，晚上開箱戰利品。</p>
-          <a href="./album.html?day=7#album" class="story-link mt-4 inline-flex items-center gap-2 text-sm md:text-base font-semibold">進入第 7 天相簿 <span aria-hidden="true">→</span></a>
+      <div class="max-w-6xl mx-auto px-5 md:px-8 day-shell">
+        <article class="day-story reveal" data-day="7" data-tilt>
+          <p class="day-badge">Day 7 · 2026.04.07</p>
+          <h2 class="day-title mt-3">回台灣</h2>
+          <p class="mt-3 text-sm md:text-lg font-bold text-slate-600 leading-relaxed">中部國際機場早餐、返台，晚上開箱戰利品。</p>
+          <a href="./album.html?day=7#album" class="story-link mt-5 text-sm md:text-base">進入第 7 天相簿 <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
   </main>
 
-  <section id="album" class="album-entry py-16 md:py-24">
+  <section id="album" class="album-entry">
     <div class="max-w-6xl mx-auto px-5 md:px-8">
-      <div class="reveal flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+      <div class="entry-head reveal flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
         <div>
-          <p class="text-[10px] md:text-xs tracking-[0.22em] uppercase font-bold" style="color:var(--text-mute)">Album Entry</p>
-          <h2 class="mt-3 font-serif text-4xl md:text-6xl">相簿入口</h2>
-          <p class="mt-3 text-base md:text-lg font-light" style="color:var(--text-sub)">直接點任一天，跳到獨立相簿頁，不再長距離捲動。</p>
+          <p class="day-badge">Album Entry</p>
+          <h2 class="mt-3 text-4xl md:text-6xl font-black leading-tight text-slate-900">相簿入口</h2>
+          <p class="mt-3 text-sm md:text-lg font-bold text-slate-600">直接點任一天，跳到獨立相簿頁，不再長距離捲動。</p>
         </div>
-        <a href="./album.html#album" class="jump-btn px-6 py-3 text-sm md:text-base font-semibold self-start md:self-auto">開啟完整相簿</a>
+        <a href="./album.html#album" class="jump-btn px-6 py-3 text-sm md:text-base self-start md:self-auto">開啟完整相簿</a>
       </div>
-      <div id="home-day-grid" class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"></div>
+
+      <div id="home-day-grid" class="mt-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"></div>
     </div>
   </section>
 
-  <button id="back-top"
-    class="back-top hidden-btn fixed bottom-7 right-7 z-30 w-12 h-12 rounded-full text-white shadow-xl"
-    style="background:var(--accent)" onmouseover="this.style.background='var(--accent-dark)'"
-    onmouseout="this.style.background='var(--accent)'" aria-label="回到頂部">
+  <button id="back-top" class="back-top hidden-btn fixed bottom-7 right-7 z-30 w-12 h-12 rounded-full text-white" aria-label="回到頂部">
     <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
     </svg>
   </button>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
+
+    const section = document.getElementById('world-lite');
+    const canvas = document.getElementById('world-canvas');
+    const statusEl = document.getElementById('world-status');
+    const fallbackEl = document.getElementById('world-fallback');
+    const resetBtn = document.getElementById('world-reset');
+    const autoJumpToggleBtn = document.getElementById('world-auto-jump-toggle');
+    const touchAutoBtn = document.getElementById('world-touch-auto');
+    const touchBoostBtn = document.getElementById('world-touch-boost');
+    const touchJumpBtn = document.getElementById('world-touch-jump');
+    const joystickEl = document.getElementById('world-joystick');
+    const joystickStick = document.getElementById('world-joystick-stick');
+    if (!section || !canvas || !statusEl || !fallbackEl || !resetBtn || !autoJumpToggleBtn || !touchAutoBtn || !touchBoostBtn || !touchJumpBtn || !joystickEl || !joystickStick) {
+      throw new Error('World-lite DOM is missing.');
+    }
+
+    const showFallback = (message) => {
+      fallbackEl.classList.add('show');
+      statusEl.textContent = message;
+    };
+
+    const autoJumpState = {
+      enabled: true
+    };
+
+    const syncAutoJumpButtons = () => {
+      const label = `自動跳轉：${autoJumpState.enabled ? '開' : '關'}`;
+      autoJumpToggleBtn.textContent = label;
+      touchAutoBtn.textContent = label;
+      autoJumpToggleBtn.classList.toggle('primary', autoJumpState.enabled);
+      touchAutoBtn.classList.toggle('active', autoJumpState.enabled);
+    };
+    syncAutoJumpButtons();
+
+    if (!window.WebGLRenderingContext) {
+      showFallback('目前站點：瀏覽模式（未啟用 3D）');
+    } else {
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance'
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.Fog(0xdbeafe, 28, 120);
+
+      const camera = new THREE.PerspectiveCamera(50, canvas.clientWidth / canvas.clientHeight, 0.1, 240);
+      camera.position.set(0, 10, -16);
+
+      const hemi = new THREE.HemisphereLight(0xffffff, 0xfef3c7, 0.9);
+      scene.add(hemi);
+
+      const sun = new THREE.DirectionalLight(0xffffff, 1.06);
+      sun.position.set(16, 24, -8);
+      sun.castShadow = true;
+      sun.shadow.mapSize.set(1024, 1024);
+      sun.shadow.camera.left = -52;
+      sun.shadow.camera.right = 52;
+      sun.shadow.camera.top = 52;
+      sun.shadow.camera.bottom = -52;
+      scene.add(sun);
+
+      const world = new THREE.Group();
+      scene.add(world);
+
+      const ground = new THREE.Mesh(
+        new THREE.PlaneGeometry(170, 170),
+        new THREE.MeshStandardMaterial({ color: 0xfde68a, roughness: 0.97, metalness: 0.02 })
+      );
+      ground.rotation.x = -Math.PI / 2;
+      ground.receiveShadow = true;
+      world.add(ground);
+
+      const grid = new THREE.GridHelper(170, 60, 0x334155, 0x94a3b8);
+      grid.position.y = 0.02;
+      world.add(grid);
+
+      const roadCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-26, 0, -4),
+        new THREE.Vector3(-16, 0, 17),
+        new THREE.Vector3(4, 0, 24),
+        new THREE.Vector3(22, 0, 11),
+        new THREE.Vector3(25, 0, -15),
+        new THREE.Vector3(8, 0, -25),
+        new THREE.Vector3(-14, 0, -20),
+        new THREE.Vector3(-30, 0, -8)
+      ], true);
+
+      const roadPoints = roadCurve.getPoints(180);
+      const roadShape = new THREE.Shape();
+      const roadWidth = 3.8;
+      roadShape.moveTo(-roadWidth, 0);
+      roadShape.lineTo(roadWidth, 0);
+      roadShape.lineTo(roadWidth, 1);
+      roadShape.lineTo(-roadWidth, 1);
+      roadShape.lineTo(-roadWidth, 0);
+
+      const roadGeom = new THREE.ExtrudeGeometry(roadShape, {
+        steps: roadPoints.length - 1,
+        bevelEnabled: false,
+        extrudePath: roadCurve
+      });
+      const road = new THREE.Mesh(
+        roadGeom,
+        new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.9, metalness: 0.12 })
+      );
+      road.castShadow = false;
+      road.receiveShadow = true;
+      road.position.y = 0.05;
+      world.add(road);
+
+      const laneLineGeom = new THREE.SphereGeometry(0.14, 8, 8);
+      const laneLineMat = new THREE.MeshStandardMaterial({ color: 0xfbbf24, roughness: 0.5 });
+      const laneDots = [];
+      for (let i = 0; i < 90; i += 1) {
+        const dot = new THREE.Mesh(laneLineGeom, laneLineMat);
+        dot.position.copy(roadCurve.getPoint(i / 90));
+        dot.position.y = 0.22;
+        laneDots.push(dot);
+        world.add(dot);
+      }
+
+      const decoColors = [0x22c55e, 0xf97316, 0x0ea5e9, 0xe11d48];
+      for (let i = 0; i < 36; i += 1) {
+        const box = new THREE.Mesh(
+          new THREE.BoxGeometry(1.8, 1.8 + Math.random() * 5.5, 1.8),
+          new THREE.MeshStandardMaterial({ color: decoColors[i % decoColors.length], roughness: 0.88 })
+        );
+        box.position.set((Math.random() - 0.5) * 120, box.geometry.parameters.height * 0.5, (Math.random() - 0.5) * 120);
+        if (Math.abs(box.position.x) < 12 && Math.abs(box.position.z) < 12) {
+          box.position.x += box.position.x > 0 ? 12 : -12;
+          box.position.z += box.position.z > 0 ? 12 : -12;
+        }
+        box.castShadow = true;
+        box.receiveShadow = true;
+        world.add(box);
+      }
+
+      const createLabelSprite = (text, color) => {
+        const labelCanvas = document.createElement('canvas');
+        labelCanvas.width = 512;
+        labelCanvas.height = 160;
+        const ctx = labelCanvas.getContext('2d');
+        if (!ctx) return null;
+        ctx.clearRect(0, 0, labelCanvas.width, labelCanvas.height);
+        ctx.fillStyle = 'rgba(255,255,255,0.95)';
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 10;
+        const radius = 28;
+        ctx.beginPath();
+        ctx.moveTo(radius, 10);
+        ctx.lineTo(labelCanvas.width - radius, 10);
+        ctx.quadraticCurveTo(labelCanvas.width - 10, 10, labelCanvas.width - 10, radius);
+        ctx.lineTo(labelCanvas.width - 10, labelCanvas.height - radius);
+        ctx.quadraticCurveTo(labelCanvas.width - 10, labelCanvas.height - 10, labelCanvas.width - radius, labelCanvas.height - 10);
+        ctx.lineTo(radius, labelCanvas.height - 10);
+        ctx.quadraticCurveTo(10, labelCanvas.height - 10, 10, labelCanvas.height - radius);
+        ctx.lineTo(10, radius);
+        ctx.quadraticCurveTo(10, 10, radius, 10);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = color;
+        ctx.font = '900 74px Nunito, "Noto Sans TC", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, labelCanvas.width / 2, labelCanvas.height / 2);
+
+        const texture = new THREE.CanvasTexture(labelCanvas);
+        const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+        const sprite = new THREE.Sprite(material);
+        sprite.scale.set(4.4, 1.42, 1);
+        return sprite;
+      };
+
+      const checkpointMeta = [
+        { day: 1, name: 'Day 1 抵達', sectionId: 'day-1', pos: new THREE.Vector3(-21, 0, 13), color: '#dc2626' },
+        { day: 2, name: 'Day 2 夜櫻', sectionId: 'day-2', pos: new THREE.Vector3(-2, 0, 23), color: '#c2410c' },
+        { day: 3, name: 'Day 3 山景', sectionId: 'day-3', pos: new THREE.Vector3(16, 0, 12), color: '#1d4ed8' },
+        { day: 4, name: 'Day 4 大須', sectionId: 'day-4', pos: new THREE.Vector3(23, 0, -10), color: '#9333ea' },
+        { day: 5, name: 'Day 5 犬山', sectionId: 'day-5', pos: new THREE.Vector3(10, 0, -22), color: '#be123c' },
+        { day: 6, name: 'Day 6 爆走', sectionId: 'day-6', pos: new THREE.Vector3(-10, 0, -20), color: '#0f766e' },
+        { day: 7, name: 'Day 7 回程', sectionId: 'day-7', pos: new THREE.Vector3(-25, 0, -6), color: '#b45309' }
+      ];
+
+      const checkpointMeshes = [];
+      checkpointMeta.forEach((meta) => {
+        const base = new THREE.Mesh(
+          new THREE.CylinderGeometry(1.65, 1.85, 1.2, 16),
+          new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5, metalness: 0.06 })
+        );
+        base.position.copy(meta.pos);
+        base.position.y = 0.6;
+        base.castShadow = true;
+        base.receiveShadow = true;
+        base.userData = meta;
+        world.add(base);
+        checkpointMeshes.push(base);
+
+        const ring = new THREE.Mesh(
+          new THREE.TorusGeometry(1.5, 0.18, 12, 32),
+          new THREE.MeshStandardMaterial({ color: Number(`0x${meta.color.slice(1)}`), roughness: 0.3, metalness: 0.25 })
+        );
+        ring.rotation.x = Math.PI / 2;
+        ring.position.copy(meta.pos);
+        ring.position.y = 1.3;
+        world.add(ring);
+        base.userData.ring = ring;
+
+        const sprite = createLabelSprite(`Day ${meta.day}`, meta.color);
+        if (sprite) {
+          sprite.position.copy(meta.pos);
+          sprite.position.y = 2.95;
+          world.add(sprite);
+          base.userData.sprite = sprite;
+        }
+      });
+
+      const startPad = new THREE.Mesh(
+        new THREE.CylinderGeometry(2.6, 2.9, 0.75, 22),
+        new THREE.MeshStandardMaterial({ color: 0x0ea5e9, roughness: 0.5, metalness: 0.15 })
+      );
+      startPad.position.set(0, 0.38, 0);
+      world.add(startPad);
+
+      const car = new THREE.Group();
+      const body = new THREE.Mesh(
+        new THREE.BoxGeometry(2.2, 0.9, 4),
+        new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.42, metalness: 0.12 })
+      );
+      body.position.y = 1.2;
+      body.castShadow = true;
+      car.add(body);
+
+      const cabin = new THREE.Mesh(
+        new THREE.BoxGeometry(1.6, 0.65, 1.95),
+        new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.2, metalness: 0.2 })
+      );
+      cabin.position.y = 1.8;
+      cabin.position.z = -0.2;
+      cabin.castShadow = true;
+      car.add(cabin);
+
+      const wheelGeom = new THREE.CylinderGeometry(0.45, 0.45, 0.5, 18);
+      wheelGeom.rotateZ(Math.PI / 2);
+      const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.9 });
+      const wheelPositions = [
+        [-1.1, 0.72, 1.4],
+        [1.1, 0.72, 1.4],
+        [-1.1, 0.72, -1.4],
+        [1.1, 0.72, -1.4]
+      ];
+      const wheels = wheelPositions.map(([x, y, z]) => {
+        const wheel = new THREE.Mesh(wheelGeom, wheelMat);
+        wheel.position.set(x, y, z);
+        wheel.castShadow = true;
+        car.add(wheel);
+        return wheel;
+      });
+
+      world.add(car);
+
+      const carState = {
+        speed: 0,
+        yaw: 0,
+        y: 0.55,
+        verticalVel: 0,
+        onGround: true
+      };
+      car.position.set(0, carState.y, 0);
+
+      const resetCar = () => {
+        car.position.set(0, carState.y, 0);
+        carState.speed = 0;
+        carState.yaw = 0;
+        car.rotation.y = 0;
+        carState.verticalVel = 0;
+        carState.onGround = true;
+        autoJumpLockSection = null;
+        autoJumpCooldownUntil = 0;
+        statusEl.textContent = '目前站點：起點廣場';
+      };
+      resetBtn.addEventListener('click', resetCar);
+
+      const triggerJump = () => {
+        if (!carState.onGround) return;
+        carState.verticalVel = 6.2;
+        carState.onGround = false;
+      };
+
+      let touchBoostActive = false;
+      const keys = {
+        forward: false,
+        backward: false,
+        left: false,
+        right: false,
+        boost: false
+      };
+
+      const onKey = (event, down) => {
+        const key = event.key.toLowerCase();
+        if (key === 'w' || key === 'a' || key === 's' || key === 'd' || key === 'arrowup' || key === 'arrowdown' || key === 'arrowleft' || key === 'arrowright' || key === 'shift' || key === ' ') {
+          event.preventDefault();
+        }
+        if (key === 'w' || key === 'arrowup') keys.forward = down;
+        if (key === 's' || key === 'arrowdown') keys.backward = down;
+        if (key === 'a' || key === 'arrowleft') keys.left = down;
+        if (key === 'd' || key === 'arrowright') keys.right = down;
+        if (key === 'shift') keys.boost = down;
+        if (down && key === ' ') triggerJump();
+      };
+      window.addEventListener('keydown', (event) => onKey(event, true));
+      window.addEventListener('keyup', (event) => onKey(event, false));
+
+      const joystickState = {
+        active: false,
+        pointerId: null,
+        x: 0,
+        y: 0
+      };
+      const joyRadius = 34;
+      const joyNormalize = (clientX, clientY) => {
+        const rect = joystickEl.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        let dx = clientX - cx;
+        let dy = clientY - cy;
+        const dist = Math.hypot(dx, dy);
+        if (dist > joyRadius) {
+          const ratio = joyRadius / dist;
+          dx *= ratio;
+          dy *= ratio;
+        }
+        joystickState.x = dx / joyRadius;
+        joystickState.y = dy / joyRadius;
+        joystickStick.style.transform = `translate(${dx}px, ${dy}px)`;
+      };
+      const joyReset = () => {
+        joystickState.active = false;
+        joystickState.pointerId = null;
+        joystickState.x = 0;
+        joystickState.y = 0;
+        joystickStick.style.transform = 'translate(0px, 0px)';
+      };
+      joystickEl.addEventListener('pointerdown', (event) => {
+        joystickState.active = true;
+        joystickState.pointerId = event.pointerId;
+        joystickEl.setPointerCapture(event.pointerId);
+        joyNormalize(event.clientX, event.clientY);
+        event.preventDefault();
+      });
+      joystickEl.addEventListener('pointermove', (event) => {
+        if (!joystickState.active || joystickState.pointerId !== event.pointerId) return;
+        joyNormalize(event.clientX, event.clientY);
+        event.preventDefault();
+      });
+      const stopJoy = (event) => {
+        if (joystickState.pointerId !== event.pointerId) return;
+        joyReset();
+      };
+      joystickEl.addEventListener('pointerup', stopJoy);
+      joystickEl.addEventListener('pointercancel', stopJoy);
+      joystickEl.addEventListener('lostpointercapture', joyReset);
+
+      const setTouchBoost = (active) => {
+        touchBoostActive = active;
+        touchBoostBtn.classList.toggle('active', active);
+      };
+      touchBoostBtn.addEventListener('pointerdown', (event) => {
+        touchBoostBtn.setPointerCapture(event.pointerId);
+        setTouchBoost(true);
+        event.preventDefault();
+      });
+      touchBoostBtn.addEventListener('pointerup', () => setTouchBoost(false));
+      touchBoostBtn.addEventListener('pointercancel', () => setTouchBoost(false));
+      touchBoostBtn.addEventListener('lostpointercapture', () => setTouchBoost(false));
+
+      touchJumpBtn.addEventListener('pointerdown', (event) => {
+        touchJumpBtn.classList.add('active');
+        triggerJump();
+        event.preventDefault();
+      });
+      touchJumpBtn.addEventListener('pointerup', () => touchJumpBtn.classList.remove('active'));
+      touchJumpBtn.addEventListener('pointercancel', () => touchJumpBtn.classList.remove('active'));
+
+      const toggleAutoJump = () => {
+        autoJumpState.enabled = !autoJumpState.enabled;
+        syncAutoJumpButtons();
+        statusEl.textContent = autoJumpState.enabled ? '目前站點：自動跳轉已開啟' : '目前站點：自動跳轉已關閉';
+      };
+      autoJumpToggleBtn.addEventListener('click', toggleAutoJump);
+      touchAutoBtn.addEventListener('pointerdown', (event) => {
+        toggleAutoJump();
+        event.preventDefault();
+      });
+
+      const pointer = { down: false, lastX: 0, lastY: 0 };
+      let camYawOffset = 0;
+      let camPitchOffset = 0.2;
+      canvas.addEventListener('pointerdown', (event) => {
+        pointer.down = true;
+        pointer.lastX = event.clientX;
+        pointer.lastY = event.clientY;
+      });
+      window.addEventListener('pointerup', () => {
+        pointer.down = false;
+      });
+      window.addEventListener('pointermove', (event) => {
+        if (!pointer.down) return;
+        const dx = (event.clientX - pointer.lastX) * 0.004;
+        const dy = (event.clientY - pointer.lastY) * 0.0032;
+        camYawOffset += dx;
+        camPitchOffset = THREE.MathUtils.clamp(camPitchOffset + dy, -0.05, 0.62);
+        pointer.lastX = event.clientX;
+        pointer.lastY = event.clientY;
+      });
+
+      const raycaster = new THREE.Raycaster();
+      const pointerNdc = new THREE.Vector2();
+      const jumpToSection = (sectionId) => {
+        const target = document.getElementById(sectionId);
+        if (!target) return false;
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return true;
+      };
+      canvas.addEventListener('click', (event) => {
+        const rect = canvas.getBoundingClientRect();
+        pointerNdc.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        pointerNdc.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        raycaster.setFromCamera(pointerNdc, camera);
+        const hit = raycaster.intersectObjects(checkpointMeshes, false)[0];
+        if (!hit || !hit.object?.userData?.sectionId) return;
+        jumpToSection(hit.object.userData.sectionId);
+      });
+
+      let activeCheckpoint = null;
+      let autoJumpLockSection = null;
+      let autoJumpCooldownUntil = 0;
+      const clock = new THREE.Clock();
+
+      const updateStatus = (text) => {
+        statusEl.textContent = text;
+      };
+
+      const updateCamera = (dt) => {
+        const followDistance = 11;
+        const followHeight = 7.2;
+        const yaw = carState.yaw + Math.PI + camYawOffset;
+        const targetPos = new THREE.Vector3(
+          car.position.x + Math.sin(yaw) * followDistance,
+          car.position.y + followHeight + camPitchOffset * 7,
+          car.position.z + Math.cos(yaw) * followDistance
+        );
+        camera.position.lerp(targetPos, 1 - Math.exp(-dt * 5));
+        const lookAt = new THREE.Vector3(car.position.x, car.position.y + 1.5, car.position.z);
+        camera.lookAt(lookAt);
+      };
+
+      const updateCheckpointState = (time) => {
+        let nearest = null;
+        let nearestDist = Infinity;
+        checkpointMeshes.forEach((mesh, index) => {
+          const meta = mesh.userData;
+          const dist = mesh.position.distanceTo(car.position);
+          if (dist < nearestDist) {
+            nearestDist = dist;
+            nearest = meta;
+          }
+
+          const pulse = 1 + Math.sin(time * 2.7 + index) * 0.06;
+          mesh.scale.setScalar(pulse);
+          if (meta.ring) {
+            meta.ring.rotation.z += 0.01;
+          }
+        });
+
+        if (nearest && nearestDist < 6.8) {
+          if (activeCheckpoint !== nearest.name) {
+            activeCheckpoint = nearest.name;
+            const autoText = autoJumpState.enabled ? '，靠近會自動跳轉' : '，可點擊跳轉';
+            updateStatus(`目前站點：${nearest.name}${autoText}`);
+          }
+
+          if (autoJumpState.enabled && nearestDist < 2.45 && time > autoJumpCooldownUntil && autoJumpLockSection !== nearest.sectionId) {
+            const jumped = jumpToSection(nearest.sectionId);
+            if (jumped) {
+              autoJumpLockSection = nearest.sectionId;
+              autoJumpCooldownUntil = time + 2.2;
+              updateStatus(`目前站點：${nearest.name}（已自動跳轉）`);
+            }
+          }
+        } else {
+          if (activeCheckpoint !== null) {
+            activeCheckpoint = null;
+            updateStatus('目前站點：自由探索中');
+          }
+          if (!nearest || nearestDist > 8.4) {
+            autoJumpLockSection = null;
+          }
+        }
+      };
+
+      const resize = () => {
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        if (!width || !height) return;
+        renderer.setSize(width, height, false);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      };
+      window.addEventListener('resize', resize, { passive: true });
+      resize();
+
+      const update = () => {
+        const dt = Math.min(clock.getDelta(), 0.045);
+        const time = clock.elapsedTime;
+
+        const accel = 21;
+        const turnAccel = 2.6;
+        const drag = 2.2;
+        const maxSpeed = (keys.boost || touchBoostActive) ? 17 : 11;
+        const keyboardForward = Number(keys.forward) - Number(keys.backward);
+        const keyboardTurn = Number(keys.left) - Number(keys.right);
+        const forwardInput = THREE.MathUtils.clamp(keyboardForward - joystickState.y, -1, 1);
+        const turnInput = THREE.MathUtils.clamp(keyboardTurn - joystickState.x, -1, 1);
+
+        if (forwardInput !== 0) {
+          carState.speed += forwardInput * accel * dt;
+        } else {
+          const damp = Math.max(0, 1 - drag * dt);
+          carState.speed *= damp;
+        }
+        carState.speed = THREE.MathUtils.clamp(carState.speed, -7, maxSpeed);
+
+        if (Math.abs(carState.speed) > 0.03) {
+          const direction = carState.speed >= 0 ? 1 : -1;
+          carState.yaw += turnInput * turnAccel * dt * direction * (0.6 + Math.abs(carState.speed) * 0.045);
+        }
+
+        const forward = new THREE.Vector3(Math.sin(carState.yaw), 0, Math.cos(carState.yaw));
+        car.position.addScaledVector(forward, carState.speed * dt);
+
+        carState.verticalVel -= 14.5 * dt;
+        carState.y += carState.verticalVel * dt;
+        if (carState.y <= 0.55) {
+          carState.y = 0.55;
+          carState.verticalVel = 0;
+          carState.onGround = true;
+        }
+        car.position.y = carState.y;
+
+        const boundary = 38;
+        if (Math.abs(car.position.x) > boundary) {
+          car.position.x = THREE.MathUtils.clamp(car.position.x, -boundary, boundary);
+          carState.speed *= -0.24;
+        }
+        if (Math.abs(car.position.z) > boundary) {
+          car.position.z = THREE.MathUtils.clamp(car.position.z, -boundary, boundary);
+          carState.speed *= -0.24;
+        }
+
+        wheels.forEach((wheel) => {
+          wheel.rotation.x -= carState.speed * dt * 1.55;
+        });
+
+        car.rotation.y = carState.yaw;
+        car.rotation.z = THREE.MathUtils.lerp(car.rotation.z, turnInput * -0.18, 0.08);
+        car.rotation.x = THREE.MathUtils.lerp(car.rotation.x, Math.min(Math.abs(carState.speed) * 0.014, 0.08), 0.06);
+
+        laneDots.forEach((dot, index) => {
+          const t = (index / laneDots.length + time * 0.08) % 1;
+          dot.position.copy(roadCurve.getPointAt(t));
+          dot.position.y = 0.22;
+        });
+
+        updateCamera(dt);
+        updateCheckpointState(time);
+        renderer.render(scene, camera);
+        window.requestAnimationFrame(update);
+      };
+
+      window.requestAnimationFrame(update);
+    }
+  </script>
 
   <script src="./data/album.manifest.js"></script>
   <script>
@@ -447,20 +1633,24 @@
         const third = photos[2] || meta.cover;
 
         const card = document.createElement('article');
-        card.className = 'home-card rounded-2xl overflow-hidden';
+        card.className = 'home-card';
+        card.setAttribute('data-tilt', '');
         card.innerHTML = `
           <a href="./album.html?day=${meta.day}#album" class="block">
-            <div class="grid grid-cols-6 gap-[2px] bg-black/5">
-              <img src="${first}" alt="第${meta.day}天精選1" class="col-span-4 h-40 object-cover" loading="lazy" />
+            <div class="home-card-top grid grid-cols-6 gap-[2px] bg-slate-900/15">
+              <img src="${first}" alt="第${meta.day}天精選1" class="col-span-4 h-44 object-cover" loading="lazy" />
               <div class="col-span-2 grid grid-rows-2 gap-[2px]">
-                <img src="${second}" alt="第${meta.day}天精選2" class="h-[79px] w-full object-cover" loading="lazy" />
-                <img src="${third}" alt="第${meta.day}天精選3" class="h-[79px] w-full object-cover" loading="lazy" />
+                <img src="${second}" alt="第${meta.day}天精選2" class="h-[87px] w-full object-cover" loading="lazy" />
+                <img src="${third}" alt="第${meta.day}天精選3" class="h-[87px] w-full object-cover" loading="lazy" />
+              </div>
+              <div class="absolute bottom-2 left-2 z-10">
+                <span class="home-count">DAY ${meta.day}</span>
               </div>
             </div>
-            <div class="px-6 py-5">
-              <p class="text-[10px] tracking-[0.14em] uppercase font-bold" style="color:var(--text-mute)">Day ${meta.day}</p>
-              <p class="font-serif text-2xl mt-1 text-gray-900">第 ${meta.day} 天</p>
-              <p class="text-sm mt-2 font-light" style="color:var(--text-sub)">${meta.date} · ${photos.length} 張照片</p>
+            <div class="px-5 py-5">
+              <p class="text-xs tracking-[0.18em] uppercase font-black text-slate-500">Checkpoint ${meta.day}</p>
+              <p class="text-2xl md:text-3xl mt-1 font-black text-slate-900">第 ${meta.day} 天</p>
+              <p class="text-sm mt-2 font-bold text-slate-600">${meta.date} · ${photos.length} 張照片</p>
             </div>
           </a>
         `;
@@ -473,6 +1663,11 @@
     }
 
     function initReveal() {
+      const nodes = Array.from(document.querySelectorAll('.reveal'));
+      nodes.forEach((node, index) => {
+        node.style.transitionDelay = `${Math.min(index * 60, 260)}ms`;
+      });
+
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -480,9 +1675,27 @@
             observer.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.18 });
+      }, { threshold: 0.16 });
 
-      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+      nodes.forEach((el) => observer.observe(el));
+    }
+
+    function initTilt() {
+      const cards = document.querySelectorAll('[data-tilt]');
+      cards.forEach((card) => {
+        card.addEventListener('pointermove', (event) => {
+          const rect = card.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width;
+          const y = (event.clientY - rect.top) / rect.height;
+          const rotateY = (x - 0.5) * 8;
+          const rotateX = (0.5 - y) * 8;
+          card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+        });
+
+        card.addEventListener('pointerleave', () => {
+          card.style.transform = '';
+        });
+      });
     }
 
     const navbar = document.getElementById('navbar');
@@ -515,6 +1728,7 @@
     state.albumData = buildAlbumData();
     renderHomeCards();
     initReveal();
+    initTilt();
   </script>
 </body>
 

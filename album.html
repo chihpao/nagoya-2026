@@ -8,7 +8,7 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@500;700;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Nunito:wght@500;700;800;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
     rel="stylesheet" />
 
   <script>
@@ -16,8 +16,8 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Manrope"', '"Noto Sans TC"', 'sans-serif'],
-            serif: ['"Noto Serif TC"', 'serif']
+            sans: ['"Nunito"', '"Noto Sans TC"', 'sans-serif'],
+            display: ['"Amatic SC"', '"Noto Sans TC"', 'cursive']
           }
         }
       }
@@ -26,122 +26,254 @@
 
   <style>
     :root {
-      --bg-main: #f4efe5;
-      --bg-card: #fffdf9;
-      --bg-panel: #f7f1e6;
-      --bg-deep: #221d16;
-      --text-main: #221d16;
-      --text-sub: #605547;
-      --text-mute: #8d7f6f;
-      --line: rgba(34, 29, 22, 0.12);
-      --accent: #af612d;
-      --accent-dark: #7f461d;
+      --bg-main: #fff1d0;
+      --ink: #0f172a;
+      --ink-soft: #475569;
+      --line: #1e3a8a;
+      --accent: #22c55e;
+      --accent-dark: #166534;
+      --warn: #f97316;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
-      background: var(--bg-main);
-      color: var(--text-main);
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 7% 14%, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0) 33%),
+        radial-gradient(circle at 92% 8%, rgba(249, 115, 22, 0.2) 0%, rgba(249, 115, 22, 0) 38%),
+        linear-gradient(180deg, #ffefca 0%, #ffe0a0 52%, #ffd283 100%);
+      background-attachment: fixed;
       overflow-x: hidden;
     }
 
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(30, 58, 138, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 58, 138, 0.05) 1px, transparent 1px);
+      background-size: 34px 34px;
+      z-index: -1;
+      opacity: 0.5;
+    }
+
     .top-nav {
-      background: rgba(244, 239, 229, 0.9);
-      border-bottom: 1px solid var(--line);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: transform 300ms ease;
+      background: rgba(255, 248, 227, 0.9);
+      border-bottom: 3px solid var(--line);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform 260ms ease;
     }
 
     .top-nav.hidden-nav {
       transform: translateY(-100%);
     }
 
+    .nav-shell {
+      border: 3px solid var(--line);
+      border-radius: 999px;
+      background: #fffdf7;
+      box-shadow: 0 5px 0 rgba(30, 58, 138, 0.2);
+      padding: 0.2rem;
+    }
+
     .nav-link {
       border-radius: 999px;
-      font-weight: 600;
-      color: var(--text-mute);
-      transition: all 200ms ease;
+      color: #334155;
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      transition: transform 150ms ease, background 150ms ease, color 150ms ease;
     }
 
     .nav-link:hover,
     .nav-link:focus-visible,
     .nav-link.active {
+      background: var(--line);
       color: #fff;
-      background: var(--bg-deep);
+      transform: translateY(-1px);
+    }
+
+    .hero-photo {
+      border-bottom: 3px solid var(--line);
     }
 
     .hero-photo img {
       width: 100%;
-      height: 56vh;
+      height: min(72vh, 760px);
       object-fit: cover;
       display: block;
     }
 
+    .album-head {
+      padding: 2rem 1rem 2.8rem;
+    }
+
     @media (min-width: 768px) {
-      .hero-photo img {
-        height: min(70vh, 760px);
+      .album-head {
+        padding: 3rem 2rem 3.4rem;
       }
     }
 
-    .album-head {
-      background: linear-gradient(180deg, #fbf8f2 0%, #efe7db 100%);
-      border-bottom: 1px solid var(--line);
+    .head-shell {
+      border: 3px solid var(--line);
+      border-radius: 28px;
+      background: #fff9ec;
+      box-shadow: 0 12px 0 rgba(30, 58, 138, 0.28);
+      padding: 1.3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .head-shell::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      right: -30px;
+      width: 170px;
+      height: 170px;
+      background: radial-gradient(circle at center, rgba(34, 197, 94, 0.3) 0%, rgba(34, 197, 94, 0) 70%);
+      pointer-events: none;
+    }
+
+    @media (min-width: 768px) {
+      .head-shell {
+        padding: 2rem 2.2rem;
+      }
+    }
+
+    .stamp {
+      display: inline-flex;
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      padding: 0.45rem 0.8rem;
+      font-size: 0.7rem;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #334155;
+    }
+
+    .display-title {
+      font-family: 'Amatic SC', 'Noto Sans TC', cursive;
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: 0.03em;
+      font-size: clamp(2.9rem, 11vw, 6.5rem);
+      color: #0f172a;
+      text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.6);
+    }
+
+    .jump-btn {
+      border-radius: 999px;
+      border: 3px solid #14532d;
+      background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%);
+      color: #fff;
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      box-shadow: 0 6px 0 rgba(20, 83, 45, 0.45);
+      transition: transform 140ms ease, box-shadow 140ms ease;
+    }
+
+    .jump-btn:hover,
+    .jump-btn:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 rgba(20, 83, 45, 0.45);
+    }
+
+    .ghost-btn {
+      border-radius: 999px;
+      border: 3px solid var(--line);
+      background: #fff;
+      color: var(--line);
+      font-weight: 900;
+      transition: transform 140ms ease, background 140ms ease, color 140ms ease;
+    }
+
+    .ghost-btn:hover,
+    .ghost-btn:focus-visible {
+      transform: translateY(-2px);
+      background: var(--line);
+      color: #fff;
     }
 
     .album-layout {
-      background: var(--bg-panel);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.08);
+      border: 3px solid var(--line);
+      border-radius: 30px;
+      background: #fffdf7;
+      box-shadow: 0 13px 0 rgba(30, 58, 138, 0.28);
+      padding: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .album-layout {
+        padding: 1.8rem;
+      }
+    }
+
+    .album-summary {
+      border: 3px solid var(--line);
+      background: #f8f6ff;
+      border-radius: 22px;
+      padding: 1rem;
+    }
+
+    .day-chip {
+      display: inline-flex;
+      border: 2px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      padding: 0.35rem 0.72rem;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: #334155;
     }
 
     .day-tab {
-      border: 1px solid var(--line);
+      border: 3px solid var(--line);
       border-radius: 999px;
       background: #fff;
-      color: var(--text-mute);
+      color: #334155;
+      font-weight: 900;
       white-space: nowrap;
-      transition: all 180ms ease;
+      box-shadow: 0 4px 0 rgba(30, 58, 138, 0.17);
+      transition: transform 150ms ease, background 150ms ease, color 150ms ease;
     }
 
     .day-tab.active,
     .day-tab:hover,
     .day-tab:focus-visible {
-      background: var(--bg-deep);
+      background: var(--line);
       color: #fff;
-      border-color: var(--bg-deep);
+      transform: translateY(-1px);
     }
 
     .album-thumb {
-      border: 1px solid var(--line);
-      background: #f3ece0;
-      border-radius: 14px;
+      border: 3px solid var(--line);
+      border-radius: 16px;
+      background: #f1f5f9;
       overflow: hidden;
-      transition: transform 200ms ease, box-shadow 200ms ease;
+      box-shadow: 0 7px 0 rgba(30, 58, 138, 0.22);
+      transition: transform 180ms ease;
     }
 
     .album-thumb:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 14px 24px rgba(0, 0, 0, 0.11);
-    }
-
-    .jump-btn {
-      border-radius: 999px;
-      background: var(--bg-deep);
-      color: #fff;
-      transition: background 180ms ease;
-    }
-
-    .jump-btn:hover,
-    .jump-btn:focus-visible {
-      background: #000;
+      transform: translateY(-4px);
     }
 
     .lightbox-shell {
       opacity: 0;
       visibility: hidden;
       transition: opacity 220ms ease, visibility 220ms ease;
-      background: rgba(0, 0, 0, 0.92);
+      background: rgba(2, 6, 23, 0.94);
       backdrop-filter: blur(8px);
     }
 
@@ -151,15 +283,15 @@
     }
 
     .lightbox-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      border: 2px solid rgba(255, 255, 255, 0.42);
       border-radius: 999px;
-      transition: transform 160ms ease, background 160ms ease;
+      background: rgba(255, 255, 255, 0.13);
+      transition: transform 150ms ease, background 150ms ease;
     }
 
     .lightbox-btn:hover,
     .lightbox-btn:focus-visible {
-      transform: scale(1.06);
+      transform: scale(1.05);
       background: rgba(255, 255, 255, 0.2);
     }
 
@@ -174,17 +306,20 @@
 
     .reveal {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 540ms ease, transform 540ms ease;
+      transform: translateY(28px) scale(0.99);
+      transition: opacity 530ms ease, transform 530ms ease;
     }
 
     .reveal.show {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
 
     .back-top {
-      transition: opacity 240ms ease, transform 240ms ease;
+      border: 3px solid #9a3412;
+      background: linear-gradient(180deg, #fb923c 0%, #ea580c 100%);
+      transition: opacity 220ms ease, transform 220ms ease;
+      box-shadow: 0 7px 0 rgba(154, 52, 18, 0.45);
     }
 
     .back-top.hidden-btn {
@@ -193,26 +328,38 @@
       pointer-events: none;
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
     ::-webkit-scrollbar {
-      width: 7px;
+      width: 9px;
     }
 
     ::-webkit-scrollbar-track {
-      background: #ece2d3;
+      background: #f6e2b8;
     }
 
     ::-webkit-scrollbar-thumb {
-      background: #b6a38b;
+      background: #22c55e;
       border-radius: 999px;
+      border: 2px solid #f6e2b8;
     }
   </style>
 </head>
 
-<body class="font-sans antialiased selection:bg-black selection:text-white">
+<body class="font-sans antialiased selection:bg-emerald-900 selection:text-white">
   <nav id="navbar" class="top-nav fixed top-0 left-0 w-full z-40 px-4 py-3 md:px-6 md:py-4">
-    <div class="max-w-6xl mx-auto flex items-center justify-between gap-2">
-      <a href="./index.html#top" class="font-serif text-lg md:text-2xl font-bold tracking-wide text-black">Nagoya 2026</a>
-      <div class="flex items-center gap-1 md:gap-4 text-sm md:text-base">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
+      <a href="./index.html#top" class="font-display text-4xl md:text-5xl text-slate-900 leading-none">Nagoya 2026</a>
+      <div class="nav-shell flex items-center gap-1 md:gap-2 text-sm md:text-base">
         <a href="./index.html#journey" class="nav-link px-3 py-1.5 md:px-4 md:py-2">旅程</a>
         <a href="#album" class="nav-link active px-3 py-1.5 md:px-4 md:py-2">相簿</a>
       </div>
@@ -223,38 +370,42 @@
     <div class="hero-photo">
       <img src="./images/divider-sakura.jpg" alt="名古屋旅程相簿封面" loading="eager" />
     </div>
-    <div class="album-head px-5 md:px-8 py-10 md:py-14">
-      <div class="max-w-6xl mx-auto reveal">
-        <p class="text-[10px] md:text-xs tracking-[0.22em] uppercase font-bold" style="color:var(--text-mute)">Album</p>
-        <h1 class="mt-3 font-serif text-4xl md:text-6xl">名古屋相簿</h1>
-        <p class="mt-3 text-base md:text-lg font-light" style="color:var(--text-sub)">現在會直接進入相簿分頁，不再在首頁長距離捲動畫面。</p>
+
+    <div class="album-head">
+      <div class="max-w-6xl mx-auto head-shell reveal">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <span class="stamp">Gallery Console</span>
+          <span class="stamp">Day 1 - Day 7</span>
+        </div>
+        <h1 class="display-title mt-5">名古屋相簿</h1>
+        <p class="mt-4 text-sm md:text-lg font-bold text-slate-600">分天切換、分批載入、鍵盤切圖。這裡是整趟旅程的照片控制台。</p>
         <div class="mt-7 flex flex-wrap gap-3">
-          <a href="./index.html#journey" class="jump-btn px-6 py-3 text-sm md:text-base font-semibold">回到旅程</a>
-          <button id="jump-current-day" class="rounded-full border border-black/20 px-6 py-3 text-sm md:text-base font-semibold hover:bg-black hover:text-white transition-colors">定位到目前天數</button>
+          <a href="./index.html#journey" class="jump-btn px-6 py-3 text-sm md:text-base">回到旅程</a>
+          <button id="jump-current-day" class="ghost-btn px-6 py-3 text-sm md:text-base">定位到目前天數</button>
         </div>
       </div>
     </div>
   </header>
 
   <main id="album" class="max-w-6xl mx-auto px-5 md:px-8 py-10 md:py-14">
-    <section class="album-layout p-4 md:p-8 reveal">
+    <section class="album-layout reveal">
       <div class="flex flex-col gap-5 md:gap-6">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+        <div class="album-summary flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p id="album-day-chip" class="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold" style="color:var(--text-mute)">Day 1</p>
-            <h2 id="album-title" class="mt-2 font-serif text-3xl md:text-5xl">第 1 天相簿</h2>
-            <p id="album-count" class="mt-2 text-sm md:text-base font-light" style="color:var(--text-sub)">0 張照片</p>
+            <p id="album-day-chip" class="day-chip">Day 1</p>
+            <h2 id="album-title" class="mt-3 text-3xl md:text-5xl font-black text-slate-900">第 1 天相簿</h2>
+            <p id="album-count" class="mt-2 text-sm md:text-base font-bold text-slate-600">0 張照片</p>
           </div>
-          <a href="./index.html#album" class="rounded-full border border-black/15 bg-white px-5 py-2.5 text-sm md:text-base font-semibold hover:bg-black hover:text-white transition-colors">回首頁相簿入口</a>
+          <a href="./index.html#album" class="ghost-btn px-5 py-2.5 text-sm md:text-base self-start md:self-auto">回首頁相簿入口</a>
         </div>
 
         <div id="album-day-tabs" class="flex gap-2 md:gap-3 overflow-x-auto hide-scrollbar pb-1"></div>
 
-        <div id="album-grid" class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-5"></div>
-        <p id="album-empty" class="hidden text-center py-12 font-light" style="color:var(--text-mute)">這一天目前沒有照片。</p>
+        <div id="album-grid" class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5"></div>
+        <p id="album-empty" class="hidden text-center py-12 font-bold text-slate-500">這一天目前沒有照片。</p>
 
-        <div class="text-center pt-4">
-          <button id="album-load-more" class="hidden jump-btn px-7 py-3 text-sm md:text-base font-semibold">載入更多照片</button>
+        <div class="text-center pt-2">
+          <button id="album-load-more" class="hidden jump-btn px-7 py-3 text-sm md:text-base">載入更多照片</button>
         </div>
       </div>
     </section>
@@ -278,13 +429,11 @@
     </button>
     <figure class="w-full h-full flex flex-col items-center justify-center gap-4 md:gap-5">
       <img id="lightbox-image" src="" alt="" class="max-w-full md:max-w-[94vw] max-h-[80vh] md:max-h-[82vh] object-contain rounded-lg shadow-2xl" />
-      <figcaption id="lightbox-meta" class="text-white/80 text-sm md:text-base tracking-wide font-light"></figcaption>
+      <figcaption id="lightbox-meta" class="text-white/80 text-sm md:text-base tracking-wide font-bold"></figcaption>
     </figure>
   </div>
 
-  <button id="back-top" class="back-top hidden-btn fixed bottom-7 right-7 z-30 w-12 h-12 rounded-full text-white shadow-xl"
-    style="background:var(--accent)" onmouseover="this.style.background='var(--accent-dark)'"
-    onmouseout="this.style.background='var(--accent)'" aria-label="回到頂部">
+  <button id="back-top" class="back-top hidden-btn fixed bottom-7 right-7 z-30 w-12 h-12 rounded-full text-white" aria-label="回到頂部">
     <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
     </svg>
@@ -398,7 +547,7 @@
       const frag = document.createDocumentFragment();
       dayMeta.forEach((meta) => {
         const tab = document.createElement('button');
-        tab.className = `day-tab px-5 py-2.5 text-sm md:text-base font-semibold ${meta.day === state.currentDay ? 'active' : ''}`;
+        tab.className = `day-tab px-5 py-2.5 text-sm md:text-base ${meta.day === state.currentDay ? 'active' : ''}`;
         tab.textContent = `第 ${meta.day} 天`;
         tab.addEventListener('click', () => switchDay(meta.day));
         frag.appendChild(tab);
@@ -484,6 +633,11 @@
     }
 
     function initReveal() {
+      const nodes = Array.from(document.querySelectorAll('.reveal'));
+      nodes.forEach((node, index) => {
+        node.style.transitionDelay = `${Math.min(index * 70, 240)}ms`;
+      });
+
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -493,7 +647,7 @@
         });
       }, { threshold: 0.16 });
 
-      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+      nodes.forEach((el) => observer.observe(el));
     }
 
     albumLoadMore.addEventListener('click', () => {
