@@ -5,6 +5,7 @@
 ## 目前網站架構
 
 - 首頁旅程頁: `index.html`
+  - 首屏保留 Three.js `3D-lite` 互動世界（含 WebGL fallback）
   - 保留 Day 1-7 全版圖片旅程段落
   - 保留首頁 Day 預覽卡（相簿入口）
   - Navbar `相簿` 直接導向獨立相簿頁 `album.html#album`
@@ -14,6 +15,33 @@
   - Lightbox 鍵盤操作 (`ArrowLeft` / `ArrowRight` / `Escape`)
 - 相簿資料來源: `data/album.manifest.js`
   - 若 manifest 不可用，頁面會用內建 fallback 圖片清單
+
+## 設計方向（目前基準）
+
+- 視覺方向: playful / game-like / bold（Bruno Simon 靈感）
+- 表現語言: 高對比色塊、厚邊框、貼紙感、明顯動態
+- 文案語系: `zh-Hant` 為主
+- 原則: 功能優先，不為了造型破壞既有 Day 1-7 與相簿流程
+
+## 3D-Lite 首屏規格（index）
+
+- 技術: Three.js module（CDN 載入）
+- 鍵盤操作:
+  - `WASD` / `Arrow` 移動
+  - `Shift` 加速
+  - `Space` 跳躍
+- 滑鼠/觸控:
+  - Pointer 拖曳視角
+  - 站點可點擊跳轉到對應 Day 區塊
+- 手機控制:
+  - 虛擬搖桿
+  - 觸控加速按鈕
+  - 觸控跳躍按鈕
+- 站點互動:
+  - 可切換「自動跳轉：開/關」
+  - 靠近站點時可自動 smooth scroll 到對應 Day 區塊
+- 退化策略:
+  - WebGL 不可用時顯示 fallback，不影響後續旅程與相簿瀏覽
 
 ## 本機預覽
 

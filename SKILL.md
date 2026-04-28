@@ -18,6 +18,7 @@ When this file and `AGENTS.md` overlap, treat `AGENTS.md` as the UI/product requ
 - `images/`
 - `.github/workflows/image-optimization.yml`
 - `README.md`
+- `AGENTS.md`
 
 ## Working Rules
 
@@ -38,6 +39,12 @@ When this file and `AGENTS.md` overlap, treat `AGENTS.md` as the UI/product requ
    - `ArrowLeft`: previous
    - `ArrowRight`: next
    - `Escape`: close
+7. Keep index first-screen 3D-lite experience:
+   - Keep Three.js world section with graceful fallback
+   - Keep desktop controls (`WASD`/Arrow, `Shift`, `Space`)
+   - Keep mobile controls (virtual joystick + boost/jump touch buttons)
+   - Keep checkpoint interaction (click jump + auto-jump toggle)
+8. Do not remove/replace 3D-lite architecture unless explicitly requested.
 
 ## Image Conventions
 
@@ -63,6 +70,7 @@ When adding new photos:
 - Keep `loading="lazy"` for gallery thumbnails
 - Keep batch rendering enabled (`BATCH_SIZE`)
 - Avoid rendering all 100+ images in initial viewport
+- Keep 3D-lite responsive and avoid heavy geometry/material counts without clear value
 
 ## Content Checklist
 
