@@ -483,7 +483,9 @@
       albumData: {},
       currentDay: 1,
       visibleCount: BATCH_SIZE,
-      lightboxIndex: 0
+      lightboxIndex: 0,
+      photoLookup: new Map(),
+      photosByDay: {}
     };
 
     function mergeUnique(items) {
@@ -496,9 +498,86 @@
       });
     }
 
+    function isRemoteUrl(value) {
+      return /^https?:\/\//i.test(value);
+    }
+
+    function normalizePath(value) {
+      return String(value || '')
+        .trim()
+        .replace(/\\/g, '/')
+        .replace(/^\.\//, '')
+        .replace(/^\/+/, '');
+    }
+
+    function inferDay(value) {
+      const match = String(value || '').match(/day\s*([1-7])/i);
+      if (!match) return null;
+      return Number(match[1]);
+    }
+
+    function resolveAsset(path) {
+      if (!path || isRemoteUrl(path)) return path;
+      const found = state.photoLookup.get(normalizePath(path));
+      return found || path;
+    }
+
+    function applyResolvedAssets() {
+      dayMeta.forEach((meta) => {
+        meta.cover = resolveAsset(meta.cover);
+      });
+
+      Object.keys(fallbackAlbumData).forEach((day) => {
+        fallbackAlbumData[day] = (fallbackAlbumData[day] || []).map((path) => resolveAsset(path));
+      });
+
+      document.querySelectorAll('img[src^="./images/"]').forEach((img) => {
+        const current = img.getAttribute('src');
+        const resolved = resolveAsset(current);
+        if (resolved && resolved !== current) {
+          img.setAttribute('src', resolved);
+        }
+      });
+    }
+
+    async function loadPhotosJson() {
+      try {
+        const response = await fetch('./data/photos.json', { cache: 'no-store' });
+        if (!response.ok) {
+          return;
+        }
+        const list = await response.json();
+        if (!Array.isArray(list)) {
+          return;
+        }
+
+        const byDay = {};
+        list.forEach((photo) => {
+          if (!photo || typeof photo !== 'object') return;
+          const url = typeof photo.url === 'string' ? photo.url.trim() : '';
+          if (!url) return;
+
+          const source = typeof photo.source === 'string' ? normalizePath(photo.source) : '';
+          if (source) {
+            state.photoLookup.set(source, url);
+          }
+
+          const day = Number(photo.day) || inferDay(photo.source) || inferDay(photo.key) || inferDay(photo.filename);
+          if (day >= 1 && day <= 7) {
+            byDay[day] = byDay[day] || [];
+            byDay[day].push(url);
+          }
+        });
+
+        state.photosByDay = byDay;
+      } catch (_error) {
+        state.photosByDay = {};
+      }
+    }
+
     function getDayCover(day) {
       const meta = dayMeta.find((entry) => entry.day === day);
-      return meta ? meta.cover : './images/hero-nagoya.jpg';
+      return meta ? meta.cover : resolveAsset('./images/hero-nagoya.jpg');
     }
 
     function buildAlbumData() {
@@ -508,9 +587,10 @@
       const normalized = {};
 
       dayMeta.forEach((meta) => {
-        const sourcePhotos = Array.isArray(source[meta.day]) ? source[meta.day] : [];
+        const jsonPhotos = Array.isArray(state.photosByDay[meta.day]) ? state.photosByDay[meta.day] : [];
+        const sourcePhotos = Array.isArray(source[meta.day]) ? source[meta.day].map((item) => resolveAsset(item)) : [];
         const dayFallback = Array.isArray(fallbackAlbumData[meta.day]) ? fallbackAlbumData[meta.day] : [];
-        const merged = mergeUnique([meta.cover, ...sourcePhotos, ...dayFallback]);
+        const merged = mergeUnique([meta.cover, ...jsonPhotos, ...sourcePhotos, ...dayFallback]);
         normalized[meta.day] = merged.length ? merged : [meta.cover];
       });
 
@@ -710,12 +790,18 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    state.albumData = buildAlbumData();
-    state.currentDay = parseInitialDay();
-    renderTabs();
-    renderAlbumGrid();
-    updateURLDay(state.currentDay);
-    initReveal();
+    async function initAlbumPage() {
+      await loadPhotosJson();
+      applyResolvedAssets();
+      state.albumData = buildAlbumData();
+      state.currentDay = parseInitialDay();
+      renderTabs();
+      renderAlbumGrid();
+      updateURLDay(state.currentDay);
+      initReveal();
+    }
+
+    initAlbumPage();
   </script>
 </body>
 

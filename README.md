@@ -51,7 +51,7 @@ python -m http.server 8000
 
 打開 `http://localhost:8000/index.html` 與 `http://localhost:8000/album.html`
 
-## Album Pipeline (WebP + R2 + manifest.json)
+## Album Pipeline (WebP + R2 + photos.json)
 
 1. 安裝依賴
 
@@ -60,21 +60,34 @@ python -m pip install -r requirements-r2.txt
 ```
 
 2. 填入 R2 環境變數（可從 `.env.r2.example` 複製）
+- `R2_ACCOUNT_ID`
+- `R2_ACCESS_KEY_ID`
+- `R2_SECRET_ACCESS_KEY`
+- `R2_BUCKET_NAME`
+- `R2_PUBLIC_URL`
 
-3. 只做轉檔與 manifest 產出
+3. 只做掃描 + WebP 轉檔 + `data/photos.json` 產出
 
 ```powershell
-python scripts/build_album_manifest_and_upload.py
+python scripts/migrate_photos_to_r2.py
 ```
 
-4. 轉檔 + 上傳 R2 + 更新 `data/manifest.json`
+4. 轉檔 + 上傳 R2 + 將完整 URL 寫入 `data/photos.json`
 
 ```powershell
-python scripts/build_album_manifest_and_upload.py --upload
+python scripts/migrate_photos_to_r2.py --upload
 ```
+
+5. 上傳成功後再刪除 repo 原始圖片（可選）
+
+```powershell
+python scripts/migrate_photos_to_r2.py --upload --delete-originals
+```
+
+補充：若要把 HEIC/HEIF 一起轉 WebP，可加上 `--extensions .jpg,.jpeg,.png,.gif,.heic,.heif`
 
 ## 部署注意事項（GitHub Actions / GitHub Pages）
 
 - `.github/workflows/deploy-pages.yml` 使用 `path: '.'` 上傳整個 repo 當部署內容。
 - 因此新增 `album.html` 會自動一起部署，不需額外調整 workflow。
-- 圖片路徑請維持相對路徑（例如 `./images/...`、`./data/...`）以確保 Pages 正常載入。
+- 目前 CI 不做圖片壓縮或轉檔，僅負責靜態網站部署。

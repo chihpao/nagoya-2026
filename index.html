@@ -74,6 +74,13 @@
       transition: transform 260ms ease;
     }
 
+    .brand-mark {
+      max-width: 62vw;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .top-nav.hidden-nav {
       transform: translateY(-100%);
     }
@@ -159,14 +166,42 @@
       flex-wrap: wrap;
     }
 
+    .world-overlay.collapsed .world-panel {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px) scale(0.98);
+    }
+
     .world-panel {
       pointer-events: auto;
-      max-width: 540px;
+      max-width: 520px;
       border: 3px solid #0f172a;
       border-radius: 20px;
       background: rgba(255, 255, 255, 0.92);
       box-shadow: 0 8px 0 rgba(15, 23, 42, 0.28);
-      padding: 0.9rem 1rem;
+      padding: 0.72rem 0.78rem;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .world-ui-toggle {
+      pointer-events: auto;
+      border: 2px solid #0f172a;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.96);
+      color: #0f172a;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      padding: 0.4rem 0.75rem;
+      box-shadow: 0 4px 0 rgba(15, 23, 42, 0.25);
+      transition: transform 140ms ease, background 140ms ease, color 140ms ease;
+    }
+
+    .world-ui-toggle:hover,
+    .world-ui-toggle:focus-visible {
+      transform: translateY(-1px);
+      background: #0f172a;
+      color: #fff;
     }
 
     .world-chip-row {
@@ -369,17 +404,143 @@
       display: flex;
     }
 
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     @media (max-width: 767px) {
+      .top-nav {
+        padding-top: calc(0.66rem + env(safe-area-inset-top));
+      }
+
+      .nav-shell {
+        gap: 0.2rem;
+      }
+
+      .nav-link {
+        font-size: 0.8rem;
+      }
+
       .world-stage {
-        height: min(76vh, 620px);
+        height: min(74vh, 560px);
+        border-radius: 24px;
+      }
+
+      .world-overlay {
+        left: 0.75rem;
+        right: 0.75rem;
+        top: 0.75rem;
+        gap: 0.5rem;
+        justify-content: flex-start;
+      }
+
+      .world-panel {
+        width: 100%;
+        padding: 0.7rem 0.75rem;
+      }
+
+      .world-ui-toggle {
+        font-size: 0.68rem;
+        padding: 0.34rem 0.62rem;
+      }
+
+      .world-chip-row {
+        gap: 0.35rem;
+      }
+
+      .world-chip {
+        font-size: 0.67rem;
+        padding: 0.2rem 0.45rem;
+      }
+
+      .world-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 0;
+      }
+
+      .world-actions .primary {
+        grid-column: span 2;
+      }
+
+      .world-btn {
+        text-align: center;
+        padding: 0.42rem 0.65rem;
+        font-size: 0.75rem;
       }
 
       .world-help {
         display: none;
       }
 
+      .world-status {
+        left: 0.7rem;
+        right: 0.7rem;
+        bottom: 0.85rem;
+        max-width: none;
+        font-size: 0.71rem;
+      }
+
       .world-mobile-controls {
         display: flex;
+        left: 0.7rem;
+        right: 0.7rem;
+        bottom: 2.9rem;
+        gap: 0.6rem;
+      }
+
+      .world-joystick-wrap {
+        width: 108px;
+        height: 108px;
+      }
+
+      .world-joystick-base {
+        width: 74px;
+        height: 74px;
+      }
+
+      .world-joystick-stick {
+        width: 31px;
+        height: 31px;
+      }
+
+      .world-touch-actions {
+        gap: 0.38rem;
+      }
+
+      .world-touch-btn {
+        min-width: 92px;
+        font-size: 0.69rem;
+        padding: 0.3rem 0.54rem;
+      }
+
+      .hero-photo img {
+        height: min(66vh, 540px);
+      }
+
+      .photo-bleed img {
+        height: min(54vh, 500px);
+      }
+
+      .day-story {
+        transform: rotate(-0.2deg);
+      }
+
+      .day-story.alt {
+        transform: rotate(0.2deg);
+      }
+
+      .day-story:hover,
+      .day-story.alt:hover {
+        transform: none;
       }
     }
 
@@ -745,7 +906,7 @@
 <body class="font-sans antialiased selection:bg-sky-900 selection:text-white">
   <nav id="navbar" class="top-nav fixed top-0 left-0 w-full z-40 px-4 py-3 md:px-6 md:py-4">
     <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
-      <a href="#top" class="font-display text-4xl md:text-5xl text-slate-900 leading-none">Nagoya 2026</a>
+      <a href="#top" class="brand-mark font-display text-3xl md:text-5xl text-slate-900 leading-none">Nagoya 2026</a>
       <div class="nav-shell flex items-center gap-1 md:gap-2 text-sm md:text-base">
         <a href="#journey" class="nav-link active px-3 py-1.5 md:px-4 md:py-2">旅程</a>
         <a href="./album.html#album" class="nav-link px-3 py-1.5 md:px-4 md:py-2">相簿</a>
@@ -767,27 +928,20 @@
           </div>
 
           <div class="world-overlay">
+            <button id="world-ui-toggle" type="button" class="world-ui-toggle" aria-controls="world-ui-panel" aria-expanded="false">顯示控制</button>
             <div class="world-panel">
+              <div id="world-ui-panel">
               <p class="text-xs font-black tracking-[0.15em] uppercase text-slate-500">Three.js 3D-Lite 首屏</p>
-              <h2 class="mt-2 text-2xl md:text-3xl font-black text-slate-900">先在名古屋街區暖身一圈</h2>
-              <p class="mt-2 text-xs md:text-sm font-bold text-slate-600">WASD / 方向鍵移動、Shift 加速、空白鍵小跳、滑鼠拖曳可看角度。</p>
-
-              <div class="world-chip-row">
-                <span class="world-chip">7 個站點</span>
-                <span class="world-chip">可點擊站點跳到當天</span>
-                <span class="world-chip">手機可滑動視角</span>
-              </div>
-
               <div class="world-actions">
                 <button id="world-reset" type="button" class="world-btn">重置車輛</button>
                 <button id="world-auto-jump-toggle" type="button" class="world-btn">自動跳轉：開</button>
                 <a href="#journey" class="world-btn primary">跳到旅程</a>
               </div>
+              </div>
             </div>
           </div>
 
-          <p id="world-status" class="world-status">目前站點：起點廣場</p>
-          <p class="world-help">靠近 Day 站點會自動提示，觸碰可自動跳轉，點擊站點也可直接跳轉</p>
+          <p id="world-status" class="sr-only" aria-live="polite">目前站點：起點廣場</p>
 
           <div class="world-mobile-controls">
             <div id="world-joystick" class="world-joystick-wrap">
@@ -974,6 +1128,8 @@
     const canvas = document.getElementById('world-canvas');
     const statusEl = document.getElementById('world-status');
     const fallbackEl = document.getElementById('world-fallback');
+    const uiOverlay = document.querySelector('.world-overlay');
+    const uiToggleBtn = document.getElementById('world-ui-toggle');
     const resetBtn = document.getElementById('world-reset');
     const autoJumpToggleBtn = document.getElementById('world-auto-jump-toggle');
     const touchAutoBtn = document.getElementById('world-touch-auto');
@@ -981,9 +1137,26 @@
     const touchJumpBtn = document.getElementById('world-touch-jump');
     const joystickEl = document.getElementById('world-joystick');
     const joystickStick = document.getElementById('world-joystick-stick');
-    if (!section || !canvas || !statusEl || !fallbackEl || !resetBtn || !autoJumpToggleBtn || !touchAutoBtn || !touchBoostBtn || !touchJumpBtn || !joystickEl || !joystickStick) {
+    if (!section || !canvas || !statusEl || !fallbackEl || !uiOverlay || !uiToggleBtn || !resetBtn || !autoJumpToggleBtn || !touchAutoBtn || !touchBoostBtn || !touchJumpBtn || !joystickEl || !joystickStick) {
       throw new Error('World-lite DOM is missing.');
     }
+
+    const panelState = {
+      expanded: false
+    };
+
+    const syncWorldUi = () => {
+      uiOverlay.classList.toggle('collapsed', !panelState.expanded);
+      uiToggleBtn.textContent = panelState.expanded ? '隱藏控制' : '顯示控制';
+      uiToggleBtn.setAttribute('aria-expanded', panelState.expanded ? 'true' : 'false');
+    };
+
+    uiToggleBtn.addEventListener('click', () => {
+      panelState.expanded = !panelState.expanded;
+      syncWorldUi();
+    });
+
+    syncWorldUi();
 
     const showFallback = (message) => {
       fallbackEl.classList.add('show');
@@ -1585,7 +1758,9 @@
     const backTop = document.getElementById('back-top');
 
     const state = {
-      albumData: {}
+      albumData: {},
+      photoLookup: new Map(),
+      photosByDay: {}
     };
 
     function mergeUnique(items) {
@@ -1598,6 +1773,79 @@
       });
     }
 
+    function isRemoteUrl(value) {
+      return /^https?:\/\//i.test(value);
+    }
+
+    function normalizePath(value) {
+      return String(value || '')
+        .trim()
+        .replace(/\\/g, '/')
+        .replace(/^\.\//, '')
+        .replace(/^\/+/, '');
+    }
+
+    function inferDay(value) {
+      const match = String(value || '').match(/day\s*([1-7])/i);
+      if (!match) return null;
+      return Number(match[1]);
+    }
+
+    function resolveAsset(path) {
+      if (!path || isRemoteUrl(path)) return path;
+      const found = state.photoLookup.get(normalizePath(path));
+      return found || path;
+    }
+
+    async function loadPhotosJson() {
+      try {
+        const response = await fetch('./data/photos.json', { cache: 'no-store' });
+        if (!response.ok) return;
+        const list = await response.json();
+        if (!Array.isArray(list)) return;
+
+        const byDay = {};
+        list.forEach((photo) => {
+          if (!photo || typeof photo !== 'object') return;
+          const url = typeof photo.url === 'string' ? photo.url.trim() : '';
+          if (!url) return;
+
+          const source = typeof photo.source === 'string' ? normalizePath(photo.source) : '';
+          if (source) {
+            state.photoLookup.set(source, url);
+          }
+
+          const day = Number(photo.day) || inferDay(photo.source) || inferDay(photo.key) || inferDay(photo.filename);
+          if (day >= 1 && day <= 7) {
+            byDay[day] = byDay[day] || [];
+            byDay[day].push(url);
+          }
+        });
+
+        state.photosByDay = byDay;
+      } catch (_error) {
+        state.photosByDay = {};
+      }
+    }
+
+    function applyResolvedAssets() {
+      dayMeta.forEach((meta) => {
+        meta.cover = resolveAsset(meta.cover);
+      });
+
+      Object.keys(fallbackAlbumData).forEach((day) => {
+        fallbackAlbumData[day] = (fallbackAlbumData[day] || []).map((path) => resolveAsset(path));
+      });
+
+      document.querySelectorAll('img[src^="./images/"]').forEach((img) => {
+        const current = img.getAttribute('src');
+        const resolved = resolveAsset(current);
+        if (resolved && resolved !== current) {
+          img.setAttribute('src', resolved);
+        }
+      });
+    }
+
     function buildAlbumData() {
       const source = typeof window.NAGOYA_ALBUM_DATA === 'object' && window.NAGOYA_ALBUM_DATA !== null
         ? window.NAGOYA_ALBUM_DATA
@@ -1605,9 +1853,10 @@
       const normalized = {};
 
       dayMeta.forEach((meta) => {
-        const sourcePhotos = Array.isArray(source[meta.day]) ? source[meta.day] : [];
+        const jsonPhotos = Array.isArray(state.photosByDay[meta.day]) ? state.photosByDay[meta.day] : [];
+        const sourcePhotos = Array.isArray(source[meta.day]) ? source[meta.day].map((item) => resolveAsset(item)) : [];
         const fallbackPhotos = Array.isArray(fallbackAlbumData[meta.day]) ? fallbackAlbumData[meta.day] : [];
-        const merged = mergeUnique([meta.cover, ...sourcePhotos, ...fallbackPhotos]);
+        const merged = mergeUnique([meta.cover, ...jsonPhotos, ...sourcePhotos, ...fallbackPhotos]);
         normalized[meta.day] = merged.length ? merged : [meta.cover];
       });
 
@@ -1615,7 +1864,7 @@
     }
 
     function bindImageFallback(img, day) {
-      const cover = dayMeta.find((entry) => entry.day === day)?.cover || './images/hero-nagoya.jpg';
+      const cover = dayMeta.find((entry) => entry.day === day)?.cover || resolveAsset('./images/hero-nagoya.jpg');
       img.addEventListener('error', () => {
         if (img.dataset.fallbackApplied === '1') return;
         img.dataset.fallbackApplied = '1';
@@ -1681,6 +1930,9 @@
     }
 
     function initTilt() {
+      if (window.matchMedia('(pointer: coarse)').matches) {
+        return;
+      }
       const cards = document.querySelectorAll('[data-tilt]');
       cards.forEach((card) => {
         card.addEventListener('pointermove', (event) => {
@@ -1725,10 +1977,16 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    state.albumData = buildAlbumData();
-    renderHomeCards();
-    initReveal();
-    initTilt();
+    async function initHomePage() {
+      await loadPhotosJson();
+      applyResolvedAssets();
+      state.albumData = buildAlbumData();
+      renderHomeCards();
+      initReveal();
+      initTilt();
+    }
+
+    initHomePage();
   </script>
 </body>
 

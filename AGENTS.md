@@ -8,7 +8,7 @@ Any AI or contributor modifying this repo must follow these rules unless the use
 ## Source Of Truth
 
 - Primary pages: `index.html` and `album.html`
-- Album data source: `data/album.manifest.js` (fallback allowed only when manifest is unavailable)
+- Album/photo data source: `data/photos.json` (fallback to `data/album.manifest.js` when photos json is unavailable)
 
 ## Current Design Direction (Baseline)
 
