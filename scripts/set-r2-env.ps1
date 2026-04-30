@@ -5,7 +5,7 @@ param(
   [string]$BucketName = "nagoya-2026-photos",
   [string]$AccessKeyId,
   [string]$SecretAccessKey,
-  [string]$PublicUrl = "https://0688f2639c5f1d83f3c080999af360c0.r2.cloudflarestorage.com/nagoya-2026-photos"
+  [string]$PublicUrl = "https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev"
 )
 
 if (-not $AccessKeyId) {

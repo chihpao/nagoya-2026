@@ -590,8 +590,12 @@
         const jsonPhotos = Array.isArray(state.photosByDay[meta.day]) ? state.photosByDay[meta.day] : [];
         const sourcePhotos = Array.isArray(source[meta.day]) ? source[meta.day].map((item) => resolveAsset(item)) : [];
         const dayFallback = Array.isArray(fallbackAlbumData[meta.day]) ? fallbackAlbumData[meta.day] : [];
-        const merged = mergeUnique([meta.cover, ...jsonPhotos, ...sourcePhotos, ...dayFallback]);
-        normalized[meta.day] = merged.length ? merged : [meta.cover];
+        const resolvedCover = resolveAsset(meta.cover);
+        const preferredCover = [resolvedCover, ...jsonPhotos, ...sourcePhotos, ...dayFallback].find((item) => isRemoteUrl(item))
+          || resolvedCover;
+        const merged = mergeUnique([preferredCover, ...jsonPhotos, ...sourcePhotos, ...dayFallback]);
+        normalized[meta.day] = merged.length ? merged : [preferredCover];
+        meta.cover = preferredCover;
       });
 
       return normalized;

@@ -15,8 +15,11 @@ When this file and `AGENTS.md` overlap, treat `AGENTS.md` as the UI/product requ
 
 - `index.html`
 - `album.html`
-- `images/`
-- `.github/workflows/image-optimization.yml`
+- `data/photos.json`
+- `data/album.manifest.js`
+- `scripts/migrate_photos_to_r2.py`
+- `scripts/fill_photos_urls.py`
+- `scripts/set-r2-env.ps1`
 - `README.md`
 - `AGENTS.md`
 
@@ -46,24 +49,16 @@ When this file and `AGENTS.md` overlap, treat `AGENTS.md` as the UI/product requ
    - Keep checkpoint interaction (click jump + auto-jump toggle)
 8. Do not remove/replace 3D-lite architecture unless explicitly requested.
 
-## Image Conventions
-
-- Store all assets in `images/`
-- Use day-prefixed file names for scalable data entry:
-  - `day1-001.jpg` ... `day1-999.jpg`
-  - ...
-  - `day7-001.jpg` ... `day7-999.jpg`
-- Avoid spaces in file names
-
 ## Album Data Update Procedure
 
 When adding new photos:
 
-1. Put files into `images/album/day1` ... `images/album/day7`
-2. Run `powershell -ExecutionPolicy Bypass -File .\scripts\generate-album-manifest.ps1`
-3. Ensure `data/album.manifest.js` is regenerated
-4. Verify day switch + load more + lightbox navigation on `album.html`
-5. Verify home day preview cards still render on `index.html`
+1. Prepare source images under `images/` (or provide `--source-dir`).
+2. Run `python scripts/migrate_photos_to_r2.py --upload --skip-existing`.
+3. Ensure `data/photos.json` contains non-empty R2 `url` values.
+4. Regenerate `data/album.manifest.js` from `photos.json` when needed for fallback.
+5. Verify day switch + load more + lightbox navigation on `album.html`.
+6. Verify home day preview cards still render on `index.html`.
 
 ## Performance Checklist
 
@@ -75,5 +70,6 @@ When adding new photos:
 ## Content Checklist
 
 - README reflects latest page architecture and file conventions
-- Workflow description matches `.github/workflows/image-optimization.yml`
+- Workflow description matches `.github/workflows/deploy-pages.yml`
+- `photos.json` / `album.manifest.js` stay consistent with current R2 public URL
 - No broken image paths in `index.html` and `album.html`

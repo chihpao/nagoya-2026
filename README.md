@@ -13,8 +13,9 @@
   - Day 1-7 分頁切換
   - 批次載入（Load More）
   - Lightbox 鍵盤操作 (`ArrowLeft` / `ArrowRight` / `Escape`)
-- 相簿資料來源: `data/album.manifest.js`
-  - 若 manifest 不可用，頁面會用內建 fallback 圖片清單
+- 相簿資料來源:
+  - 主來源: `data/photos.json`（含 R2 URL）
+  - 次來源: `data/album.manifest.js`（Day 1-7 URL 清單 fallback）
 
 ## 設計方向（目前基準）
 
@@ -66,7 +67,7 @@ python -m pip install -r requirements-r2.txt
 - `R2_BUCKET_NAME`
 - `R2_PUBLIC_URL`
 
-3. 只做掃描 + WebP 轉檔 + `data/photos.json` 產出
+3. 只做掃描 + WebP 轉檔 + `data/photos.json` 產出（不含上傳）
 
 ```powershell
 python scripts/migrate_photos_to_r2.py
@@ -84,7 +85,23 @@ python scripts/migrate_photos_to_r2.py --upload
 python scripts/migrate_photos_to_r2.py --upload --delete-originals
 ```
 
-補充：若要把 HEIC/HEIF 一起轉 WebP，可加上 `--extensions .jpg,.jpeg,.png,.gif,.heic,.heif`
+補充:
+- 預設已包含 `jpg/jpeg/png/gif/heic/heif`
+- `--skip-existing` 會同時跳過「已轉檔」與「R2 已存在 key」的檔案
+
+## 手動工具
+
+- 只更新 `photos.json` 的公開 URL 前綴：
+
+```powershell
+python scripts/fill_photos_urls.py --public-base "https://<your-r2-public-domain>"
+```
+
+- 快速載入 R2 環境變數（目前 shell）：
+
+```powershell
+. .\scripts\set-r2-env.ps1 -AccessKeyId "<32-char-key>" -SecretAccessKey "<64-char-secret>"
+```
 
 ## 部署注意事項（GitHub Actions / GitHub Pages）
 
