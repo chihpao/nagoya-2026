@@ -22,6 +22,7 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 import boto3
+from botocore.exceptions import ClientError
 from PIL import Image, ImageOps, UnidentifiedImageError
 from pillow_heif import register_heif_opener
 
@@ -152,6 +153,17 @@ def create_r2_client() -> Tuple[object, str, str]:
     if missing:
         raise ValueError(f"Missing required env vars: {', '.join(missing)}")
 
+    # Cloudflare R2 S3 credentials usually have fixed lengths:
+    # Access Key ID: 32 chars, Secret Access Key: 64 chars.
+    # This catches the common mistake of swapping these two values.
+    if len(access_key) != 32 or len(secret_key) != 64:
+        raise ValueError(
+            "Invalid R2 credential length. "
+            f"R2_ACCESS_KEY_ID={len(access_key)} chars (expected 32), "
+            f"R2_SECRET_ACCESS_KEY={len(secret_key)} chars (expected 64). "
+            "You may have swapped Access Key ID and Secret Access Key."
+        )
+
     client = boto3.client(
         "s3",
         endpoint_url=endpoint,
@@ -162,9 +174,34 @@ def create_r2_client() -> Tuple[object, str, str]:
     return client, bucket, public_url.rstrip("/")
 
 
-def upload_files(client, bucket: str, output_and_key: List[Tuple[Path, str]]) -> None:
+def object_exists(client, bucket: str, key: str) -> bool:
+    try:
+        client.head_object(Bucket=bucket, Key=key)
+        return True
+    except ClientError as exc:
+        status = exc.response.get("ResponseMetadata", {}).get("HTTPStatusCode")
+        code = exc.response.get("Error", {}).get("Code")
+        if status == 404 or code in {"404", "NoSuchKey", "NotFound"}:
+            return False
+        raise
+
+
+def upload_files(
+    client,
+    bucket: str,
+    output_and_key: List[Tuple[Path, str]],
+    skip_upload_existing: bool = False,
+) -> Tuple[int, int]:
     total = len(output_and_key)
+    uploaded = 0
+    skipped = 0
     for index, (output_file, key) in enumerate(output_and_key, start=1):
+        if skip_upload_existing and object_exists(client, bucket, key):
+            skipped += 1
+            if index % 100 == 0 or index == total:
+                print(f"[UPLOAD {index}/{total}] skip exists: {key}")
+            continue
+
         content_type = mimetypes.guess_type(output_file.name)[0] or "application/octet-stream"
         client.upload_file(
             str(output_file),
@@ -175,9 +212,11 @@ def upload_files(client, bucket: str, output_and_key: List[Tuple[Path, str]]) ->
                 "CacheControl": "public, max-age=31536000, immutable",
             },
         )
+        uploaded += 1
 
         if index % 100 == 0 or index == total:
             print(f"[UPLOAD {index}/{total}] {key}")
+    return uploaded, skipped
 
 
 def write_photos_json(path: Path, records: List[PhotoRecord]) -> None:
@@ -280,7 +319,12 @@ def main() -> int:
     uploaded = False
     if args.upload:
         client, bucket, public_url = create_r2_client()
-        upload_files(client, bucket, [(item[1], item[2]) for item in converted_items])
+        uploaded_count, skipped_upload_count = upload_files(
+            client,
+            bucket,
+            [(item[1], item[2]) for item in converted_items],
+            skip_upload_existing=args.skip_existing,
+        )
         for record in records:
             record.url = f"{public_url}/{record.key}"
         uploaded = True
@@ -296,6 +340,9 @@ def main() -> int:
     print(f"[OK] Total converted size: {total_size / (1024 * 1024):.2f} MB")
     print(f"[OK] photos.json: {photos_json_path}")
     print(f"[OK] Uploaded: {'yes' if uploaded else 'no'}")
+    if args.upload:
+        print(f"[OK] Uploaded objects now: {uploaded_count}")
+        print(f"[OK] Skipped existing objects: {skipped_upload_count}")
     if args.delete_originals:
         print(f"[OK] Original files deleted: {len(converted_items)}")
 
