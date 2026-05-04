@@ -5,6 +5,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>名古屋 2026 · 旅程</title>
+  <meta name="description" content="2026 名古屋七天旅行紀錄——像闖關一樣把城市玩到滿。包含 3D 互動首屏、全版圖片旅程、超過千張照片相簿。" />
+  <meta property="og:title" content="名古屋 2026 · 七天旅行紀錄" />
+  <meta property="og:description" content="3D 互動首屏 + 全版圖片旅程 + 超過千張照片相簿" />
+  <meta property="og:type" content="website" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link
@@ -67,10 +71,10 @@
     }
 
     .top-nav {
-      background: rgba(255, 249, 232, 0.9);
+      background: rgba(255, 249, 232, 0.88);
       border-bottom: 3px solid var(--line);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(14px) saturate(1.8);
+      -webkit-backdrop-filter: blur(14px) saturate(1.8);
       transition: transform 260ms ease;
     }
 
@@ -593,10 +597,16 @@
       position: absolute;
       top: 0;
       right: 0;
-      width: 170px;
-      height: 170px;
+      width: 200px;
+      height: 200px;
       background: radial-gradient(circle at center, rgba(14, 165, 233, 0.32) 0%, rgba(14, 165, 233, 0) 68%);
       pointer-events: none;
+      animation: breathe-glow 4s ease-in-out infinite;
+    }
+
+    @keyframes breathe-glow {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.15); }
     }
 
     @media (min-width: 768px) {
@@ -735,9 +745,10 @@
       width: 82px;
       height: 22px;
       border-radius: 999px;
-      background: rgba(239, 68, 68, 0.94);
+      background: repeating-linear-gradient(135deg, rgba(239,68,68,0.92) 0px, rgba(239,68,68,0.92) 3px, rgba(252,165,165,0.7) 3px, rgba(252,165,165,0.7) 6px);
       border: 2px solid #7f1d1d;
       transform: rotate(-9deg);
+      box-shadow: 0 2px 6px rgba(127,29,29,0.2);
     }
 
     @media (min-width: 768px) {
@@ -900,10 +911,44 @@
       border-radius: 999px;
       border: 2px solid #f7e4ba;
     }
+
+    /* ── Scroll Progress ── */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      z-index: 50;
+      background: linear-gradient(90deg, #ef4444, #f97316, #f59e0b);
+      transition: width 80ms linear;
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* ── Home card image fade ── */
+    .home-card img {
+      transition: opacity 400ms ease, transform 320ms ease;
+    }
+    .home-card:hover img {
+      transform: scale(1.04);
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      border-top: 3px solid var(--line);
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 2.5rem 1rem;
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .site-footer a { color: #ef4444; }
+    .footer-brand { font-family: 'Amatic SC', cursive; font-size: 2.2rem; color: #fff; }
   </style>
 </head>
 
 <body class="font-sans antialiased selection:bg-sky-900 selection:text-white">
+  <div id="scroll-progress" class="scroll-progress" style="width:0%"></div>
   <nav id="navbar" class="top-nav fixed top-0 left-0 w-full z-40 px-4 py-3 md:px-6 md:py-4">
     <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
       <a href="#top" class="brand-mark font-display text-3xl md:text-5xl text-slate-900 leading-none">Nagoya 2026</a>
@@ -921,7 +966,7 @@
           <canvas id="world-canvas" aria-label="3D 互動首屏"></canvas>
           <div id="world-fallback" class="world-fallback" role="status" aria-live="polite">
             <div class="world-panel">
-              <p class="text-xs font-black tracking-[0.15em] uppercase text-slate-500">3D-Lite</p>
+              <p class="text-xs font-black tracking-[0.15em] text-slate-500">互動首屏</p>
               <p class="mt-2 text-xl md:text-2xl font-black text-slate-900">你的瀏覽器目前無法顯示 3D 場景</p>
               <p class="mt-2 text-sm font-bold text-slate-600">可直接繼續往下瀏覽旅程與相簿，不影響主要內容。</p>
             </div>
@@ -931,7 +976,7 @@
             <button id="world-ui-toggle" type="button" class="world-ui-toggle" aria-controls="world-ui-panel" aria-expanded="false">顯示控制</button>
             <div class="world-panel">
               <div id="world-ui-panel">
-              <p class="text-xs font-black tracking-[0.15em] uppercase text-slate-500">Three.js 3D-Lite 首屏</p>
+              <p class="text-xs font-black tracking-[0.15em] text-slate-500">3D 旅程控制</p>
               <div class="world-actions">
                 <button id="world-reset" type="button" class="world-btn">重置車輛</button>
                 <button id="world-auto-jump-toggle" type="button" class="world-btn">自動跳轉：開</button>
@@ -966,8 +1011,8 @@
     <div class="hero-intro">
       <div class="max-w-6xl mx-auto intro-shell reveal">
         <div class="flex flex-wrap items-center justify-between gap-4">
-          <span class="stamp">Roadbook · 2026</span>
-          <span class="stamp">7 Days / 1 City / 1 Team</span>
+          <span class="stamp">旅程手冊 · 2026</span>
+          <span class="stamp">七天 · 一座城市</span>
         </div>
 
         <h1 class="display-title mt-5">名古屋 2026</h1>
@@ -975,19 +1020,19 @@
 
         <div class="mt-6 control-grid">
           <div class="control-chip">
-            <b>MODE</b>
+            <b>模式</b>
             <span>旅程地圖</span>
           </div>
           <div class="control-chip">
-            <b>CHECKPOINT</b>
-            <span>Day 1 - Day 7</span>
+            <b>站點</b>
+            <span>第 1-7 天</span>
           </div>
           <div class="control-chip">
-            <b>GALLERY</b>
+            <b>相簿</b>
             <span>獨立相簿頁</span>
           </div>
           <div class="control-chip">
-            <b>STATUS</b>
+            <b>狀態</b>
             <span>完成紀錄</span>
           </div>
         </div>
@@ -1007,7 +1052,7 @@
       </div>
       <div class="max-w-6xl mx-auto px-5 md:px-8 day-shell">
         <article class="day-story reveal" data-day="1" data-tilt>
-          <p class="day-badge">Day 1 · 2026.04.01</p>
+          <p class="day-badge">第 1 天 · 2026.04.01</p>
           <h2 class="day-title mt-3">抵達名古屋</h2>
           <p class="mt-3 text-sm md:text-lg font-bold text-slate-600 leading-relaxed">桃園機場喝星巴克、抵達名古屋、居酒屋。</p>
           <a href="./album.html?day=1#album" class="story-link mt-5 text-sm md:text-base">進入第 1 天相簿 <span aria-hidden="true">→</span></a>
@@ -1021,7 +1066,7 @@
       </div>
       <div class="max-w-6xl mx-auto px-5 md:px-8 day-shell">
         <article class="day-story alt reveal" data-day="2" data-tilt>
-          <p class="day-badge">Day 2 · 2026.04.02</p>
+          <p class="day-badge">第 2 天 · 2026.04.02</p>
           <h2 class="day-title mt-3">榮區與夜櫻</h2>
           <p class="mt-3 text-sm md:text-lg font-bold text-slate-600 leading-relaxed">榮區逛街、神奇寶貝中心、鰻魚飯、名古屋城、夜櫻。</p>
           <a href="./album.html?day=2#album" class="story-link mt-5 text-sm md:text-base">進入第 2 天相簿 <span aria-hidden="true">→</span></a>
@@ -1035,7 +1080,7 @@
       </div>
       <div class="max-w-6xl mx-auto px-5 md:px-8 day-shell">
         <article class="day-story reveal" data-day="3" data-tilt>
-          <p class="day-badge">Day 3 · 2026.04.03</p>
+          <p class="day-badge">第 3 天 · 2026.04.03</p>
           <h2 class="day-title mt-3">山景與夜景</h2>
           <p class="mt-3 text-sm md:text-lg font-bold text-slate-600 leading-relaxed">飛驒山、合掌村、大採購、中部電力塔，宵夜拉麵收尾。</p>
           <a href="./album.html?day=3#album" class="story-link mt-5 text-sm md:text-base">進入第 3 天相簿 <span aria-hidden="true">→</span></a>
@@ -1049,7 +1094,7 @@
       </div>
       <div class="max-w-6xl mx-auto px-5 md:px-8 day-shell">
         <article class="day-story alt reveal" data-day="4" data-tilt>
-          <p class="day-badge">Day 4 · 2026.04.04</p>
+          <p class="day-badge">第 4 天 · 2026.04.04</p>
           <h2 class="day-title mt-3">大須散策</h2>
           <p class="mt-3 text-sm md:text-lg font-bold text-slate-600 leading-relaxed">定食早餐、熱田神宮、大須商店街、太鼓表演與夜晚小酌。</p>
           <a href="./album.html?day=4#album" class="story-link mt-5 text-sm md:text-base">進入第 4 天相簿 <span aria-hidden="true">→</span></a>
@@ -1063,7 +1108,7 @@
       </div>
       <div class="max-w-6xl mx-auto px-5 md:px-8 day-shell">
         <article class="day-story reveal" data-day="5" data-tilt>
-          <p class="day-badge">Day 5 · 2026.04.05</p>
+          <p class="day-badge">第 5 天 · 2026.04.05</p>
           <h2 class="day-title mt-3">犬山祭日</h2>
           <p class="mt-3 text-sm md:text-lg font-bold text-slate-600 leading-relaxed">犬山城與祭典、神社祈福、商店街散步，晚上吃台灣滷肉飯。</p>
           <a href="./album.html?day=5#album" class="story-link mt-5 text-sm md:text-base">進入第 5 天相簿 <span aria-hidden="true">→</span></a>
@@ -1077,7 +1122,7 @@
       </div>
       <div class="max-w-6xl mx-auto px-5 md:px-8 day-shell">
         <article class="day-story alt reveal" data-day="6" data-tilt>
-          <p class="day-badge">Day 6 · 2026.04.06</p>
+          <p class="day-badge">第 6 天 · 2026.04.06</p>
           <h2 class="day-title mt-3">市區爆走</h2>
           <p class="mt-3 text-sm md:text-lg font-bold text-slate-600 leading-relaxed">吉卜力商店、女僕咖啡、圓頓寺商店街、綠洲21、卡拉 OK。</p>
           <a href="./album.html?day=6#album" class="story-link mt-5 text-sm md:text-base">進入第 6 天相簿 <span aria-hidden="true">→</span></a>
@@ -1091,7 +1136,7 @@
       </div>
       <div class="max-w-6xl mx-auto px-5 md:px-8 day-shell">
         <article class="day-story reveal" data-day="7" data-tilt>
-          <p class="day-badge">Day 7 · 2026.04.07</p>
+          <p class="day-badge">第 7 天 · 2026.04.07</p>
           <h2 class="day-title mt-3">回台灣</h2>
           <p class="mt-3 text-sm md:text-lg font-bold text-slate-600 leading-relaxed">中部國際機場早餐、返台，晚上開箱戰利品。</p>
           <a href="./album.html?day=7#album" class="story-link mt-5 text-sm md:text-base">進入第 7 天相簿 <span aria-hidden="true">→</span></a>
@@ -1104,7 +1149,7 @@
     <div class="max-w-6xl mx-auto px-5 md:px-8">
       <div class="entry-head reveal flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
         <div>
-          <p class="day-badge">Album Entry</p>
+          <p class="day-badge">相簿入口</p>
           <h2 class="mt-3 text-4xl md:text-6xl font-black leading-tight text-slate-900">相簿入口</h2>
           <p class="mt-3 text-sm md:text-lg font-bold text-slate-600">直接點任一天，跳到獨立相簿頁，不再長距離捲動。</p>
         </div>
@@ -1114,6 +1159,13 @@
       <div id="home-day-grid" class="mt-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"></div>
     </div>
   </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p class="footer-brand">Nagoya 2026</p>
+    <p class="mt-2">2026.04.01 — 2026.04.07 · 七天旅行紀錄</p>
+    <p class="mt-1" style="font-size:0.72rem;opacity:0.6">以照片寫日記，用程式碼蓋紀念館。</p>
+  </footer>
 
   <button id="back-top" class="back-top hidden-btn fixed bottom-7 right-7 z-30 w-12 h-12 rounded-full text-white" aria-label="回到頂部">
     <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1323,13 +1375,13 @@
       };
 
       const checkpointMeta = [
-        { day: 1, name: 'Day 1 抵達', sectionId: 'day-1', pos: new THREE.Vector3(-21, 0, 13), color: '#dc2626' },
-        { day: 2, name: 'Day 2 夜櫻', sectionId: 'day-2', pos: new THREE.Vector3(-2, 0, 23), color: '#c2410c' },
-        { day: 3, name: 'Day 3 山景', sectionId: 'day-3', pos: new THREE.Vector3(16, 0, 12), color: '#1d4ed8' },
-        { day: 4, name: 'Day 4 大須', sectionId: 'day-4', pos: new THREE.Vector3(23, 0, -10), color: '#9333ea' },
-        { day: 5, name: 'Day 5 犬山', sectionId: 'day-5', pos: new THREE.Vector3(10, 0, -22), color: '#be123c' },
-        { day: 6, name: 'Day 6 爆走', sectionId: 'day-6', pos: new THREE.Vector3(-10, 0, -20), color: '#0f766e' },
-        { day: 7, name: 'Day 7 回程', sectionId: 'day-7', pos: new THREE.Vector3(-25, 0, -6), color: '#b45309' }
+        { day: 1, name: '第 1 天 抵達', sectionId: 'day-1', pos: new THREE.Vector3(-21, 0, 13), color: '#dc2626' },
+        { day: 2, name: '第 2 天 夜櫻', sectionId: 'day-2', pos: new THREE.Vector3(-2, 0, 23), color: '#c2410c' },
+        { day: 3, name: '第 3 天 山景', sectionId: 'day-3', pos: new THREE.Vector3(16, 0, 12), color: '#1d4ed8' },
+        { day: 4, name: '第 4 天 大須', sectionId: 'day-4', pos: new THREE.Vector3(23, 0, -10), color: '#9333ea' },
+        { day: 5, name: '第 5 天 犬山', sectionId: 'day-5', pos: new THREE.Vector3(10, 0, -22), color: '#be123c' },
+        { day: 6, name: '第 6 天 爆走', sectionId: 'day-6', pos: new THREE.Vector3(-10, 0, -20), color: '#0f766e' },
+        { day: 7, name: '第 7 天 回程', sectionId: 'day-7', pos: new THREE.Vector3(-25, 0, -6), color: '#b45309' }
       ];
 
       const checkpointMeshes = [];
@@ -1356,7 +1408,7 @@
         world.add(ring);
         base.userData.ring = ring;
 
-        const sprite = createLabelSprite(`Day ${meta.day}`, meta.color);
+        const sprite = createLabelSprite(`第 ${meta.day} 天`, meta.color);
         if (sprite) {
           sprite.position.copy(meta.pos);
           sprite.position.y = 2.95;
@@ -1897,11 +1949,11 @@
                 <img src="${third}" alt="第${meta.day}天精選3" class="h-[87px] w-full object-cover" loading="lazy" />
               </div>
               <div class="absolute bottom-2 left-2 z-10">
-                <span class="home-count">DAY ${meta.day}</span>
+                <span class="home-count">第 ${meta.day} 天</span>
               </div>
             </div>
             <div class="px-5 py-5">
-              <p class="text-xs tracking-[0.18em] uppercase font-black text-slate-500">Checkpoint ${meta.day}</p>
+              <p class="text-xs tracking-[0.18em] font-black text-slate-500">站點 ${meta.day}</p>
               <p class="text-2xl md:text-3xl mt-1 font-black text-slate-900">第 ${meta.day} 天</p>
               <p class="text-sm mt-2 font-bold text-slate-600">${meta.date} · ${photos.length} 張照片</p>
             </div>
@@ -1960,6 +2012,11 @@
 
     window.addEventListener('scroll', () => {
       const currentScrollY = window.scrollY;
+      const docH = document.documentElement.scrollHeight - window.innerHeight;
+      const progressEl = document.getElementById('scroll-progress');
+      if (progressEl && docH > 0) {
+        progressEl.style.width = `${Math.round((currentScrollY / docH) * 100)}%`;
+      }
 
       backTop.classList.toggle('hidden-btn', currentScrollY <= window.innerHeight * 0.4);
 

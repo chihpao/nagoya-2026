@@ -11,8 +11,11 @@
   - Navbar `相簿` 直接導向獨立相簿頁 `album.html#album`
 - 相簿頁: `album.html`
   - Day 1-7 分頁切換
-  - 批次載入（Load More）
+  - 手機上一天/下一天控制、active day 自動置中
+  - 舒適/密集檢視切換與已顯示/總數進度
+  - 批次載入（載入後定位到新增照片）
   - Lightbox 鍵盤操作 (`ArrowLeft` / `ArrowRight` / `Escape`)
+  - Lightbox 手機左右滑動切圖
 - 相簿資料來源:
   - 主來源: `data/photos.json`（含 R2 URL）
   - 次來源: `data/album.manifest.js`（Day 1-7 URL 清單 fallback）
@@ -43,6 +46,20 @@
   - 靠近站點時可自動 smooth scroll 到對應 Day 區塊
 - 退化策略:
   - WebGL 不可用時顯示 fallback，不影響後續旅程與相簿瀏覽
+
+## 相簿 UX 規格（album）
+
+- 手機優先:
+  - 保留 Day 1-7 分頁，但必須同時提供上一天/下一天按鈕，避免只靠橫向捲動。
+  - 切換天數後，active day tab 需自動置中或保持可見。
+  - 手機預設使用「舒適」模式，縮圖較大、點擊面積較明確；可切換「密集」模式快速掃圖。
+- 大量照片:
+  - 保留批次載入，不一次渲染全部照片。
+  - 顯示已載入張數與總張數。
+  - 點擊載入更多後，要把視線帶到新載入的第一張照片。
+- Lightbox:
+  - 桌面保留方向鍵與 Escape。
+  - 手機保留可觸及的關閉按鈕，並支援左右滑動切圖。
 
 ## 本機預覽
 
@@ -88,6 +105,7 @@ python scripts/migrate_photos_to_r2.py --upload --delete-originals
 補充:
 - 預設已包含 `jpg/jpeg/png/gif/heic/heif`
 - `--skip-existing` 會同時跳過「已轉檔」與「R2 已存在 key」的檔案
+- 目前 `data/photos.json` 是相簿主資料，`data/album.manifest.js` 是靜態 fallback；兩者都應維持 Day 1-7 可用。
 
 ## 手動工具
 

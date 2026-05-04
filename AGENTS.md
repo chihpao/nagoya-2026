@@ -53,6 +53,16 @@ Any AI or contributor modifying this repo must follow these rules unless the use
    - `ArrowLeft`: previous
    - `ArrowRight`: next
    - `Escape`: close
+6. Keep mobile album controls usable without desktop precision:
+   - Previous/next day buttons
+   - Active day tab visible/centered after switching
+   - Clear visible/total photo progress
+7. Keep album view density controls:
+   - Comfortable mode for larger mobile thumbnails
+   - Dense mode for fast scanning
+8. Keep touch support in the lightbox:
+   - Horizontal swipe changes photos
+   - Close button remains reachable on mobile
 
 ## Navbar Requirements (Must Keep)
 
@@ -78,5 +88,38 @@ Any AI or contributor modifying this repo must follow these rules unless the use
 3. UI is Traditional Chinese.
 4. `index.html` still has 3D-lite section with fallback mode and usable controls on desktop/mobile.
 5. Home still has Day 1-7 preview cards and each day can open the dedicated album page.
-6. Album page still supports Day 1-7 tabs + load more + lightbox keyboard control.
-7. Navbar links and behavior still work on both pages.
+6. Album page still supports Day 1-7 tabs + mobile previous/next day controls + load more.
+7. Album page still supports comfortable/dense gallery modes and visible photo progress.
+8. Lightbox still supports keyboard control and mobile swipe control.
+9. Navbar links and behavior still work on both pages.
+10. Footer exists on both pages with correct content.
+
+## Footer Requirements (Must Keep)
+
+1. Both pages must have a footer with the site brand, date range, and tagline.
+2. Footer uses dark background (`#0f172a`) with light text for contrast.
+3. Footer must respect `safe-area-inset-bottom` on mobile.
+4. Footer must not obstruct the mobile bottom day nav on album page.
+
+## SEO & Meta Requirements
+
+1. Both pages must include `<meta name="description">` with relevant content.
+2. Both pages must include Open Graph tags (`og:title`, `og:description`, `og:type`).
+3. Each page must have a unique, descriptive `<title>`.
+4. Use semantic HTML5 elements (`<header>`, `<main>`, `<footer>`, `<nav>`, `<section>`, `<article>`).
+5. Each page has exactly one `<h1>`.
+
+## Accessibility Baseline
+
+1. All interactive elements must have minimum 44×44px touch targets on mobile.
+2. All images must have `alt` attributes.
+3. Lightbox must trap focus when open and restore focus on close.
+4. `prefers-reduced-motion: reduce` must disable all animations and transitions.
+5. ARIA attributes must be present on dynamic UI (tabs, dialogs, live regions).
+
+## Performance Budget
+
+1. Keep `loading="lazy"` on all gallery thumbnails.
+2. Keep batch rendering with `BATCH_SIZE` — never render all photos at once.
+3. 3D scene should not exceed ~40 geometry objects without clear value.
+4. Photos served from R2 CDN in WebP format for bandwidth efficiency.

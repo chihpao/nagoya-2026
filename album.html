@@ -5,6 +5,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>名古屋 2026 · 相簿</title>
+  <meta name="description" content="2026 名古屋七天旅行相簿——超過 1000 張精選照片，從名古屋城到犬山祭，完整收錄每一天的精彩瞬間。" />
+  <meta property="og:title" content="名古屋 2026 · 相簿" />
+  <meta property="og:description" content="七天旅行的完整照片控制台，分天瀏覽、分批載入。" />
+  <meta property="og:type" content="website" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link
@@ -73,6 +77,13 @@
 
     .top-nav.hidden-nav {
       transform: translateY(-100%);
+    }
+
+    .brand-mark {
+      max-width: 58vw;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .nav-shell {
@@ -204,24 +215,31 @@
     }
 
     .album-layout {
-      border: 3px solid var(--line);
-      border-radius: 30px;
-      background: #fffdf7;
-      box-shadow: 0 13px 0 rgba(30, 58, 138, 0.28);
-      padding: 1rem;
+      padding: 0;
     }
 
     @media (min-width: 768px) {
       .album-layout {
-        padding: 1.8rem;
+        padding: 0;
       }
+    }
+
+    main#album {
+      scroll-margin-top: 6rem;
     }
 
     .album-summary {
       border: 3px solid var(--line);
-      background: #f8f6ff;
+      background: #fffdf7;
       border-radius: 22px;
       padding: 1rem;
+      box-shadow: 0 9px 0 rgba(30, 58, 138, 0.22);
+    }
+
+    @media (min-width: 768px) {
+      .album-summary {
+        padding: 1.35rem 1.5rem;
+      }
     }
 
     .day-chip {
@@ -237,6 +255,70 @@
       color: #334155;
     }
 
+    .album-command-bar {
+      position: sticky;
+      top: 4.9rem;
+      z-index: 25;
+      border: 3px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 253, 247, 0.94);
+      box-shadow: 0 9px 0 rgba(30, 58, 138, 0.2);
+      padding: 0.85rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .mobile-day-switch {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      gap: 0.55rem;
+      align-items: center;
+    }
+
+    .day-step-btn {
+      min-height: 44px;
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--line);
+      font-size: 0.82rem;
+      font-weight: 900;
+      box-shadow: 0 4px 0 rgba(30, 58, 138, 0.18);
+      transition: transform 140ms ease, background 140ms ease, color 140ms ease, opacity 140ms ease;
+    }
+
+    .day-step-btn:hover,
+    .day-step-btn:focus-visible {
+      transform: translateY(-1px);
+      background: var(--line);
+      color: #fff;
+    }
+
+    .day-step-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .mobile-day-readout {
+      min-width: 84px;
+      text-align: center;
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    .mobile-day-readout small {
+      display: block;
+      margin-top: 0.1rem;
+      font-size: 0.72rem;
+      color: #64748b;
+    }
+
+    .day-tab-rail {
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 0.75rem;
+    }
+
     .day-tab {
       border: 3px solid var(--line);
       border-radius: 999px;
@@ -246,6 +328,8 @@
       white-space: nowrap;
       box-shadow: 0 4px 0 rgba(30, 58, 138, 0.17);
       transition: transform 150ms ease, background 150ms ease, color 150ms ease;
+      scroll-snap-align: center;
+      min-height: 46px;
     }
 
     .day-tab.active,
@@ -256,6 +340,95 @@
       transform: translateY(-1px);
     }
 
+    .album-view-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.8rem;
+    }
+
+    .album-progress {
+      font-size: 0.82rem;
+      font-weight: 900;
+      color: #475569;
+    }
+
+    .view-toggle {
+      display: inline-grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      padding: 0.2rem;
+      width: 100%;
+      max-width: 240px;
+    }
+
+    .view-toggle button {
+      border-radius: 999px;
+      min-height: 38px;
+      font-weight: 900;
+      color: #475569;
+      transition: background 140ms ease, color 140ms ease, transform 140ms ease;
+    }
+
+    .view-toggle button.active {
+      background: var(--line);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    @media (min-width: 768px) {
+      .album-command-bar {
+        top: 5.6rem;
+        padding: 1rem;
+      }
+
+      .mobile-day-switch {
+        display: none;
+      }
+
+      .album-view-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .album-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .album-grid.comfy {
+      grid-template-columns: 1fr;
+    }
+
+    .album-grid.dense {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.72rem;
+    }
+
+    @media (min-width: 640px) {
+      .album-grid.comfy {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .album-grid.dense {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .album-grid.comfy {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .album-grid.dense {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+    }
+
     .album-thumb {
       border: 3px solid var(--line);
       border-radius: 16px;
@@ -263,6 +436,31 @@
       overflow: hidden;
       box-shadow: 0 7px 0 rgba(30, 58, 138, 0.22);
       transition: transform 180ms ease;
+    }
+
+    .album-thumb img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      display: block;
+    }
+
+    .album-grid.dense .album-thumb img {
+      aspect-ratio: 1 / 1;
+    }
+
+    .album-thumb-index {
+      position: absolute;
+      left: 0.55rem;
+      bottom: 0.55rem;
+      z-index: 12;
+      border: 2px solid #fff;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.78);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 900;
+      padding: 0.24rem 0.55rem;
     }
 
     .album-thumb:hover {
@@ -293,6 +491,64 @@
     .lightbox-btn:focus-visible {
       transform: scale(1.05);
       background: rgba(255, 255, 255, 0.2);
+    }
+
+    .lightbox-caption {
+      border: 2px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.54);
+      padding: 0.55rem 0.9rem;
+      text-align: center;
+    }
+
+    .lightbox-hint {
+      display: block;
+      margin-top: 0.12rem;
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.62);
+      font-weight: 800;
+    }
+
+    @media (max-width: 767px) {
+      .hero-photo img {
+        height: min(48vh, 420px);
+      }
+
+      .album-head {
+        padding: 1.15rem 0.9rem 1.8rem;
+      }
+
+      .head-shell {
+        border-radius: 22px;
+        padding: 1rem;
+      }
+
+      .display-title {
+        font-size: clamp(2.6rem, 18vw, 4.4rem);
+      }
+
+      main#album {
+        padding-left: 0.9rem;
+        padding-right: 0.9rem;
+        padding-top: 1.4rem;
+      }
+
+      .album-thumb {
+        border-radius: 18px;
+      }
+
+      .album-grid.comfy .album-thumb {
+        border-radius: 20px;
+      }
+
+      .lightbox-shell {
+        padding: 0.75rem;
+      }
+
+      .lightbox-btn {
+        width: 3rem;
+        height: 3rem;
+      }
     }
 
     .hide-scrollbar::-webkit-scrollbar {
@@ -352,13 +608,192 @@
       border-radius: 999px;
       border: 2px solid #f6e2b8;
     }
+
+    /* ── Mobile Bottom Day Nav ── */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 35;
+      padding: 0 0.65rem calc(0.65rem + env(safe-area-inset-bottom));
+      background: linear-gradient(180deg, rgba(255,243,214,0) 0%, rgba(255,238,200,0.97) 18%);
+      pointer-events: none;
+    }
+    .mobile-bottom-nav > * { pointer-events: auto; }
+
+    .bottom-progress-track {
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(30,58,138,0.12);
+      margin-bottom: 0.45rem;
+      overflow: hidden;
+    }
+    .bottom-progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #4ade80, #22c55e);
+      transition: width 320ms ease;
+    }
+
+    .bottom-day-pills {
+      display: flex;
+      gap: 0.35rem;
+      justify-content: center;
+      padding: 0.55rem 0.25rem;
+      border: 3px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255,253,247,0.96);
+      box-shadow: 0 -4px 18px rgba(30,58,138,0.10), 0 6px 0 rgba(30,58,138,0.18);
+      backdrop-filter: blur(14px) saturate(1.6);
+      -webkit-backdrop-filter: blur(14px) saturate(1.6);
+    }
+    .bottom-day-pill {
+      flex: 1;
+      min-height: 42px;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      color: #334155;
+      font-size: 0.72rem;
+      font-weight: 900;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.08rem;
+      transition: transform 140ms ease, background 140ms ease, color 140ms ease, box-shadow 140ms ease;
+    }
+    .bottom-day-pill.active {
+      background: var(--line);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 0 rgba(30,58,138,0.35);
+    }
+    .bottom-day-pill span { font-size: 0.62rem; opacity: 0.7; }
+    .bottom-day-pill.active span { opacity: 1; }
+
+    @media (max-width: 767px) {
+      .mobile-bottom-nav { display: block; }
+      .mobile-day-switch { display: none !important; }
+      main#album { padding-bottom: 7rem; }
+      .back-top { bottom: 7.5rem; }
+
+      /* Comfy = 2-col masonry-like */
+      .album-grid.comfy {
+        display: columns;
+        columns: 2;
+        column-gap: 0.65rem;
+        gap: 0;
+      }
+      .album-grid.comfy { display: block; columns: 2; column-gap: 0.65rem; }
+      .album-grid.comfy .album-thumb {
+        break-inside: avoid;
+        margin-bottom: 0.65rem;
+        display: inline-block;
+        width: 100%;
+      }
+      .album-grid.comfy .album-thumb img {
+        aspect-ratio: auto;
+        height: auto;
+      }
+
+      /* Lightbox fullscreen mobile */
+      .lightbox-shell { padding: 0; }
+      .lightbox-shell figure { gap: 0; }
+      #lightbox-image {
+        max-width: 100vw;
+        max-height: calc(100vh - 6rem);
+        border-radius: 0;
+      }
+      .lightbox-caption {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-radius: 0;
+        border: none;
+        border-top: 2px solid rgba(255,255,255,0.15);
+        padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+        background: rgba(2,6,23,0.85);
+        backdrop-filter: blur(12px);
+      }
+      #lightbox-close {
+        top: calc(0.5rem + env(safe-area-inset-top));
+        right: 0.5rem;
+        width: 3.2rem;
+        height: 3.2rem;
+        background: rgba(0,0,0,0.5);
+        border: 2px solid rgba(255,255,255,0.3);
+      }
+    }
+
+    /* ── Skeleton & Fade-in ── */
+    @keyframes skeleton-pulse {
+      0%, 100% { opacity: 0.45; }
+      50% { opacity: 0.8; }
+    }
+    .album-thumb.loading { background: linear-gradient(110deg, #e2e8f0 30%, #f1f5f9 50%, #e2e8f0 70%); background-size: 200% 100%; animation: skeleton-pulse 1.4s ease infinite; }
+    .album-thumb img { opacity: 0; transition: opacity 380ms ease; }
+    .album-thumb img.loaded { opacity: 1; }
+
+    /* ── Floating Counter ── */
+    .floating-counter {
+      position: fixed;
+      right: 1rem;
+      bottom: 8.2rem;
+      z-index: 28;
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,253,247,0.92);
+      backdrop-filter: blur(8px);
+      padding: 0.3rem 0.7rem;
+      font-size: 0.72rem;
+      font-weight: 900;
+      color: #334155;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 260ms ease, transform 260ms ease;
+      pointer-events: none;
+      display: none;
+    }
+    .floating-counter.visible { opacity: 1; transform: translateY(0); }
+    @media (max-width: 767px) { .floating-counter { display: block; } }
+
+    /* ── Scroll Progress (top) ── */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      z-index: 50;
+      background: linear-gradient(90deg, #22c55e, #4ade80, #a3e635);
+      transition: width 80ms linear;
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      border-top: 3px solid var(--line);
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 2.5rem 1rem calc(2.5rem + env(safe-area-inset-bottom));
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .site-footer a { color: #4ade80; }
+    .footer-brand { font-family: 'Amatic SC', cursive; font-size: 2rem; color: #fff; }
   </style>
 </head>
 
 <body class="font-sans antialiased selection:bg-emerald-900 selection:text-white">
+  <div id="scroll-progress" class="scroll-progress" style="width:0%"></div>
+
   <nav id="navbar" class="top-nav fixed top-0 left-0 w-full z-40 px-4 py-3 md:px-6 md:py-4">
     <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
-      <a href="./index.html#top" class="font-display text-4xl md:text-5xl text-slate-900 leading-none">Nagoya 2026</a>
+      <a href="./index.html#top" class="brand-mark font-display text-4xl md:text-5xl text-slate-900 leading-none">Nagoya 2026</a>
       <div class="nav-shell flex items-center gap-1 md:gap-2 text-sm md:text-base">
         <a href="./index.html#journey" class="nav-link px-3 py-1.5 md:px-4 md:py-2">旅程</a>
         <a href="#album" class="nav-link active px-3 py-1.5 md:px-4 md:py-2">相簿</a>
@@ -374,8 +809,8 @@
     <div class="album-head">
       <div class="max-w-6xl mx-auto head-shell reveal">
         <div class="flex flex-wrap items-center justify-between gap-4">
-          <span class="stamp">Gallery Console</span>
-          <span class="stamp">Day 1 - Day 7</span>
+          <span class="stamp">相簿控制台</span>
+          <span class="stamp">第 1-7 天</span>
         </div>
         <h1 class="display-title mt-5">名古屋相簿</h1>
         <p class="mt-4 text-sm md:text-lg font-bold text-slate-600">分天切換、分批載入、鍵盤切圖。這裡是整趟旅程的照片控制台。</p>
@@ -388,24 +823,43 @@
   </header>
 
   <main id="album" class="max-w-6xl mx-auto px-5 md:px-8 py-10 md:py-14">
-    <section class="album-layout reveal">
+    <section class="album-layout">
       <div class="flex flex-col gap-5 md:gap-6">
         <div class="album-summary flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p id="album-day-chip" class="day-chip">Day 1</p>
+            <p id="album-day-chip" class="day-chip">第 1 天</p>
             <h2 id="album-title" class="mt-3 text-3xl md:text-5xl font-black text-slate-900">第 1 天相簿</h2>
             <p id="album-count" class="mt-2 text-sm md:text-base font-bold text-slate-600">0 張照片</p>
           </div>
           <a href="./index.html#album" class="ghost-btn px-5 py-2.5 text-sm md:text-base self-start md:self-auto">回首頁相簿入口</a>
         </div>
 
-        <div id="album-day-tabs" class="flex gap-2 md:gap-3 overflow-x-auto hide-scrollbar pb-1"></div>
+        <div class="album-command-bar">
+          <div class="mobile-day-switch" aria-label="手機天數切換">
+            <button id="album-prev-day" type="button" class="day-step-btn px-3">上一天</button>
+            <div class="mobile-day-readout" aria-live="polite">
+              <span id="mobile-day-label">第 1 天</span>
+              <small id="mobile-day-count">0 張</small>
+            </div>
+            <button id="album-next-day" type="button" class="day-step-btn px-3">下一天</button>
+          </div>
 
-        <div id="album-grid" class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5"></div>
+          <div id="album-day-tabs" class="day-tab-rail mt-3 md:mt-0 flex gap-2 md:gap-3 overflow-x-auto hide-scrollbar pb-1" role="tablist" aria-label="相簿天數"></div>
+
+          <div class="album-view-row">
+            <p id="album-progress" class="album-progress" aria-live="polite">已顯示 0 / 0 張</p>
+            <div class="view-toggle" role="group" aria-label="相簿檢視模式">
+              <button id="view-comfy" type="button" class="active" aria-pressed="true">舒適</button>
+              <button id="view-dense" type="button" aria-pressed="false">密集</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="album-grid" class="album-grid comfy"></div>
         <p id="album-empty" class="hidden text-center py-12 font-bold text-slate-500">這一天目前沒有照片。</p>
 
         <div class="text-center pt-2">
-          <button id="album-load-more" class="hidden jump-btn px-7 py-3 text-sm md:text-base">載入更多照片</button>
+          <button id="album-load-more" type="button" class="hidden jump-btn px-7 py-3 text-sm md:text-base">載入更多照片</button>
         </div>
       </div>
     </section>
@@ -429,15 +883,34 @@
     </button>
     <figure class="w-full h-full flex flex-col items-center justify-center gap-4 md:gap-5">
       <img id="lightbox-image" src="" alt="" class="max-w-full md:max-w-[94vw] max-h-[80vh] md:max-h-[82vh] object-contain rounded-lg shadow-2xl" />
-      <figcaption id="lightbox-meta" class="text-white/80 text-sm md:text-base tracking-wide font-bold"></figcaption>
+      <figcaption class="lightbox-caption">
+        <span id="lightbox-meta" class="text-white text-sm md:text-base tracking-wide font-bold"></span>
+        <span class="lightbox-hint">左右滑動或使用方向鍵切換</span>
+      </figcaption>
     </figure>
   </div>
+
+  <!-- Mobile Bottom Day Nav -->
+  <nav id="mobile-bottom-nav" class="mobile-bottom-nav" aria-label="手機天數導覽">
+    <div class="bottom-progress-track"><div id="bottom-progress-fill" class="bottom-progress-fill" style="width:0%"></div></div>
+    <div id="bottom-day-pills" class="bottom-day-pills"></div>
+  </nav>
+
+  <!-- Floating Photo Counter -->
+  <div id="floating-counter" class="floating-counter" aria-live="polite"></div>
 
   <button id="back-top" class="back-top hidden-btn fixed bottom-7 right-7 z-30 w-12 h-12 rounded-full text-white" aria-label="回到頂部">
     <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
     </svg>
   </button>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p class="footer-brand">Nagoya 2026</p>
+    <p class="mt-2">2026.04.01 — 2026.04.07 · 七天旅行紀錄</p>
+    <p class="mt-1" style="font-size:0.72rem;opacity:0.6">以照片寫日記，用程式碼蓋紀念館。</p>
+  </footer>
 
   <script src="./data/album.manifest.js"></script>
   <script>
@@ -471,6 +944,13 @@
     const albumEmpty = document.getElementById('album-empty');
     const albumLoadMore = document.getElementById('album-load-more');
     const jumpCurrentDay = document.getElementById('jump-current-day');
+    const albumPrevDay = document.getElementById('album-prev-day');
+    const albumNextDay = document.getElementById('album-next-day');
+    const mobileDayLabel = document.getElementById('mobile-day-label');
+    const mobileDayCount = document.getElementById('mobile-day-count');
+    const albumProgress = document.getElementById('album-progress');
+    const viewComfy = document.getElementById('view-comfy');
+    const viewDense = document.getElementById('view-dense');
     const lightboxShell = document.getElementById('lightbox-shell');
     const lightboxClose = document.getElementById('lightbox-close');
     const lightboxPrev = document.getElementById('lightbox-prev');
@@ -478,14 +958,24 @@
     const lightboxImage = document.getElementById('lightbox-image');
     const lightboxMeta = document.getElementById('lightbox-meta');
     const backTop = document.getElementById('back-top');
+    const scrollProgressEl = document.getElementById('scroll-progress');
+    const bottomNavEl = document.getElementById('mobile-bottom-nav');
+    const bottomPillsEl = document.getElementById('bottom-day-pills');
+    const bottomProgressFill = document.getElementById('bottom-progress-fill');
+    const floatingCounter = document.getElementById('floating-counter');
 
     const state = {
       albumData: {},
       currentDay: 1,
       visibleCount: BATCH_SIZE,
       lightboxIndex: 0,
+      viewMode: 'comfy',
+      lastFocusedPhoto: null,
+      touchStartX: 0,
+      touchStartY: 0,
       photoLookup: new Map(),
-      photosByDay: {}
+      photosByDay: {},
+      autoLoadObserver: null
     };
 
     function mergeUnique(items) {
@@ -631,18 +1121,39 @@
       const frag = document.createDocumentFragment();
       dayMeta.forEach((meta) => {
         const tab = document.createElement('button');
-        tab.className = `day-tab px-5 py-2.5 text-sm md:text-base ${meta.day === state.currentDay ? 'active' : ''}`;
+        const active = meta.day === state.currentDay;
+        tab.type = 'button';
+        tab.className = `day-tab px-5 py-2.5 text-sm md:text-base ${active ? 'active' : ''}`;
+        tab.setAttribute('role', 'tab');
+        tab.setAttribute('aria-selected', String(active));
+        tab.setAttribute('aria-controls', 'album-grid');
+        tab.dataset.day = String(meta.day);
         tab.textContent = `第 ${meta.day} 天`;
         tab.addEventListener('click', () => switchDay(meta.day));
         frag.appendChild(tab);
       });
       albumTabs.replaceChildren(frag);
+      centerActiveTab();
     }
 
     function updateHeader(total) {
-      albumDayChip.textContent = `Day ${state.currentDay}`;
+      const visible = Math.min(state.visibleCount, total);
+      albumDayChip.textContent = `第 ${state.currentDay} 天`;
       albumTitle.textContent = `第 ${state.currentDay} 天相簿`;
       albumCount.textContent = `${total} 張照片`;
+      mobileDayLabel.textContent = `第 ${state.currentDay} 天`;
+      mobileDayCount.textContent = `${total} 張`;
+      albumProgress.textContent = total ? `已顯示 ${visible} / ${total} 張` : '這一天目前沒有照片';
+      albumPrevDay.disabled = state.currentDay <= 1;
+      albumNextDay.disabled = state.currentDay >= 7;
+      // Sync bottom nav
+      if (bottomProgressFill && total) {
+        bottomProgressFill.style.width = `${Math.round((visible / total) * 100)}%`;
+      }
+      if (floatingCounter) {
+        floatingCounter.textContent = total ? `${visible} / ${total}` : '';
+      }
+      syncBottomPills();
     }
 
     function renderAlbumGrid() {
@@ -658,26 +1169,36 @@
       const frag = document.createDocumentFragment();
       visible.forEach((src, index) => {
         const item = document.createElement('button');
-        item.className = 'album-thumb group text-left relative';
+        item.type = 'button';
+        item.className = 'album-thumb group text-left relative loading';
+        item.dataset.photoIndex = String(index);
+        item.setAttribute('aria-label', `開啟第 ${day} 天第 ${index + 1} 張照片`);
         item.innerHTML = `
           <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors z-10"></div>
-          <img src="${src}" alt="第${day}天照片${index + 1}" class="w-full aspect-square object-cover" loading="lazy" />
+          <img src="${src}" alt="第${day}天照片${index + 1}" loading="lazy" decoding="async" />
+          <span class="album-thumb-index">第 ${index + 1} 張</span>
         `;
         const img = item.querySelector('img');
+        img.addEventListener('load', () => { img.classList.add('loaded'); item.classList.remove('loading'); });
         bindImageFallback(img, day);
         item.addEventListener('click', () => openLightbox(index));
         frag.appendChild(item);
       });
 
       albumGrid.appendChild(frag);
+      updateLoadMoreLabel(photos.length);
+      setupAutoLoad();
     }
 
-    function switchDay(day) {
+    function switchDay(day, options = {}) {
       state.currentDay = day;
       state.visibleCount = BATCH_SIZE;
       renderTabs();
       renderAlbumGrid();
       updateURLDay(day);
+      if (options.scroll) {
+        document.getElementById('album')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
 
     function updateLightbox() {
@@ -697,6 +1218,7 @@
 
     function openLightbox(index) {
       state.lightboxIndex = index;
+      state.lastFocusedPhoto = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       lightboxShell.classList.add('open');
       updateLightbox();
       syncBodyLock();
@@ -705,6 +1227,7 @@
     function closeLightbox() {
       lightboxShell.classList.remove('open');
       syncBodyLock();
+      state.lastFocusedPhoto?.focus?.();
     }
 
     function shiftLightbox(delta) {
@@ -714,6 +1237,33 @@
 
     function syncBodyLock() {
       document.body.style.overflow = lightboxShell.classList.contains('open') ? 'hidden' : '';
+    }
+
+    function centerActiveTab() {
+      const activeTab = albumTabs.querySelector('.day-tab.active');
+      activeTab?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+
+    function updateLoadMoreLabel(total) {
+      const remaining = Math.max(total - state.visibleCount, 0);
+      albumLoadMore.textContent = remaining > 0 ? `再載入 ${Math.min(BATCH_SIZE, remaining)} 張` : '已載入全部照片';
+    }
+
+    function focusPhoto(index) {
+      const target = albumGrid.querySelector(`[data-photo-index="${index}"]`);
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      window.setTimeout(() => target.focus({ preventScroll: true }), 260);
+    }
+
+    function setViewMode(mode) {
+      state.viewMode = mode === 'dense' ? 'dense' : 'comfy';
+      albumGrid.classList.toggle('dense', state.viewMode === 'dense');
+      albumGrid.classList.toggle('comfy', state.viewMode !== 'dense');
+      viewComfy.classList.toggle('active', state.viewMode === 'comfy');
+      viewDense.classList.toggle('active', state.viewMode === 'dense');
+      viewComfy.setAttribute('aria-pressed', String(state.viewMode === 'comfy'));
+      viewDense.setAttribute('aria-pressed', String(state.viewMode === 'dense'));
     }
 
     function initReveal() {
@@ -735,13 +1285,26 @@
     }
 
     albumLoadMore.addEventListener('click', () => {
+      const firstNewIndex = state.visibleCount;
       state.visibleCount += BATCH_SIZE;
       renderAlbumGrid();
+      focusPhoto(firstNewIndex);
     });
 
     jumpCurrentDay.addEventListener('click', () => {
       document.getElementById('album')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
+
+    albumPrevDay.addEventListener('click', () => {
+      if (state.currentDay > 1) switchDay(state.currentDay - 1, { scroll: true });
+    });
+
+    albumNextDay.addEventListener('click', () => {
+      if (state.currentDay < 7) switchDay(state.currentDay + 1, { scroll: true });
+    });
+
+    viewComfy.addEventListener('click', () => setViewMode('comfy'));
+    viewDense.addEventListener('click', () => setViewMode('dense'));
 
     lightboxClose.addEventListener('click', closeLightbox);
     lightboxPrev.addEventListener('click', () => shiftLightbox(-1));
@@ -749,6 +1312,21 @@
     lightboxShell.addEventListener('click', (event) => {
       if (event.target === lightboxShell) closeLightbox();
     });
+
+    lightboxShell.addEventListener('touchstart', (event) => {
+      const touch = event.changedTouches[0];
+      state.touchStartX = touch.clientX;
+      state.touchStartY = touch.clientY;
+    }, { passive: true });
+
+    lightboxShell.addEventListener('touchend', (event) => {
+      if (!lightboxShell.classList.contains('open')) return;
+      const touch = event.changedTouches[0];
+      const dx = touch.clientX - state.touchStartX;
+      const dy = touch.clientY - state.touchStartY;
+      if (Math.abs(dx) < 46 || Math.abs(dx) < Math.abs(dy) * 1.15) return;
+      shiftLightbox(dx < 0 ? 1 : -1);
+    }, { passive: true });
 
     lightboxImage.addEventListener('error', () => {
       if (lightboxImage.dataset.fallbackApplied === '1') return;
@@ -770,11 +1348,93 @@
     const navbar = document.getElementById('navbar');
     let lastScrollY = window.scrollY;
     let navHideTimeout;
+    let preserveNavUntil = 0;
+
+    function revealNavbar() {
+      clearTimeout(navHideTimeout);
+      navbar.classList.remove('hidden-nav');
+      lastScrollY = window.scrollY;
+    }
+
+    // ── Bottom Nav ──
+    function renderBottomPills() {
+      if (!bottomPillsEl) return;
+      const frag = document.createDocumentFragment();
+      dayMeta.forEach((meta) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `bottom-day-pill${meta.day === state.currentDay ? ' active' : ''}`;
+        btn.dataset.day = String(meta.day);
+        btn.innerHTML = `${meta.day}<span>天</span>`;
+        btn.addEventListener('click', () => switchDay(meta.day, { scroll: true }));
+        frag.appendChild(btn);
+      });
+      bottomPillsEl.replaceChildren(frag);
+    }
+    function syncBottomPills() {
+      if (!bottomPillsEl) return;
+      bottomPillsEl.querySelectorAll('.bottom-day-pill').forEach((pill) => {
+        pill.classList.toggle('active', Number(pill.dataset.day) === state.currentDay);
+      });
+    }
+
+    // ── Auto Load Observer ──
+    function setupAutoLoad() {
+      if (state.autoLoadObserver) state.autoLoadObserver.disconnect();
+      const photos = state.albumData[state.currentDay] || [];
+      if (state.visibleCount >= photos.length) return;
+      const sentinel = albumLoadMore;
+      if (!sentinel) return;
+      state.autoLoadObserver = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          const firstNewIndex = state.visibleCount;
+          state.visibleCount += BATCH_SIZE;
+          renderAlbumGrid();
+          focusPhoto(firstNewIndex);
+        }
+      }, { rootMargin: '300px' });
+      state.autoLoadObserver.observe(sentinel);
+    }
+
+    // ── Lightbox Preload ──
+    function preloadAdjacent() {
+      const photos = state.albumData[state.currentDay] || [];
+      if (!photos.length) return;
+      const total = photos.length;
+      [state.lightboxIndex - 1, state.lightboxIndex + 1].forEach((i) => {
+        const idx = ((i % total) + total) % total;
+        const img = new Image();
+        img.src = photos[idx];
+      });
+    }
+    const origUpdateLightbox = updateLightbox;
+    updateLightbox = function() { origUpdateLightbox(); preloadAdjacent(); };
+
+    // ── Floating counter scroll visibility ──
+    let counterTimer;
+    function showFloatingCounter() {
+      if (!floatingCounter) return;
+      floatingCounter.classList.add('visible');
+      clearTimeout(counterTimer);
+      counterTimer = setTimeout(() => floatingCounter.classList.remove('visible'), 1800);
+    }
 
     window.addEventListener('scroll', () => {
       const currentScrollY = window.scrollY;
+      const docH = document.documentElement.scrollHeight - window.innerHeight;
+
+      // Scroll progress bar
+      if (scrollProgressEl && docH > 0) {
+        scrollProgressEl.style.width = `${Math.round((currentScrollY / docH) * 100)}%`;
+      }
 
       backTop.classList.toggle('hidden-btn', currentScrollY <= window.innerHeight * 0.45);
+      showFloatingCounter();
+
+      if (Date.now() < preserveNavUntil) {
+        revealNavbar();
+        return;
+      }
 
       if (currentScrollY <= 50 || currentScrollY < lastScrollY) {
         navbar.classList.remove('hidden-nav');
@@ -800,9 +1460,19 @@
       state.albumData = buildAlbumData();
       state.currentDay = parseInitialDay();
       renderTabs();
+      renderBottomPills();
       renderAlbumGrid();
+      setViewMode('comfy');
       updateURLDay(state.currentDay);
       initReveal();
+      if (window.location.hash === '#album') {
+        preserveNavUntil = Date.now() + 2200;
+        window.requestAnimationFrame(() => {
+          document.getElementById('album')?.scrollIntoView({ behavior: 'auto', block: 'start' });
+          revealNavbar();
+          window.setTimeout(revealNavbar, 180);
+        });
+      }
     }
 
     initAlbumPage();
