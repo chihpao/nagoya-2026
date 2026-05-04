@@ -1459,32 +1459,15 @@
       if (!lightboxShell.classList.contains('open')) return;
       if (event.key === 'ArrowLeft') shiftLightbox(-1);
       if (event.key === 'ArrowRight') shiftLightbox(1);
+    });
+
     const navbar = document.getElementById('navbar');
     let lastScrollY = window.scrollY;
     let navHideTimeout;
-
-    window.addEventListener('scroll', () => {
-      const currentScrollY = window.scrollY;
-      const docH = document.documentElement.scrollHeight - window.innerHeight;
-      const progressEl = document.getElementById('scroll-progress');
-      if (progressEl && docH > 0) {
-        progressEl.style.width = `${Math.round((currentScrollY / docH) * 100)}%`;
-      }
-
-      backTop.classList.toggle('hidden-btn', currentScrollY <= window.innerHeight * 0.4);
-
-      // Auto-hide navbar logic
-      if (currentScrollY > 100) {
-        if (currentScrollY > lastScrollY + 5) {
-          navbar.classList.add('hidden-nav'); // Scrolling down
-        } else if (currentScrollY < lastScrollY - 5) {
-          navbar.classList.remove('hidden-nav'); // Scrolling up
-        }
-      } else {
-        navbar.classList.remove('hidden-nav'); // At top
-      }
-      lastScrollY = currentScrollY;
-    }, { passive: true });
+    let preserveNavUntil = 0;
+    function revealNavbar() {
+      navbar.classList.remove('hidden-nav');
+    }
 
     // ── Bottom Nav ──
     function renderBottomPills() {
