@@ -30,25 +30,23 @@
 
   <style>
     :root {
-      --bg-main: #fff1d0;
-      --ink: #0f172a;
-      --ink-soft: #475569;
-      --line: #1e3a8a;
+      --bg-main: #f9f8f4; /* Sophisticated warm off-white */
+      --ink: #1a1a1a;
+      --ink-soft: #666666;
+      --line: #1a1a1a;
       --accent: #22c55e;
-      --accent-dark: #166534;
-      --warn: #f97316;
-      --day-1: #ef4444;
-      --day-2: #f97316;
-      --day-3: #0ea5e9;
-      --day-4: #a855f7;
-      --day-5: #ec4899;
-      --day-6: #14b8a6;
-      --day-7: #eab308;
+      --day-1: #e63946;
+      --day-2: #f4a261;
+      --day-3: #2a9d8f;
+      --day-4: #a29bfe;
+      --day-5: #ff7675;
+      --day-6: #00cec9;
+      --day-7: #fdcb6e;
     }
 
     * {
       box-sizing: border-box;
-      cursor: none !important; /* Hide default cursor for custom cursor */
+      cursor: none !important;
     }
 
     body {
@@ -56,457 +54,236 @@
       color: var(--ink);
       background-color: var(--bg-main);
       overflow-x: hidden;
+      font-weight: 400;
+      letter-spacing: 0.01em;
     }
 
-    body::before {
+    /* Organic Noise Texture */
+    body::after {
       content: '';
       position: fixed;
       inset: 0;
       pointer-events: none;
-      background-image: radial-gradient(rgba(30, 58, 138, 0.14) 2px, transparent 2px);
-      background-size: 26px 26px;
-      z-index: -1;
-      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      z-index: 100;
+      mix-blend-mode: multiply;
     }
 
     .top-nav {
-      background: rgba(255, 248, 227, 0.9);
-      border-bottom: 3px solid var(--line);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      transition: transform 260ms ease;
+      background: rgba(249, 248, 244, 0.8);
+      border-bottom: none;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1), opacity 600ms ease;
     }
 
     .top-nav.hidden-nav {
       transform: translateY(-100%);
+      opacity: 0;
     }
 
     .brand-mark {
-      max-width: 58vw;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-weight: 700;
+      letter-spacing: -0.02em;
     }
 
     .nav-shell {
-      border: 3px solid var(--line);
+      border: 1px solid rgba(0, 0, 0, 0.05);
       border-radius: 999px;
-      background: #fffdf7;
-      box-shadow: 0 5px 0 rgba(30, 58, 138, 0.2);
+      background: rgba(255, 255, 255, 0.5);
       padding: 0.2rem;
     }
 
     .nav-link {
       border-radius: 999px;
-      color: #334155;
-      font-weight: 900;
-      letter-spacing: 0.03em;
-      transition: transform 150ms ease, background 150ms ease, color 150ms ease;
+      color: var(--ink-soft);
+      font-weight: 500;
+      transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .nav-link:hover,
-    .nav-link:focus-visible,
     .nav-link.active {
-      background: var(--line);
+      background: var(--ink);
       color: #fff;
-      transform: translateY(-1px);
-    }
-
-    .hero-photo {
-      border-bottom: 3px solid var(--line);
-    }
-
-    .hero-photo img {
-      width: 100%;
-      height: min(72vh, 760px);
-      object-fit: cover;
-      display: block;
     }
 
     .album-head {
-      padding: 2rem 1rem 2.8rem;
-    }
-
-    @media (min-width: 768px) {
-      .album-head {
-        padding: 3rem 2rem 3.4rem;
-      }
-    }
-
-    .head-shell {
-      border: 3px solid var(--line);
-      border-radius: 28px;
-      background: #fff9ec;
-      box-shadow: 0 12px 0 rgba(30, 58, 138, 0.28);
-      padding: 1.3rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .head-shell::before {
-      content: '';
-      position: absolute;
-      top: -20px;
-      right: -30px;
-      width: 170px;
-      height: 170px;
-      background: radial-gradient(circle at center, rgba(34, 197, 94, 0.3) 0%, rgba(34, 197, 94, 0) 70%);
-      pointer-events: none;
-    }
-
-    @media (min-width: 768px) {
-      .head-shell {
-        padding: 2rem 2.2rem;
-      }
-    }
-
-    .stamp {
-      display: inline-flex;
-      border: 2px solid var(--line);
-      border-radius: 999px;
-      background: #fff;
-      padding: 0.45rem 0.8rem;
-      font-size: 0.7rem;
-      font-weight: 900;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #334155;
+      padding: 4rem 1.5rem 6rem;
+      text-align: center;
     }
 
     .display-title {
-      font-family: 'Amatic SC', 'Noto Sans TC', cursive;
+      font-family: 'Outfit', 'Noto Sans TC', sans-serif;
       font-weight: 700;
-      line-height: 0.95;
-      letter-spacing: 0.03em;
-      font-size: clamp(2.9rem, 11vw, 6.5rem);
-      color: #0f172a;
-      text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.6);
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--ink);
     }
 
-    .jump-btn {
-      border-radius: 999px;
-      border: 3px solid #14532d;
-      background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%);
-      color: #fff;
-      font-weight: 900;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-size: 0.88rem;
-      box-shadow: 0 6px 0 rgba(20, 83, 45, 0.5);
-      transition: transform 120ms cubic-bezier(.34,1.56,.64,1), box-shadow 120ms ease;
-    }
-
-    .jump-btn:hover,
-    .jump-btn:focus-visible {
-      transform: translateY(2px);
-      box-shadow: 0 2px 0 rgba(20, 83, 45, 0.5);
-    }
-
-    .jump-btn:active {
-      transform: translateY(4px) scale(0.96);
-      box-shadow: 0 0px 0 rgba(20, 83, 45, 0.5);
-    }
-
-    .ghost-btn {
-      border-radius: 999px;
-      border: 3px dashed var(--line);
-      background: transparent;
-      color: var(--line);
-      font-weight: 900;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-size: 0.88rem;
-      box-shadow: 0 6px 0 rgba(30, 58, 138, 0.15);
-      transition: transform 120ms cubic-bezier(.34,1.56,.64,1), background 140ms ease, color 140ms ease, box-shadow 120ms ease, border-style 0ms;
-    }
-
-    .ghost-btn:hover,
-    .ghost-btn:focus-visible {
-      transform: translateY(2px);
-      box-shadow: 0 2px 0 rgba(30, 58, 138, 0.15);
-      background: var(--line);
-      color: #fff;
-      border-style: solid;
-    }
-
-    .ghost-btn:active {
-      transform: translateY(4px) scale(0.96);
-      box-shadow: 0 0px 0 rgba(30, 58, 138, 0.15);
-    }
-
-    .album-layout {
-      padding: 0;
-    }
-
-    @media (min-width: 768px) {
-      .album-layout {
-        padding: 0;
-      }
-    }
-
-    main#album {
-      scroll-margin-top: 6rem;
-    }
-
-    .album-summary {
-      border: 3px solid var(--line);
-      background: #fffdf7;
-      border-radius: 22px;
-      padding: 1rem;
-      box-shadow: 0 9px 0 rgba(30, 58, 138, 0.22);
-    }
-
-    @media (min-width: 768px) {
-      .album-summary {
-        padding: 1.35rem 1.5rem;
-      }
-    }
-
-    .day-chip {
-      display: inline-flex;
-      border: 2px solid var(--line);
-      background: #fff;
-      border-radius: 999px;
-      padding: 0.35rem 0.72rem;
-      font-size: 0.72rem;
-      font-weight: 900;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      color: #334155;
-    }
-
-    .album-command-bar {
-      position: sticky;
-      top: 4.9rem;
-      z-index: 25;
-      border: 3px solid var(--line);
-      border-radius: 24px;
-      background: rgba(255, 253, 247, 0.88);
-      box-shadow: 0 9px 0 rgba(30, 58, 138, 0.2);
-      padding: 0.85rem;
-      backdrop-filter: blur(22px) saturate(1.8);
-      -webkit-backdrop-filter: blur(22px) saturate(1.8);
-    }
-
-    .mobile-day-switch {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-      gap: 0.55rem;
-      align-items: center;
-    }
-
-    .day-step-btn {
-      min-height: 44px;
-      border: 2px solid var(--line);
-      border-radius: 999px;
-      background: #fff;
-      color: var(--line);
-      font-size: 0.82rem;
-      font-weight: 900;
-      box-shadow: 0 4px 0 rgba(30, 58, 138, 0.18);
-      transition: transform 140ms ease, background 140ms ease, color 140ms ease, opacity 140ms ease;
-    }
-
-    .day-step-btn:hover,
-    .day-step-btn:focus-visible {
-      transform: translateY(-1px);
-      background: var(--line);
-      color: #fff;
-    }
-
-    .day-step-btn:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .mobile-day-readout {
-      min-width: 84px;
-      text-align: center;
-      font-weight: 900;
-      color: #0f172a;
-    }
-
-    .mobile-day-readout small {
-      display: block;
-      margin-top: 0.1rem;
-      font-size: 0.72rem;
-      color: #64748b;
-    }
-
-    .day-tab-rail {
-      scroll-snap-type: x mandatory;
-      scroll-padding-inline: 0.75rem;
-    }
-
-    .day-tab {
-      border: 3px solid var(--line);
-      border-radius: 999px;
-      background: #fff;
-      color: #334155;
-      font-weight: 900;
-      white-space: nowrap;
-      box-shadow: 0 4px 0 rgba(30, 58, 138, 0.17);
-      transition: transform 180ms cubic-bezier(.34,1.56,.64,1), background 150ms ease, color 150ms ease, box-shadow 180ms ease;
-      scroll-snap-align: center;
-      min-height: 46px;
-    }
-
-    .day-tab.active,
-    .day-tab:hover,
-    .day-tab:focus-visible {
-      background: var(--line);
-      color: #fff;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 0 rgba(30, 58, 138, 0.22);
-    }
-
-    .album-view-row {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      margin-top: 0.8rem;
-    }
-
-    .album-progress {
-      font-size: 0.82rem;
-      font-weight: 900;
-      color: #475569;
-    }
-
-    .view-toggle {
-      display: inline-grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      border: 2px solid var(--line);
-      border-radius: 999px;
-      background: #fff;
-      padding: 0.2rem;
-      width: 100%;
-      max-width: 240px;
-    }
-
-    .view-toggle button {
-      border-radius: 999px;
-      min-height: 38px;
-      font-weight: 900;
-      color: #475569;
-      transition: background 140ms ease, color 140ms ease, transform 140ms ease;
-    }
-
-    .view-toggle button.active {
-      background: var(--line);
-      color: #fff;
-      transform: translateY(-1px);
-    }
-
-    @media (min-width: 768px) {
-      .album-command-bar {
-        top: 5.6rem;
-        padding: 1rem;
-      }
-
-      .mobile-day-switch {
-        display: none;
-      }
-
-      .album-view-row {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
-    }
-
+    /* ── Masonry Grid Elite ── */
     .album-grid {
-      display: grid;
-      gap: 1rem;
+      display: block;
+      column-gap: 2rem;
+      width: 100%;
     }
 
-    .album-grid.comfy {
-      grid-template-columns: 1fr;
+    .album-grid.comfy { column-count: 2; }
+    .album-grid.dense { column-count: 3; }
+
+    @media (min-width: 768px) {
+      .album-grid.comfy { column-count: 3; }
+      .album-grid.dense { column-count: 4; }
     }
 
-    .album-grid.dense {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.72rem;
-    }
-
-    @media (min-width: 640px) {
-      .album-grid.comfy {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .album-grid.dense {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .album-grid.comfy {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .album-grid.dense {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-      }
+    @media (min-width: 1280px) {
+      .album-grid { column-gap: 3rem; }
+      .album-grid.comfy { column-count: 4; }
+      .album-grid.dense { column-count: 6; }
     }
 
     .album-thumb {
-      border: 3px solid var(--line);
-      border-radius: 16px;
-      background: #f1f5f9;
+      break-inside: avoid;
+      display: inline-block;
+      width: 100%;
+      margin-bottom: 2rem;
+      border-radius: 4px;
+      background: transparent;
       overflow: hidden;
-      box-shadow: 0 7px 0 rgba(30, 58, 138, 0.22);
-      transition: transform 280ms cubic-bezier(.34,1.56,.64,1), box-shadow 360ms ease;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.03);
+      transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 800ms ease;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    @media (min-width: 1280px) {
+      .album-thumb { margin-bottom: 3rem; }
+    }
+
+    .album-thumb.reveal-show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .album-thumb img {
       width: 100%;
-      aspect-ratio: 4 / 3;
+      height: auto;
       object-fit: cover;
       display: block;
-      transition: transform 320ms cubic-bezier(.22,1,.36,1);
-    }
-
-    .album-grid.dense .album-thumb img {
-      aspect-ratio: 1 / 1;
-    }
-
-    .album-thumb-index {
-      position: absolute;
-      left: 0.55rem;
-      bottom: 0.55rem;
-      z-index: 12;
-      border: 2px solid #fff;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.78);
-      color: #fff;
-      font-size: 0.72rem;
-      font-weight: 900;
-      padding: 0.24rem 0.55rem;
+      transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 800ms ease;
     }
 
     .album-thumb:hover {
-      transform: translateY(-5px) scale(1.03);
-      box-shadow: 0 16px 32px -8px rgba(30, 58, 138, 0.28);
+      transform: translateY(-8px);
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08);
+      z-index: 10;
     }
 
     .album-thumb:hover img {
-      transform: scale(1.06);
+      transform: scale(1.04);
+    }
+
+    /* ── Custom Cursor Studio ── */
+    #custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      background: var(--ink);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 500ms cubic-bezier(0.19, 1, 0.22, 1), 
+                  height 500ms cubic-bezier(0.19, 1, 0.22, 1), 
+                  background 500ms ease,
+                  opacity 500ms ease;
+      display: none;
+    }
+
+    @media (pointer: fine) {
+      #custom-cursor { display: block; }
+    }
+
+    body.hovering-photo #custom-cursor {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    body.hovering-photo #custom-cursor::after {
+      content: 'VIEW';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      color: #fff;
+    }
+
+    /* ── Floating Pill Nav Studio ── */
+    .floating-pill-nav {
+      position: fixed;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 45;
+      pointer-events: none;
+      transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1), opacity 600ms ease;
+    }
+
+    .floating-pill-nav.ui-hidden {
+      transform: translateX(-50%) translateY(40px);
+      opacity: 0;
+    }
+
+    .pill-inner {
+      pointer-events: auto;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(30px) saturate(1.8);
+      -webkit-backdrop-filter: blur(30px) saturate(1.8);
+      border: 1px solid rgba(0, 0, 0, 0.03);
+      border-radius: 999px;
+      padding: 0.5rem;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+    }
+
+    .pill-day-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .pill-day-btn.active {
+      background: var(--ink);
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .pill-day-btn:hover:not(.active) {
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--ink);
     }
 
     .lightbox-shell {
       opacity: 0;
       visibility: hidden;
-      transition: opacity 280ms ease, visibility 280ms ease;
-      background: rgba(2, 6, 23, 0.7);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-    }
-
-    .lightbox-shell figure {
-      transition: transform 320ms cubic-bezier(.34,1.56,.64,1), opacity 280ms ease;
-      transform: scale(0.92);
-      opacity: 0;
+      transition: all 800ms cubic-bezier(0.16, 1, 0.3, 1);
+      background: rgba(10, 10, 10, 0.98);
+      backdrop-filter: blur(20px);
     }
 
     .lightbox-shell.open {
@@ -514,272 +291,17 @@
       visibility: visible;
     }
 
-    .lightbox-shell.open figure {
-      transform: scale(1);
-      opacity: 1;
-    }
-
     .lightbox-btn {
-      border: 2px solid rgba(255, 255, 255, 0.42);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.13);
-      transition: transform 150ms ease, background 150ms ease;
-    }
-
-    .lightbox-btn:hover,
-    .lightbox-btn:focus-visible {
-      transform: scale(1.05);
-      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.02);
+      transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .lightbox-caption {
-      border: 2px solid rgba(255, 255, 255, 0.28);
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.54);
-      padding: 0.55rem 0.9rem;
-      text-align: center;
-    }
-
-    .lightbox-hint {
-      display: block;
-      margin-top: 0.12rem;
-      font-size: 0.72rem;
-      color: rgba(255, 255, 255, 0.62);
-      font-weight: 800;
-    }
-
-    @media (max-width: 767px) {
-      .hero-photo img {
-        height: min(48vh, 420px);
-      }
-
-      .album-head {
-        padding: 1.15rem 0.9rem 1.8rem;
-      }
-
-      .head-shell {
-        border-radius: 22px;
-        padding: 1rem;
-      }
-
-      .display-title {
-        font-size: clamp(2.6rem, 18vw, 4.4rem);
-      }
-
-      main#album {
-        padding-left: 0.9rem;
-        padding-right: 0.9rem;
-        padding-top: 1.4rem;
-      }
-
-      .album-thumb {
-        border-radius: 18px;
-      }
-
-      .album-grid.comfy .album-thumb {
-        border-radius: 20px;
-      }
-
-      .lightbox-shell {
-        padding: 0.75rem;
-      }
-
-      .lightbox-btn {
-        width: 3.2rem;
-        height: 3.2rem;
-      }
-      
-      #lightbox-close {
-        top: auto;
-        bottom: calc(2rem + env(safe-area-inset-bottom));
-        right: 50%;
-        transform: translateX(50%);
-        background: rgba(239, 68, 68, 0.85);
-        border-color: rgba(239, 68, 68, 1);
-        box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
-      }
-      
-      #lightbox-close:active {
-        transform: translateX(50%) scale(0.9);
-      }
-    }
-
-    .hide-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-
-    .hide-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(44px) scale(0.97);
-      transition: opacity 600ms cubic-bezier(.22,1,.36,1), transform 600ms cubic-bezier(.22,1,.36,1);
-    }
-
-    .reveal.show {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    .back-top {
-      border: 3px solid #9a3412;
-      background: linear-gradient(180deg, #fb923c 0%, #ea580c 100%);
-      transition: opacity 220ms ease, transform 220ms ease;
-      box-shadow: 0 7px 0 rgba(154, 52, 18, 0.45);
-    }
-
-    .back-top.hidden-btn {
-      opacity: 0;
-      transform: translateY(16px);
-      pointer-events: none;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-      }
-    }
-
-    ::-webkit-scrollbar {
-      width: 9px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #f6e2b8;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #22c55e;
-      border-radius: 999px;
-      border: 2px solid #f6e2b8;
-    }
-
-    /* ── Mobile Bottom Day Nav ── */
-    .mobile-bottom-nav {
-      display: none;
-      position: fixed;
-      bottom: calc(1rem + env(safe-area-inset-bottom));
-      left: 1rem;
-      right: 1rem;
-      z-index: 35;
-      pointer-events: none;
-    }
-    .mobile-bottom-nav > * { pointer-events: auto; }
-
-    .bottom-progress-track {
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.15);
-      margin-bottom: 0.55rem;
-      overflow: hidden;
-      margin-left: 0.5rem;
-      margin-right: 0.5rem;
-    }
-    .bottom-progress-fill {
-      height: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--day-1), var(--day-2), var(--day-3), var(--day-4), var(--day-5), var(--day-6), var(--day-7));
-      transition: width 320ms ease;
-    }
-
-    .bottom-day-pills {
-      display: flex;
-      gap: 0.25rem;
-      justify-content: center;
-      padding: 0.45rem 0.35rem;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.85);
-      box-shadow: 0 12px 30px rgba(15,23,42,0.4), inset 0 1px 1px rgba(255,255,255,0.1);
-      backdrop-filter: blur(16px) saturate(1.8);
-      -webkit-backdrop-filter: blur(16px) saturate(1.8);
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-    .bottom-day-pill {
-      flex: 1;
-      min-height: 40px;
       border: none;
-      border-radius: 999px;
       background: transparent;
-      color: rgba(255,255,255,0.6);
-      font-size: 0.95rem;
-      font-weight: 900;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      transition: transform 140ms ease, background 140ms ease, color 140ms ease, box-shadow 140ms ease;
-    }
-    .bottom-day-pill.active {
-      background: var(--day-color, var(--day-1));
-      color: #fff;
-      transform: translateY(0);
-      box-shadow: 0 4px 12px var(--day-glow, rgba(0,0,0,0.3));
-    }
-    .bottom-day-pill span { font-size: 0.6rem; opacity: 0.6; display: none; }
-    .bottom-day-pill.active span { opacity: 1; display: block; }
-
-    @media (max-width: 767px) {
-      .mobile-bottom-nav { display: block; }
-      .mobile-day-switch { display: none !important; }
-      main#album { padding-bottom: 7rem; }
-      .back-top { bottom: 7.5rem; }
-
-      /* Comfy = 2-col masonry-like */
-      .album-grid.comfy {
-        display: columns;
-        columns: 2;
-        column-gap: 0.65rem;
-        gap: 0;
-      }
-      .album-grid.comfy { display: block; columns: 2; column-gap: 0.65rem; }
-      .album-grid.comfy .album-thumb {
-        break-inside: avoid;
-        margin-bottom: 0.65rem;
-        display: inline-block;
-        width: 100%;
-      }
-      .album-grid.comfy .album-thumb img {
-        aspect-ratio: auto;
-        height: auto;
-      }
-
-      /* Lightbox fullscreen mobile */
-      .lightbox-shell { padding: 0; }
-      .lightbox-shell figure { gap: 0; }
-      #lightbox-image {
-        max-width: 100vw;
-        max-height: calc(100vh - 6rem);
-        border-radius: 0;
-      }
-      .lightbox-caption {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        border-radius: 0;
-        border: none;
-        border-top: 2px solid rgba(255,255,255,0.15);
-        padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
-        background: rgba(2,6,23,0.85);
-        backdrop-filter: blur(12px);
-      }
-      #lightbox-close {
-        top: calc(0.5rem + env(safe-area-inset-top));
-        right: 0.5rem;
-        width: 3.2rem;
-        height: 3.2rem;
-        background: rgba(0,0,0,0.5);
-        border: 2px solid rgba(255,255,255,0.3);
-      }
+      padding: 2rem;
+      text-align: center;
     }
 
     /* ── Skeleton & Fade-in ── */
@@ -927,44 +449,14 @@
     </div>
   </header>
 
-  <main id="album" class="max-w-6xl mx-auto px-5 md:px-8 py-10 md:py-14">
+  <main id="album" class="w-full px-4 md:px-8 py-10 md:py-20">
     <section class="album-layout">
-      <div class="flex flex-col gap-5 md:gap-6">
-        <div class="album-summary flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p id="album-day-chip" class="day-chip">第 1 天</p>
-            <h2 id="album-title" class="mt-3 text-3xl md:text-5xl font-black text-slate-900">第 1 天相簿</h2>
-            <p id="album-count" class="mt-2 text-sm md:text-base font-bold text-slate-600">0 張照片</p>
-          </div>
-          <a href="./index.html#album" class="ghost-btn px-5 py-2.5 text-sm md:text-base self-start md:self-auto">← 旅程</a>
-        </div>
-
-        <div class="album-command-bar">
-          <div class="mobile-day-switch" aria-label="手機天數切換">
-            <button id="album-prev-day" type="button" class="day-step-btn px-3">上一天</button>
-            <div class="mobile-day-readout" aria-live="polite">
-              <span id="mobile-day-label">第 1 天</span>
-              <small id="mobile-day-count">0 張</small>
-            </div>
-            <button id="album-next-day" type="button" class="day-step-btn px-3">下一天</button>
-          </div>
-
-          <div id="album-day-tabs" class="day-tab-rail mt-3 md:mt-0 flex gap-2 md:gap-3 overflow-x-auto hide-scrollbar pb-1" role="tablist" aria-label="相簿天數"></div>
-
-          <div class="album-view-row">
-            <p id="album-progress" class="album-progress" aria-live="polite">已顯示 0 / 0 張</p>
-            <div class="view-toggle" role="group" aria-label="相簿檢視模式">
-              <button id="view-comfy" type="button" class="active" aria-pressed="true">舒適</button>
-              <button id="view-dense" type="button" aria-pressed="false">密集</button>
-            </div>
-          </div>
-        </div>
-
+      <div class="flex flex-col gap-10">
         <div id="album-grid" class="album-grid comfy"></div>
-        <p id="album-empty" class="hidden text-center py-12 font-bold text-slate-500">這一天目前沒有照片。</p>
+        <p id="album-empty" class="hidden text-center py-20 font-bold text-slate-400">這一天目前沒有照片。</p>
 
-        <div class="text-center pt-2">
-          <button id="album-load-more" type="button" class="hidden jump-btn px-7 py-3 text-sm md:text-base">載入更多照片</button>
+        <div class="text-center pt-8">
+          <button id="album-load-more" type="button" class="hidden jump-btn px-8 py-4 text-sm md:text-base">載入更多照片</button>
         </div>
       </div>
     </section>
@@ -995,10 +487,11 @@
     </figure>
   </div>
 
-  <!-- Mobile Bottom Day Nav -->
-  <nav id="mobile-bottom-nav" class="mobile-bottom-nav" aria-label="手機天數導覽">
-    <div class="bottom-progress-track"><div id="bottom-progress-fill" class="bottom-progress-fill" style="width:0%"></div></div>
-    <div id="bottom-day-pills" class="bottom-day-pills"></div>
+  <!-- Universal Floating Pill Nav -->
+  <nav id="floating-pill-nav" class="floating-pill-nav" aria-label="天數導覽藥丸">
+    <div class="pill-inner">
+      <div id="bottom-day-pills" class="pill-days"></div>
+    </div>
   </nav>
 
   <!-- Floating Photo Counter -->
@@ -1050,21 +543,9 @@
 
     const BATCH_SIZE = 36;
 
-    const albumDayChip = document.getElementById('album-day-chip');
-    const albumTitle = document.getElementById('album-title');
-    const albumCount = document.getElementById('album-count');
-    const albumTabs = document.getElementById('album-day-tabs');
     const albumGrid = document.getElementById('album-grid');
     const albumEmpty = document.getElementById('album-empty');
     const albumLoadMore = document.getElementById('album-load-more');
-    const jumpCurrentDay = document.getElementById('jump-current-day');
-    const albumPrevDay = document.getElementById('album-prev-day');
-    const albumNextDay = document.getElementById('album-next-day');
-    const mobileDayLabel = document.getElementById('mobile-day-label');
-    const mobileDayCount = document.getElementById('mobile-day-count');
-    const albumProgress = document.getElementById('album-progress');
-    const viewComfy = document.getElementById('view-comfy');
-    const viewDense = document.getElementById('view-dense');
     const lightboxShell = document.getElementById('lightbox-shell');
     const lightboxClose = document.getElementById('lightbox-close');
     const lightboxPrev = document.getElementById('lightbox-prev');
@@ -1073,9 +554,8 @@
     const lightboxMeta = document.getElementById('lightbox-meta');
     const backTop = document.getElementById('back-top');
     const scrollProgressEl = document.getElementById('scroll-progress');
-    const bottomNavEl = document.getElementById('mobile-bottom-nav');
+    const floatingPillNav = document.getElementById('floating-pill-nav');
     const bottomPillsEl = document.getElementById('bottom-day-pills');
-    const bottomProgressFill = document.getElementById('bottom-progress-fill');
     const floatingCounter = document.getElementById('floating-counter');
 
     const state = {
@@ -1231,41 +711,9 @@
       window.history.replaceState({}, '', url);
     }
 
-    function renderTabs() {
-      const frag = document.createDocumentFragment();
-      dayMeta.forEach((meta) => {
-        const tab = document.createElement('button');
-        const active = meta.day === state.currentDay;
-        tab.type = 'button';
-        tab.className = `day-tab px-5 py-2.5 text-sm md:text-base ${active ? 'active' : ''}`;
-        tab.setAttribute('role', 'tab');
-        tab.setAttribute('aria-selected', String(active));
-        tab.setAttribute('aria-controls', 'album-grid');
-        tab.dataset.day = String(meta.day);
-        tab.textContent = `第 ${meta.day} 天`;
-        tab.addEventListener('click', () => switchDay(meta.day));
-        frag.appendChild(tab);
-      });
-      albumTabs.replaceChildren(frag);
-      centerActiveTab();
-    }
-
     function updateHeader(total) {
-      const visible = Math.min(state.visibleCount, total);
-      albumDayChip.textContent = `第 ${state.currentDay} 天`;
-      albumTitle.textContent = `第 ${state.currentDay} 天相簿`;
-      albumCount.textContent = `${total} 張照片`;
-      mobileDayLabel.textContent = `第 ${state.currentDay} 天`;
-      mobileDayCount.textContent = `${total} 張`;
-      albumProgress.textContent = total ? `已顯示 ${visible} / ${total} 張` : '這一天目前沒有照片';
-      albumPrevDay.disabled = state.currentDay <= 1;
-      albumNextDay.disabled = state.currentDay >= 7;
-      // Sync bottom nav
-      if (bottomProgressFill && total) {
-        bottomProgressFill.style.width = `${Math.round((visible / total) * 100)}%`;
-      }
       if (floatingCounter) {
-        floatingCounter.textContent = total ? `${visible} / ${total}` : '';
+        floatingCounter.textContent = total ? `${Math.min(state.visibleCount, total)} / ${total}` : '';
       }
       syncBottomPills();
     }
@@ -1288,26 +736,47 @@
         item.dataset.photoIndex = String(index);
         item.setAttribute('aria-label', `開啟第 ${day} 天第 ${index + 1} 張照片`);
         item.innerHTML = `
-          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors z-10"></div>
+          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors z-10"></div>
           <img src="${src}" alt="第${day}天照片${index + 1}" loading="lazy" decoding="async" />
-          <span class="album-thumb-index">第 ${index + 1} 張</span>
+          <span class="album-thumb-index">#${index + 1}</span>
         `;
         const img = item.querySelector('img');
         img.addEventListener('load', () => { img.classList.add('loaded'); item.classList.remove('loading'); });
         bindImageFallback(img, day);
         item.addEventListener('click', () => openLightbox(index));
+        
+        // Contextual Cursor Hover
+        item.addEventListener('mouseenter', () => document.body.classList.add('hovering-photo'));
+        item.addEventListener('mouseleave', () => document.body.classList.remove('hovering-photo'));
+        
         frag.appendChild(item);
       });
 
       albumGrid.appendChild(frag);
       updateLoadMoreLabel(photos.length);
       setupAutoLoad();
+      setupStaggerReveal();
+    }
+
+    function setupStaggerReveal() {
+      const thumbs = albumGrid.querySelectorAll('.album-thumb:not(.reveal-show)');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('reveal-show');
+            }, i * 60);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+      thumbs.forEach(thumb => observer.observe(thumb));
     }
 
     function switchDay(day, options = {}) {
       state.currentDay = day;
       state.visibleCount = BATCH_SIZE;
-      renderTabs();
       renderAlbumGrid();
       updateURLDay(day);
       if (options.scroll) {
@@ -1353,155 +822,49 @@
       document.body.style.overflow = lightboxShell.classList.contains('open') ? 'hidden' : '';
     }
 
-    function centerActiveTab() {
-      const activeTab = albumTabs.querySelector('.day-tab.active');
-      activeTab?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    }
-
-    function updateLoadMoreLabel(total) {
-      const remaining = Math.max(total - state.visibleCount, 0);
-      albumLoadMore.textContent = remaining > 0 ? `再載入 ${Math.min(BATCH_SIZE, remaining)} 張` : '已載入全部照片';
-    }
-
-    function focusPhoto(index) {
-      const target = albumGrid.querySelector(`[data-photo-index="${index}"]`);
-      if (!target) return;
-      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      window.setTimeout(() => target.focus({ preventScroll: true }), 260);
-    }
-
-    function setViewMode(mode) {
-      state.viewMode = mode === 'dense' ? 'dense' : 'comfy';
-      albumGrid.classList.toggle('dense', state.viewMode === 'dense');
-      albumGrid.classList.toggle('comfy', state.viewMode !== 'dense');
-      viewComfy.classList.toggle('active', state.viewMode === 'comfy');
-      viewDense.classList.toggle('active', state.viewMode === 'dense');
-      viewComfy.setAttribute('aria-pressed', String(state.viewMode === 'comfy'));
-      viewDense.setAttribute('aria-pressed', String(state.viewMode === 'dense'));
-    }
-
-    function initReveal() {
-      const nodes = Array.from(document.querySelectorAll('.reveal'));
-      nodes.forEach((node, index) => {
-        node.style.transitionDelay = `${Math.min(index * 70, 240)}ms`;
-      });
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('show');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.16 });
-
-      nodes.forEach((el) => observer.observe(el));
-    }
-
-    albumLoadMore.addEventListener('click', () => {
-      const firstNewIndex = state.visibleCount;
-      state.visibleCount += BATCH_SIZE;
-      renderAlbumGrid();
-      focusPhoto(firstNewIndex);
-    });
-
-    jumpCurrentDay.addEventListener('click', () => {
-      document.getElementById('album')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-
-    albumPrevDay.addEventListener('click', () => {
-      if (state.currentDay > 1) switchDay(state.currentDay - 1, { scroll: true });
-    });
-
-    albumNextDay.addEventListener('click', () => {
-      if (state.currentDay < 7) switchDay(state.currentDay + 1, { scroll: true });
-    });
-
-    viewComfy.addEventListener('click', () => setViewMode('comfy'));
-    viewDense.addEventListener('click', () => setViewMode('dense'));
-
-    lightboxClose.addEventListener('click', closeLightbox);
-    lightboxPrev.addEventListener('click', () => shiftLightbox(-1));
-    lightboxNext.addEventListener('click', () => shiftLightbox(1));
-    lightboxShell.addEventListener('click', (event) => {
-      if (event.target === lightboxShell || event.target === document.querySelector('.lightbox-shell figure')) {
-        closeLightbox();
-      }
-    });
-
-    lightboxShell.addEventListener('touchstart', (event) => {
-      const touch = event.changedTouches[0];
-      state.touchStartX = touch.clientX;
-      state.touchStartY = touch.clientY;
-    }, { passive: true });
-
-    lightboxShell.addEventListener('touchend', (event) => {
-      if (!lightboxShell.classList.contains('open')) return;
-      const touch = event.changedTouches[0];
-      const dx = touch.clientX - state.touchStartX;
-      const dy = touch.clientY - state.touchStartY;
-      if (Math.abs(dx) < 46 || Math.abs(dx) < Math.abs(dy) * 1.15) return;
-      shiftLightbox(dx < 0 ? 1 : -1);
-    }, { passive: true });
-
-    lightboxImage.addEventListener('error', () => {
-      if (lightboxImage.dataset.fallbackApplied === '1') return;
-      lightboxImage.dataset.fallbackApplied = '1';
-      lightboxImage.src = getDayCover(state.currentDay);
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && lightboxShell.classList.contains('open')) {
-        closeLightbox();
-        return;
-      }
-
-      if (!lightboxShell.classList.contains('open')) return;
-      if (event.key === 'ArrowLeft') shiftLightbox(-1);
-      if (event.key === 'ArrowRight') shiftLightbox(1);
-    });
-
     const navbar = document.getElementById('navbar');
     let lastScrollY = window.scrollY;
     let navHideTimeout;
     let preserveNavUntil = 0;
+
     function revealNavbar() {
       navbar.classList.remove('hidden-nav');
+      floatingPillNav?.classList.remove('ui-hidden');
     }
 
-    // ── Bottom Nav ──
+    // ── Floating Pill Nav ──
     function renderBottomPills() {
       if (!bottomPillsEl) return;
       const frag = document.createDocumentFragment();
       dayMeta.forEach((meta) => {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = `bottom-day-pill${meta.day === state.currentDay ? ' active' : ''}`;
+        btn.className = `pill-day-btn${meta.day === state.currentDay ? ' active' : ''}`;
         btn.dataset.day = String(meta.day);
         btn.style.setProperty('--day-color', `var(--day-${meta.day})`);
         
-        // Define day-specific glows to match the design
         const glowColors = {
-          1: 'rgba(239,68,68,0.3)',
-          2: 'rgba(249,115,22,0.3)',
-          3: 'rgba(14,165,233,0.3)',
-          4: 'rgba(168,85,247,0.3)',
-          5: 'rgba(236,72,153,0.3)',
-          6: 'rgba(20,184,166,0.3)',
-          7: 'rgba(234,179,8,0.3)'
+          1: 'rgba(230,57,70,0.3)',
+          2: 'rgba(244,162,97,0.3)',
+          3: 'rgba(42,157,143,0.3)',
+          4: 'rgba(162,155,254,0.3)',
+          5: 'rgba(255,118,117,0.3)',
+          6: 'rgba(0,206,201,0.3)',
+          7: 'rgba(253,203,110,0.3)'
         };
         btn.style.setProperty('--day-glow', glowColors[meta.day] || glowColors[1]);
         
-        btn.innerHTML = `${meta.day}<span>天</span>`;
+        btn.textContent = meta.day;
         btn.addEventListener('click', () => switchDay(meta.day, { scroll: true }));
         frag.appendChild(btn);
       });
       bottomPillsEl.replaceChildren(frag);
     }
+
     function syncBottomPills() {
       if (!bottomPillsEl) return;
-      bottomPillsEl.querySelectorAll('.bottom-day-pill').forEach((pill) => {
-        pill.classList.toggle('active', Number(pill.dataset.day) === state.currentDay);
+      bottomPillsEl.querySelectorAll('.pill-day-btn').forEach((btn) => {
+        btn.classList.toggle('active', Number(btn.dataset.day) === state.currentDay);
       });
     }
 
@@ -1519,7 +882,7 @@
           renderAlbumGrid();
           focusPhoto(firstNewIndex);
         }
-      }, { rootMargin: '300px' });
+      }, { rootMargin: '400px' });
       state.autoLoadObserver.observe(sentinel);
     }
 
@@ -1550,7 +913,6 @@
       const currentScrollY = window.scrollY;
       const docH = document.documentElement.scrollHeight - window.innerHeight;
 
-      // Scroll progress bar
       if (scrollProgressEl && docH > 0) {
         scrollProgressEl.style.width = `${Math.round((currentScrollY / docH) * 100)}%`;
       }
@@ -1563,18 +925,15 @@
         return;
       }
 
-      if (currentScrollY <= 50 || currentScrollY < lastScrollY) {
-        navbar.classList.remove('hidden-nav');
-      } else {
+      // Poetic Zero-Chrome: Gentle hiding
+      if (currentScrollY <= 100 || currentScrollY < lastScrollY - 30) {
+        revealNavbar();
+      } else if (currentScrollY > lastScrollY + 10) {
         navbar.classList.add('hidden-nav');
+        floatingPillNav?.classList.add('ui-hidden');
       }
 
       lastScrollY = currentScrollY;
-
-      clearTimeout(navHideTimeout);
-      if (currentScrollY > 50) {
-        navHideTimeout = setTimeout(() => navbar.classList.add('hidden-nav'), 900);
-      }
     }, { passive: true });
 
     backTop.addEventListener('click', () => {
@@ -1586,10 +945,8 @@
       applyResolvedAssets();
       state.albumData = buildAlbumData();
       state.currentDay = parseInitialDay();
-      renderTabs();
       renderBottomPills();
       renderAlbumGrid();
-      setViewMode('comfy');
       updateURLDay(state.currentDay);
       initReveal();
       if (window.location.hash === '#album') {
@@ -1597,7 +954,6 @@
         window.requestAnimationFrame(() => {
           document.getElementById('album')?.scrollIntoView({ behavior: 'auto', block: 'start' });
           revealNavbar();
-          window.setTimeout(revealNavbar, 180);
         });
       }
     }
@@ -1609,21 +965,31 @@
       const cursor = document.getElementById('custom-cursor');
       if (cursor) {
         document.addEventListener('mousemove', (e) => {
-          cursor.style.transform = `translate(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%))`;
+          window.requestAnimationFrame(() => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+          });
         });
         
         const attachCursorHover = () => {
-          const interactables = document.querySelectorAll('a, button, .album-thumb, input');
+          const interactables = document.querySelectorAll('a, button, .pill-day-btn');
           interactables.forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('hovering-link'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-link'));
+            el.addEventListener('mouseenter', () => {
+              if (!el.classList.contains('album-thumb')) {
+                cursor.style.transform = 'translate(-50%, -50%) scale(2.5)';
+                cursor.style.opacity = '0.3';
+              }
+            });
+            el.addEventListener('mouseleave', () => {
+              cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+              cursor.style.opacity = '1';
+            });
           });
         };
         
         attachCursorHover();
-        // Re-attach if DOM changes (e.g. load more)
         const observer = new MutationObserver(() => attachCursorHover());
-        observer.observe(document.getElementById('album-grid'), { childList: true });
+        observer.observe(document.body, { childList: true, subtree: true });
       }
     }
   </script>
