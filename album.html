@@ -12,7 +12,7 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link
-    href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Outfit:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Outfit:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap"
     rel="stylesheet" />
 
   <script>
@@ -21,6 +21,7 @@
         extend: {
           fontFamily: {
             sans: ['"Outfit"', '"Noto Sans TC"', 'sans-serif'],
+            serif: ['"Noto Serif TC"', 'serif'],
             display: ['"Amatic SC"', '"Noto Sans TC"', 'cursive']
           }
         }
@@ -30,23 +31,22 @@
 
   <style>
     :root {
-      --bg-main: #f9f8f4; /* Sophisticated warm off-white */
+      --bg-main: #faf9f6; /* Sophisticated museum off-white */
       --ink: #1a1a1a;
-      --ink-soft: #666666;
+      --ink-soft: #525252;
       --line: #1a1a1a;
-      --accent: #22c55e;
-      --day-1: #e63946;
-      --day-2: #f4a261;
-      --day-3: #2a9d8f;
-      --day-4: #a29bfe;
-      --day-5: #ff7675;
-      --day-6: #00cec9;
-      --day-7: #fdcb6e;
+      --accent: #262626;
+      --day-1: #b91c1c;
+      --day-2: #c2410c;
+      --day-3: #0369a1;
+      --day-4: #7c3aed;
+      --day-5: #db2777;
+      --day-6: #0d9488;
+      --day-7: #ca8a04;
     }
 
     * {
       box-sizing: border-box;
-      cursor: none !important;
     }
 
     body {
@@ -114,18 +114,18 @@
     }
 
     .display-title {
-      font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+      font-family: 'serif';
       font-weight: 700;
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      letter-spacing: -0.03em;
-      line-height: 1.1;
+      font-size: clamp(3rem, 10vw, 6rem);
+      letter-spacing: -0.04em;
+      line-height: 1;
       color: var(--ink);
     }
 
     /* ── Masonry Grid Elite ── */
     .album-grid {
       display: block;
-      column-gap: 2rem;
+      column-gap: 3rem;
       width: 100%;
     }
 
@@ -138,7 +138,7 @@
     }
 
     @media (min-width: 1280px) {
-      .album-grid { column-gap: 3rem; }
+      .album-grid { column-gap: 5rem; }
       .album-grid.comfy { column-count: 4; }
       .album-grid.dense { column-count: 6; }
     }
@@ -147,18 +147,18 @@
       break-inside: avoid;
       display: inline-block;
       width: 100%;
-      margin-bottom: 2rem;
+      margin-bottom: 3rem;
       border-radius: 4px;
       background: transparent;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.03);
-      transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 800ms ease;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
+      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(40px);
     }
 
     @media (min-width: 1280px) {
-      .album-thumb { margin-bottom: 3rem; }
+      .album-thumb { margin-bottom: 5rem; }
     }
 
     .album-thumb.reveal-show {
@@ -171,17 +171,17 @@
       height: auto;
       object-fit: cover;
       display: block;
-      transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 800ms ease;
+      transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .album-thumb:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08);
+      transform: translateY(-12px);
+      box-shadow: 0 50px 100px rgba(0, 0, 0, 0.1);
       z-index: 10;
     }
 
     .album-thumb:hover img {
-      transform: scale(1.04);
+      transform: scale(1.06);
     }
 
     /* ── Custom Cursor Studio ── */
@@ -189,17 +189,17 @@
       position: fixed;
       top: 0;
       left: 0;
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       background: var(--ink);
       border-radius: 50%;
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%, -50%);
-      transition: width 500ms cubic-bezier(0.19, 1, 0.22, 1), 
-                  height 500ms cubic-bezier(0.19, 1, 0.22, 1), 
-                  background 500ms ease,
-                  opacity 500ms ease;
+      transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1), 
+                  height 600ms cubic-bezier(0.16, 1, 0.3, 1), 
+                  background 600ms ease,
+                  opacity 600ms ease;
       display: none;
     }
 
@@ -208,10 +208,11 @@
     }
 
     body.hovering-photo #custom-cursor {
-      width: 80px;
-      height: 80px;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
@@ -222,60 +223,54 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 10px;
-      font-weight: 900;
-      letter-spacing: 0.1em;
+      font-weight: 700;
+      letter-spacing: 0.2em;
       color: #fff;
     }
 
     /* ── Floating Pill Nav Studio ── */
     .floating-pill-nav {
       position: fixed;
-      bottom: 3rem;
+      bottom: 4rem;
       left: 50%;
       transform: translateX(-50%);
       z-index: 45;
       pointer-events: none;
-      transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1), opacity 600ms ease;
+      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .floating-pill-nav.ui-hidden {
-      transform: translateX(-50%) translateY(40px);
+      transform: translateX(-50%) translateY(50px);
       opacity: 0;
     }
 
     .pill-inner {
       pointer-events: auto;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(30px) saturate(1.8);
-      -webkit-backdrop-filter: blur(30px) saturate(1.8);
-      border: 1px solid rgba(0, 0, 0, 0.03);
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(40px) saturate(1.8);
+      -webkit-backdrop-filter: blur(40px) saturate(1.8);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 999px;
-      padding: 0.5rem;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+      padding: 0.6rem;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.08);
     }
 
     .pill-day-btn {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
-      font-size: 0.9rem;
+      font-weight: 700;
+      font-size: 0.85rem;
       color: var(--ink-soft);
-      transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 600ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .pill-day-btn.active {
       background: var(--ink);
       color: #fff;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .pill-day-btn:hover:not(.active) {
-      background: rgba(0, 0, 0, 0.05);
-      color: var(--ink);
     }
 
     .lightbox-shell {
@@ -302,6 +297,19 @@
       background: transparent;
       padding: 2rem;
       text-align: center;
+    }
+
+    /* ── Reveal Animations ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px) scale(0.98);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
 
     /* ── Skeleton & Fade-in ── */
@@ -352,39 +360,37 @@
     /* ── Footer ── */
     .site-footer {
       position: relative;
-      border-top: 3px solid var(--line);
-      background: #0f172a;
-      color: #94a3b8;
-      padding: 2.8rem 1rem calc(2.8rem + env(safe-area-inset-bottom));
+      background: #0a0a0a;
+      color: #737373;
+      padding: 10rem 1rem;
       text-align: center;
-      font-size: 0.82rem;
-      font-weight: 700;
+      font-size: 0.85rem;
+      font-weight: 500;
       overflow: hidden;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
-    .site-footer a { color: #4ade80; }
+    .site-footer a { color: #fff; text-decoration: underline; }
     .footer-brand {
-      font-family: 'Amatic SC', cursive;
-      font-size: 3.2rem;
+      font-family: 'serif';
+      font-size: 3rem;
       color: #fff;
-      -webkit-text-stroke: 1px rgba(255,255,255,0.3);
-      text-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+      letter-spacing: -0.02em;
     }
     .footer-rainbow {
       display: flex;
-      height: 6px;
-      margin-top: 1.5rem;
-      border-radius: 999px;
-      overflow: hidden;
-      max-width: 280px;
+      height: 1px;
+      margin-top: 3rem;
+      max-width: 400px;
       margin-left: auto;
       margin-right: auto;
+      opacity: 0.2;
     }
     .footer-rainbow span { flex: 1; }
     .footer-icons {
-      font-size: 1.4rem;
-      letter-spacing: 0.6rem;
-      margin-top: 0.8rem;
-      opacity: 0.6;
+      font-size: 1.2rem;
+      letter-spacing: 0.5rem;
+      margin-top: 1.5rem;
+      opacity: 0.4;
     }
     /* ── Custom Cursor ── */
     #custom-cursor {
@@ -425,7 +431,7 @@
 
   <nav id="navbar" class="top-nav fixed top-0 left-0 w-full z-40 px-4 py-3 md:px-6 md:py-4">
     <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
-      <a href="./index.html#top" class="brand-mark font-display text-4xl md:text-5xl text-slate-900 leading-none">Nagoya 2026</a>
+      <a href="./index.html#top" class="brand-mark font-serif text-4xl md:text-5xl text-slate-900 leading-none">Nagoya 2026</a>
       <div class="nav-shell flex items-center gap-1 md:gap-2 text-sm md:text-base">
         <a href="./index.html#journey" class="nav-link px-3 py-1.5 md:px-4 md:py-2">旅程</a>
         <a href="#album" class="nav-link active px-3 py-1.5 md:px-4 md:py-2">相簿</a>
@@ -506,8 +512,7 @@
   <!-- Footer -->
   <footer class="site-footer">
     <p class="footer-brand">Nagoya 2026</p>
-    <p class="mt-2">2026.04.01 — 2026.04.07</p>
-    <p class="footer-icons">✈️🏰🌸🍜🎪🌃✈️</p>
+    <p class="mt-4 opacity-50">2026.04.01 — 2026.04.07</p>
     <div class="footer-rainbow">
       <span style="background:var(--day-1)"></span>
       <span style="background:var(--day-2)"></span>
@@ -753,7 +758,6 @@
       });
 
       albumGrid.appendChild(frag);
-      updateLoadMoreLabel(photos.length);
       setupAutoLoad();
       setupStaggerReveal();
     }
@@ -822,6 +826,37 @@
       document.body.style.overflow = lightboxShell.classList.contains('open') ? 'hidden' : '';
     }
 
+    lightboxClose?.addEventListener('click', closeLightbox);
+    lightboxPrev?.addEventListener('click', () => shiftLightbox(-1));
+    lightboxNext?.addEventListener('click', () => shiftLightbox(1));
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightboxShell.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') shiftLightbox(-1);
+      if (e.key === 'ArrowRight') shiftLightbox(1);
+    });
+
+    lightboxShell.addEventListener('touchstart', (e) => {
+      state.touchStartX = e.changedTouches[0].screenX;
+      state.touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    lightboxShell.addEventListener('touchend', (e) => {
+      const endX = e.changedTouches[0].screenX;
+      const endY = e.changedTouches[0].screenY;
+      const deltaX = endX - state.touchStartX;
+      const deltaY = endY - state.touchStartY;
+      
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+        if (deltaX > 0) {
+          shiftLightbox(-1);
+        } else {
+          shiftLightbox(1);
+        }
+      }
+    }, { passive: true });
+
     const navbar = document.getElementById('navbar');
     let lastScrollY = window.scrollY;
     let navHideTimeout;
@@ -877,10 +912,8 @@
       if (!sentinel) return;
       state.autoLoadObserver = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-          const firstNewIndex = state.visibleCount;
           state.visibleCount += BATCH_SIZE;
           renderAlbumGrid();
-          focusPhoto(firstNewIndex);
         }
       }, { rootMargin: '400px' });
       state.autoLoadObserver.observe(sentinel);
@@ -939,6 +972,24 @@
     backTop.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+
+    function initReveal() {
+      const nodes = Array.from(document.querySelectorAll('.reveal'));
+      nodes.forEach((node, index) => {
+        node.style.transitionDelay = `${Math.min(index * 90, 400)}ms`;
+      });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      nodes.forEach((el) => observer.observe(el));
+    }
 
     async function initAlbumPage() {
       await loadPhotosJson();

@@ -12,10 +12,11 @@ Any AI or contributor modifying this repo must follow these rules unless the use
 
 ## Current Design Direction (Baseline)
 
-1. Visual direction is "playful / game-like / bold" (Bruno Simon inspired), not minimal corporate style.
-2. Keep strong contrast, thick borders, sticker-like chips, and expressive motion as the default art direction.
+1. Visual direction is "Cinematic Luxury / High-End Minimalist" (WDD Group & Block Studio inspired).
+2. Prioritize vast whitespace, elegant typography pairing (Serif + Sans), and slow, sophisticated motion.
 3. Keep Traditional Chinese (`zh-Hant`) as the visible UI language.
 4. Maintain mobile + desktop parity for major interactions.
+5. Use "Premium Light Mode" (off-whites, soft charcoal text) as the primary aesthetic.
 
 ## Non-Negotiable UI Requirements
 
