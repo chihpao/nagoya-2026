@@ -441,7 +441,7 @@
 
   <header id="top">
     <div class="hero-photo">
-      <img src="./images/divider-sakura.jpg" alt="名古屋旅程相簿封面" loading="eager" />
+      <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/divider-sakura.webp" alt="名古屋旅程相簿封面" loading="eager" />
     </div>
 
     <div class="album-head">
@@ -666,7 +666,7 @@
 
     function getDayCover(day) {
       const meta = dayMeta.find((entry) => entry.day === day);
-      return meta ? meta.cover : resolveAsset('./images/hero-nagoya.jpg');
+      return meta ? meta.cover : 'https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/hero-nagoya.webp';
     }
 
     function buildAlbumData() {
