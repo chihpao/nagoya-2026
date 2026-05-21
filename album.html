@@ -71,8 +71,8 @@
     }
 
     .top-nav {
-      background: rgba(249, 248, 244, 0.8);
-      border-bottom: none;
+      background: rgba(250, 249, 246, 0.85);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1), opacity 600ms ease;
@@ -84,42 +84,82 @@
     }
 
     .brand-mark {
-      font-weight: 700;
-      letter-spacing: -0.02em;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      color: var(--ink);
     }
 
     .nav-shell {
-      border: 1px solid rgba(0, 0, 0, 0.05);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.5);
-      padding: 0.2rem;
+      display: flex;
+      gap: 2rem;
     }
 
     .nav-link {
-      border-radius: 999px;
       color: var(--ink-soft);
-      font-weight: 500;
-      transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      transition: color 0.4s ease;
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--ink);
+      transition: width 0.4s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
     }
 
     .nav-link:hover,
     .nav-link.active {
-      background: var(--ink);
-      color: #fff;
-    }
-
-    .album-head {
-      padding: 4rem 1.5rem 6rem;
-      text-align: center;
-    }
-
-    .display-title {
-      font-family: 'serif';
-      font-weight: 700;
-      font-size: clamp(3rem, 10vw, 6rem);
-      letter-spacing: -0.04em;
-      line-height: 1;
       color: var(--ink);
+    }
+
+    .jump-btn, .ghost-btn {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      padding: 0.8rem 2rem;
+      border: 1px solid var(--line);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      min-height: 44px;
+      min-width: 44px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .jump-btn {
+      background: var(--ink);
+      color: var(--bg-main);
+    }
+
+    .jump-btn:hover {
+      background: var(--bg-main);
+      color: var(--ink);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+
+    .ghost-btn:hover {
+      background: var(--ink);
+      color: var(--bg-main);
+      transform: translateY(-4px);
     }
 
     /* ── Masonry Grid Elite ── */
@@ -228,36 +268,11 @@
       color: #fff;
     }
 
-    /* ── Floating Pill Nav Studio ── */
-    .floating-pill-nav {
-      position: fixed;
-      bottom: 4rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 45;
-      pointer-events: none;
-      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .floating-pill-nav.ui-hidden {
-      transform: translateX(-50%) translateY(50px);
-      opacity: 0;
-    }
-
-    .pill-inner {
-      pointer-events: auto;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(40px) saturate(1.8);
-      -webkit-backdrop-filter: blur(40px) saturate(1.8);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 999px;
-      padding: 0.6rem;
-      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.08);
-    }
-
-    .pill-day-btn {
-      width: 48px;
-      height: 48px;
+    /* ── Navbar Day Pills ── */
+    .navbar-day-btn {
+      flex: 0 0 auto;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -265,10 +280,15 @@
       font-weight: 700;
       font-size: 0.85rem;
       color: var(--ink-soft);
-      transition: all 600ms cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
     }
 
-    .pill-day-btn.active {
+    .navbar-day-btn:hover {
+      background: rgba(0,0,0,0.05);
+    }
+
+    .navbar-day-btn.active {
       background: var(--ink);
       color: #fff;
     }
@@ -429,29 +449,21 @@
   <div id="custom-cursor"></div>
   <div id="scroll-progress" class="scroll-progress" style="width:0%"></div>
 
-  <nav id="navbar" class="top-nav fixed top-0 left-0 w-full z-40 px-4 py-3 md:px-6 md:py-4">
-    <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
-      <a href="./index.html#top" class="brand-mark font-serif text-4xl md:text-5xl text-slate-900 leading-none">Nagoya 2026</a>
-      <div class="nav-shell flex items-center gap-1 md:gap-2 text-sm md:text-base">
-        <a href="./index.html#journey" class="nav-link px-3 py-1.5 md:px-4 md:py-2">旅程</a>
-        <a href="#album" class="nav-link active px-3 py-1.5 md:px-4 md:py-2">相簿</a>
+  <nav id="navbar" class="top-nav fixed top-0 left-0 w-full z-40 px-6 py-4">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-y-4">
+      <a href="./index.html#top" class="brand-mark text-2xl md:text-3xl">Nagoya 2026</a>
+      <div id="navbar-day-pills" class="order-3 md:order-2 w-full md:w-auto flex items-center gap-1 overflow-x-auto pb-1 md:pb-0 scrollbar-hide"></div>
+      <div class="nav-shell order-2 md:order-3">
+        <a href="./index.html#journey" class="nav-link">Journey</a>
+        <a href="#album" class="nav-link active">Album</a>
       </div>
     </div>
   </nav>
 
   <header id="top">
+    <h1 class="sr-only">名古屋相簿</h1>
     <div class="hero-photo">
       <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/divider-sakura.webp" alt="名古屋旅程相簿封面" loading="eager" />
-    </div>
-
-    <div class="album-head">
-      <div class="max-w-6xl mx-auto head-shell reveal">
-        <h1 class="display-title mt-5">名古屋相簿</h1>
-        <div class="mt-7 flex flex-wrap gap-3">
-          <a href="./index.html#journey" class="jump-btn px-6 py-3 text-sm md:text-base">回到旅程</a>
-          <button id="jump-current-day" class="ghost-btn px-6 py-3 text-sm md:text-base">定位到目前天數</button>
-        </div>
-      </div>
     </div>
   </header>
 
@@ -469,17 +481,17 @@
   </main>
 
   <div id="lightbox-shell" class="lightbox-shell fixed inset-0 z-[95] p-3 md:p-8" role="dialog" aria-modal="true" aria-label="照片檢視">
-    <button id="lightbox-close" class="lightbox-btn absolute top-3 right-3 md:top-6 md:right-8 w-10 h-10 md:w-11 md:h-11 text-white" aria-label="關閉照片">
+    <button id="lightbox-close" class="lightbox-btn absolute top-3 right-3 md:top-6 md:right-8 w-11 h-11 md:w-12 md:h-12 text-white" aria-label="關閉照片">
       <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
-    <button id="lightbox-prev" class="lightbox-btn absolute left-2 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 text-white" aria-label="上一張">
+    <button id="lightbox-prev" class="lightbox-btn absolute left-2 md:left-8 top-1/2 -translate-y-1/2 w-11 h-11 md:w-12 md:h-12 text-white" aria-label="上一張">
       <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 19l-7-7 7-7" />
       </svg>
     </button>
-    <button id="lightbox-next" class="lightbox-btn absolute right-2 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 text-white" aria-label="下一張">
+    <button id="lightbox-next" class="lightbox-btn absolute right-2 md:right-8 top-1/2 -translate-y-1/2 w-11 h-11 md:w-12 md:h-12 text-white" aria-label="下一張">
       <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5l7 7-7 7" />
       </svg>
@@ -492,13 +504,6 @@
       </figcaption>
     </figure>
   </div>
-
-  <!-- Universal Floating Pill Nav -->
-  <nav id="floating-pill-nav" class="floating-pill-nav" aria-label="天數導覽藥丸">
-    <div class="pill-inner">
-      <div id="bottom-day-pills" class="pill-days"></div>
-    </div>
-  </nav>
 
   <!-- Floating Photo Counter -->
   <div id="floating-counter" class="floating-counter" aria-live="polite"></div>
@@ -559,8 +564,7 @@
     const lightboxMeta = document.getElementById('lightbox-meta');
     const backTop = document.getElementById('back-top');
     const scrollProgressEl = document.getElementById('scroll-progress');
-    const floatingPillNav = document.getElementById('floating-pill-nav');
-    const bottomPillsEl = document.getElementById('bottom-day-pills');
+    const bottomPillsEl = document.getElementById('navbar-day-pills');
     const floatingCounter = document.getElementById('floating-counter');
 
     const state = {
@@ -864,30 +868,17 @@
 
     function revealNavbar() {
       navbar.classList.remove('hidden-nav');
-      floatingPillNav?.classList.remove('ui-hidden');
     }
 
-    // ── Floating Pill Nav ──
+    // ── Navbar Day Pills ──
     function renderBottomPills() {
       if (!bottomPillsEl) return;
       const frag = document.createDocumentFragment();
       dayMeta.forEach((meta) => {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = `pill-day-btn${meta.day === state.currentDay ? ' active' : ''}`;
+        btn.className = `navbar-day-btn${meta.day === state.currentDay ? ' active' : ''}`;
         btn.dataset.day = String(meta.day);
-        btn.style.setProperty('--day-color', `var(--day-${meta.day})`);
-        
-        const glowColors = {
-          1: 'rgba(230,57,70,0.3)',
-          2: 'rgba(244,162,97,0.3)',
-          3: 'rgba(42,157,143,0.3)',
-          4: 'rgba(162,155,254,0.3)',
-          5: 'rgba(255,118,117,0.3)',
-          6: 'rgba(0,206,201,0.3)',
-          7: 'rgba(253,203,110,0.3)'
-        };
-        btn.style.setProperty('--day-glow', glowColors[meta.day] || glowColors[1]);
         
         btn.textContent = meta.day;
         btn.addEventListener('click', () => switchDay(meta.day, { scroll: true }));
@@ -898,7 +889,7 @@
 
     function syncBottomPills() {
       if (!bottomPillsEl) return;
-      bottomPillsEl.querySelectorAll('.pill-day-btn').forEach((btn) => {
+      bottomPillsEl.querySelectorAll('.navbar-day-btn').forEach((btn) => {
         btn.classList.toggle('active', Number(btn.dataset.day) === state.currentDay);
       });
     }
@@ -963,7 +954,6 @@
         revealNavbar();
       } else if (currentScrollY > lastScrollY + 10) {
         navbar.classList.add('hidden-nav');
-        floatingPillNav?.classList.add('ui-hidden');
       }
 
       lastScrollY = currentScrollY;
@@ -1023,7 +1013,7 @@
         });
         
         const attachCursorHover = () => {
-          const interactables = document.querySelectorAll('a, button, .pill-day-btn');
+          const interactables = document.querySelectorAll('a, button, .navbar-day-btn');
           interactables.forEach(el => {
             el.addEventListener('mouseenter', () => {
               if (!el.classList.contains('album-thumb')) {

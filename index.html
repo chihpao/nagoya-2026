@@ -36,8 +36,8 @@
 
   <style>
     :root {
-      --bg-main: #fcfcfc;
-      --bg-panel: rgba(255, 255, 255, 0.8);
+      --bg-main: #faf9f6;
+      --bg-panel: rgba(250, 249, 246, 0.8);
       --bg-card: #ffffff;
       --ink: #050505;
       --ink-soft: #737373;
@@ -62,14 +62,14 @@
     }
 
     .top-nav {
-      background: rgba(252, 252, 252, 0.01);
+      background: rgba(250, 249, 246, 0.01);
       border-bottom: none;
       backdrop-filter: blur(0px);
       transition: var(--transition-base);
     }
 
     .top-nav.scrolled {
-      background: rgba(252, 252, 252, 0.8);
+      background: rgba(250, 249, 246, 0.85);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--line);
       padding-top: 0.75rem;
@@ -354,7 +354,8 @@
       .world-stage { height: 80vh; }
       .world-overlay { top: 4.5rem; left: 1rem; right: 1rem; }
       .world-status, .world-help { left: 1rem; right: 1rem; bottom: 1rem; }
-      .world-mobile-controls { display: flex; }
+      .world-mobile-controls { display: flex; bottom: 1.5rem; }
+      .world-joystick-wrap, .world-touch-actions { transform: scale(0.9); transform-origin: bottom; }
     }
 
     .sr-only {
@@ -401,7 +402,7 @@
     }
 
     .hero-intro {
-      padding: 12vh 5vw 8vh;
+      padding: 10rem 1.5rem 6rem;
       text-align: center;
     }
 
@@ -432,7 +433,13 @@
       letter-spacing: 0.2em;
       padding: 1rem 2rem;
       border: 1px solid var(--line);
-      transition: all 0.4s ease;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      min-height: 44px;
+      min-width: 44px;
     }
 
     .jump-btn {
@@ -443,23 +450,32 @@
     .jump-btn:hover {
       background: var(--bg-main);
       color: var(--ink);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
     }
 
     .ghost-btn:hover {
       background: var(--line);
       color: var(--ink);
+      transform: translateY(-4px);
     }
 
     .day-section {
       position: relative;
-      padding: 4vh 0;
+      padding: 6rem 0;
       overflow: hidden;
+    }
+
+    @media (max-width: 767px) {
+      .day-section { padding: 4rem 0; }
     }
 
     .day-shell {
       position: relative;
       z-index: 10;
-      padding: 0 8vw;
+      max-width: 1152px;
+      margin: 0 auto;
+      padding: 0 2rem;
     }
 
     .day-story {
@@ -535,8 +551,8 @@
     /* ── Reveal Animations ── */
     .reveal {
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(40px);
+      transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform;
     }
 
@@ -558,7 +574,7 @@
 
     /* ── Album Entry ── */
     .album-entry {
-      padding: 10vh 0;
+      padding: 8rem 0;
       background: var(--bg-main);
     }
 
@@ -613,8 +629,9 @@
 
     /* ── Footer ── */
     .site-footer {
-      background: #f5f5f5;
-      padding: 12vh 5vw;
+      background: #0a0a0a;
+      color: #737373;
+      padding: 8rem 1.5rem;
       text-align: center;
       border-top: 1px solid var(--line);
     }
@@ -622,7 +639,7 @@
     .footer-brand {
       font-family: var(--font-display);
       font-size: clamp(2.5rem, 12vw, 10rem);
-      color: var(--ink);
+      color: #ffffff;
       text-transform: uppercase;
       font-weight: 800;
       line-height: 0.9;
@@ -662,7 +679,7 @@
   <div id="custom-cursor"></div>
   <div id="scroll-progress" class="scroll-progress" style="width:0%"></div>
   <nav id="navbar" class="top-nav fixed top-0 left-0 w-full z-40 px-6 py-5">
-    <div class="max-w-[1400px] mx-auto flex items-center justify-between">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
       <a href="#top" class="brand-mark text-2xl md:text-3xl">Nagoya 2026</a>
       <div class="nav-shell">
         <a href="#journey" class="nav-link active">Journey</a>
@@ -836,7 +853,7 @@
   </main>
 
   <section id="album" class="album-entry">
-    <div class="max-w-[1400px] mx-auto px-6">
+    <div class="max-w-6xl mx-auto px-6">
       <div class="entry-head reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
         <div>
           <span class="day-badge">Gallery Index</span>
