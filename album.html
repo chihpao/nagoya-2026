@@ -10,10 +10,8 @@
   <meta property="og:description" content="七天旅行相簿 · 名古屋 2026" />
   <meta property="og:type" content="website" />
 
+  <link rel="stylesheet" href="./shared.css" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Outfit:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap"
-    rel="stylesheet" />
 
   <script>
     tailwind.config = {
@@ -22,7 +20,8 @@
           fontFamily: {
             sans: ['"Outfit"', '"Noto Sans TC"', 'sans-serif'],
             serif: ['"Noto Serif TC"', 'serif'],
-            display: ['"Amatic SC"', '"Noto Sans TC"', 'cursive']
+            display: ['"Syne"', '"Noto Sans TC"', 'sans-serif'],
+            mono: ['"Space Grotesk"', 'monospace']
           }
         }
       }
@@ -30,142 +29,15 @@
   </script>
 
   <style>
-    :root {
-      --bg-main: #faf9f6; /* Sophisticated museum off-white */
-      --ink: #1a1a1a;
-      --ink-soft: #525252;
-      --line: #1a1a1a;
-      --accent: #262626;
-      --day-1: #b91c1c;
-      --day-2: #c2410c;
-      --day-3: #0369a1;
-      --day-4: #7c3aed;
-      --day-5: #db2777;
-      --day-6: #0d9488;
-      --day-7: #ca8a04;
-    }
+    /* ═══════════════════════════════════════════════
+       ALBUM-SPECIFIC STYLES
+       Shared styles are in shared.css
+       ═══════════════════════════════════════════════ */
 
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      color: var(--ink);
-      background-color: var(--bg-main);
-      overflow-x: hidden;
-      font-weight: 400;
-      letter-spacing: 0.01em;
-    }
-
-    /* Organic Noise Texture */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      opacity: 0.04;
-      z-index: 100;
-      mix-blend-mode: multiply;
-    }
-
-    .top-nav {
-      background: rgba(250, 249, 246, 0.85);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1), opacity 600ms ease;
-    }
-
-    .top-nav.hidden-nav {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-
-    .brand-mark {
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      text-transform: uppercase;
-      color: var(--ink);
-    }
-
-    .nav-shell {
-      display: flex;
-      gap: 2rem;
-    }
-
-    .nav-link {
-      color: var(--ink-soft);
-      font-weight: 600;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      transition: color 0.4s ease;
-      position: relative;
-    }
-
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: var(--ink);
-      transition: width 0.4s ease;
-    }
-
-    .nav-link:hover::after,
-    .nav-link.active::after {
-      width: 100%;
-    }
-
-    .nav-link:hover,
-    .nav-link.active {
-      color: var(--ink);
-    }
-
-    .jump-btn, .ghost-btn {
-      font-family: 'Noto Sans TC', sans-serif;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      padding: 0.8rem 2rem;
-      border: 1px solid var(--line);
-      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 999px;
-      min-height: 44px;
-      min-width: 44px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .jump-btn {
-      background: var(--ink);
-      color: var(--bg-main);
-    }
-
-    .jump-btn:hover {
-      background: var(--bg-main);
-      color: var(--ink);
-      transform: translateY(-4px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-    }
-
-    .ghost-btn:hover {
-      background: var(--ink);
-      color: var(--bg-main);
-      transform: translateY(-4px);
-    }
-
-    /* ── Masonry Grid Elite ── */
+    /* ── Masonry Grid ── */
     .album-grid {
       display: block;
-      column-gap: 3rem;
+      column-gap: 1.25rem;
       width: 100%;
     }
 
@@ -173,6 +45,7 @@
     .album-grid.dense { column-count: 3; }
 
     @media (min-width: 768px) {
+      .album-grid { column-gap: 3rem; }
       .album-grid.comfy { column-count: 3; }
       .album-grid.dense { column-count: 4; }
     }
@@ -191,8 +64,8 @@
       border-radius: 4px;
       background: transparent;
       overflow: hidden;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
-      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: var(--shadow-md);
+      transition: all 1s var(--ease-out-expo);
       opacity: 0;
       transform: translateY(40px);
     }
@@ -211,61 +84,17 @@
       height: auto;
       object-fit: cover;
       display: block;
-      transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 2s var(--ease-out-expo);
     }
 
     .album-thumb:hover {
       transform: translateY(-12px);
-      box-shadow: 0 50px 100px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-lg);
       z-index: 10;
     }
 
     .album-thumb:hover img {
       transform: scale(1.06);
-    }
-
-    /* ── Custom Cursor Studio ── */
-    #custom-cursor {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 10px;
-      height: 10px;
-      background: var(--ink);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1), 
-                  height 600ms cubic-bezier(0.16, 1, 0.3, 1), 
-                  background 600ms ease,
-                  opacity 600ms ease;
-      display: none;
-    }
-
-    @media (pointer: fine) {
-      #custom-cursor { display: block; }
-    }
-
-    body.hovering-photo #custom-cursor {
-      width: 100px;
-      height: 100px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    body.hovering-photo #custom-cursor::after {
-      content: 'VIEW';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      color: #fff;
     }
 
     /* ── Navbar Day Pills ── */
@@ -280,8 +109,10 @@
       font-weight: 700;
       font-size: 0.85rem;
       color: var(--ink-soft);
-      transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 400ms var(--ease-out-expo);
       cursor: pointer;
+      border: none;
+      background: transparent;
     }
 
     .navbar-day-btn:hover {
@@ -293,12 +124,14 @@
       color: #fff;
     }
 
+    /* ── Lightbox ── */
     .lightbox-shell {
       opacity: 0;
       visibility: hidden;
-      transition: all 800ms cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 800ms var(--ease-out-expo);
       background: rgba(10, 10, 10, 0.98);
       backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
 
     .lightbox-shell.open {
@@ -309,7 +142,13 @@
     .lightbox-btn {
       border: 1px solid rgba(255, 255, 255, 0.1);
       background: rgba(255, 255, 255, 0.02);
-      transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 400ms var(--ease-out-expo);
+      cursor: pointer;
+      border-radius: 2px;
+    }
+
+    .lightbox-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .lightbox-caption {
@@ -319,27 +158,26 @@
       text-align: center;
     }
 
-    /* ── Reveal Animations ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px) scale(0.98);
-      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: opacity, transform;
-    }
-
-    .reveal.show {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
     /* ── Skeleton & Fade-in ── */
     @keyframes skeleton-pulse {
       0%, 100% { opacity: 0.45; }
       50% { opacity: 0.8; }
     }
-    .album-thumb.loading { background: linear-gradient(110deg, #e2e8f0 30%, #f1f5f9 50%, #e2e8f0 70%); background-size: 200% 100%; animation: skeleton-pulse 1.4s ease infinite; }
-    .album-thumb img { opacity: 0; transition: opacity 380ms ease; }
-    .album-thumb img.loaded { opacity: 1; }
+
+    .album-thumb.loading {
+      background: linear-gradient(110deg, #e2e8f0 30%, #f1f5f9 50%, #e2e8f0 70%);
+      background-size: 200% 100%;
+      animation: skeleton-pulse 1.4s ease infinite;
+    }
+
+    .album-thumb img {
+      opacity: 0;
+      transition: opacity 380ms ease;
+    }
+
+    .album-thumb img.loaded {
+      opacity: 1;
+    }
 
     /* ── Floating Counter ── */
     .floating-counter {
@@ -347,109 +185,44 @@
       right: 1rem;
       bottom: 8.2rem;
       z-index: 28;
-      border: 2px solid var(--line);
+      border: 1px solid var(--line-solid);
       border-radius: 999px;
-      background: rgba(255,253,247,0.92);
+      background: var(--bg-panel);
       backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       padding: 0.3rem 0.7rem;
+      font-family: var(--font-mono);
       font-size: 0.72rem;
-      font-weight: 900;
-      color: #334155;
+      font-weight: 700;
+      color: var(--ink-soft);
       opacity: 0;
       transform: translateY(8px);
       transition: opacity 260ms ease, transform 260ms ease;
       pointer-events: none;
       display: none;
     }
-    .floating-counter.visible { opacity: 1; transform: translateY(0); }
-    @media (max-width: 767px) { .floating-counter { display: block; } }
 
-    /* ── Scroll Progress (top) ── */
-    .scroll-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 4px;
-      z-index: 50;
-      background: linear-gradient(90deg, var(--day-1), var(--day-2), var(--day-3), var(--day-4), var(--day-5), var(--day-6), var(--day-7));
-      transition: width 80ms linear;
-      border-radius: 0 2px 2px 0;
-      filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.5));
+    .floating-counter.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    /* ── Footer ── */
-    .site-footer {
-      position: relative;
-      background: #0a0a0a;
-      color: #737373;
-      padding: 10rem 1rem;
-      text-align: center;
-      font-size: 0.85rem;
-      font-weight: 500;
-      overflow: hidden;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .site-footer a { color: #fff; text-decoration: underline; }
-    .footer-brand {
-      font-family: 'serif';
-      font-size: 3rem;
-      color: #fff;
-      letter-spacing: -0.02em;
-    }
-    .footer-rainbow {
-      display: flex;
-      height: 1px;
-      margin-top: 3rem;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-      opacity: 0.2;
-    }
-    .footer-rainbow span { flex: 1; }
-    .footer-icons {
-      font-size: 1.2rem;
-      letter-spacing: 0.5rem;
-      margin-top: 1.5rem;
-      opacity: 0.4;
-    }
-    /* ── Custom Cursor ── */
-    #custom-cursor {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 20px;
-      height: 20px;
-      border: 3px solid var(--line);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: width 200ms ease, height 200ms ease, background 200ms ease, border-color 200ms ease;
-      will-change: width, height, transform, background;
-      display: none;
+    @media (max-width: 767px) {
+      .floating-counter { display: block; }
     }
 
-    @media (pointer: fine) {
-      #custom-cursor {
-        display: block;
-      }
-    }
-
-    body.hovering-link #custom-cursor {
-      width: 48px;
-      height: 48px;
-      background: rgba(34, 197, 94, 0.4);
-      border-color: transparent;
-      backdrop-filter: blur(4px);
+    /* ── Album hero override ── */
+    .hero-photo img {
+      transition: transform 3s var(--ease-out-expo);
     }
   </style>
 </head>
 
-<body class="font-sans antialiased selection:bg-emerald-900 selection:text-white">
+<body class="font-sans antialiased selection:bg-black selection:text-white">
   <div id="custom-cursor"></div>
   <div id="scroll-progress" class="scroll-progress" style="width:0%"></div>
 
-  <nav id="navbar" class="top-nav fixed top-0 left-0 w-full z-40 px-6 py-4">
+  <nav id="navbar" class="top-nav fixed top-0 left-0 w-full z-40 px-4 md:px-6 py-3 md:py-4">
     <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-y-4">
       <a href="./index.html#top" class="brand-mark text-2xl md:text-3xl">Nagoya 2026</a>
       <div id="navbar-day-pills" class="order-3 md:order-2 w-full md:w-auto flex items-center gap-1 overflow-x-auto pb-1 md:pb-0 scrollbar-hide"></div>
@@ -508,16 +281,16 @@
   <!-- Floating Photo Counter -->
   <div id="floating-counter" class="floating-counter" aria-live="polite"></div>
 
-  <button id="back-top" class="back-top hidden-btn fixed bottom-7 right-7 z-30 w-12 h-12 rounded-full text-white" aria-label="回到頂部">
-    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+  <button id="back-top" class="back-top hidden-btn fixed bottom-8 right-8 z-30 w-14 h-14 flex items-center justify-center" aria-label="回到頂部">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 15l7-7 7 7" />
     </svg>
   </button>
 
   <!-- Footer -->
   <footer class="site-footer">
     <p class="footer-brand">Nagoya 2026</p>
-    <p class="mt-4 opacity-50">2026.04.01 — 2026.04.07</p>
+    <p class="footer-date">2026.04.01 — 2026.04.07</p>
     <div class="footer-rainbow">
       <span style="background:var(--day-1)"></span>
       <span style="background:var(--day-2)"></span>
@@ -942,6 +715,7 @@
       }
 
       backTop.classList.toggle('hidden-btn', currentScrollY <= window.innerHeight * 0.45);
+      navbar.classList.toggle('scrolled', currentScrollY > 80);
       showFloatingCounter();
 
       if (Date.now() < preserveNavUntil) {
@@ -1001,33 +775,42 @@
 
     initAlbumPage();
 
-    /* ── Custom Cursor Logic ── */
+    /* ── Custom Cursor Logic (unified) ── */
     if (window.matchMedia('(pointer: fine)').matches) {
       const cursor = document.getElementById('custom-cursor');
       if (cursor) {
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
         document.addEventListener('mousemove', (e) => {
-          window.requestAnimationFrame(() => {
-            cursor.style.left = `${e.clientX}px`;
-            cursor.style.top = `${e.clientY}px`;
-          });
+          mouseX = e.clientX;
+          mouseY = e.clientY;
         });
-        
+
+        function animateCursor() {
+          const easing = 0.35;
+          cursorX += (mouseX - cursorX) * easing;
+          cursorY += (mouseY - cursorY) * easing;
+          cursor.style.left = `${cursorX}px`;
+          cursor.style.top = `${cursorY}px`;
+          requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
         const attachCursorHover = () => {
           const interactables = document.querySelectorAll('a, button, .navbar-day-btn');
           interactables.forEach(el => {
             el.addEventListener('mouseenter', () => {
               if (!el.classList.contains('album-thumb')) {
-                cursor.style.transform = 'translate(-50%, -50%) scale(2.5)';
-                cursor.style.opacity = '0.3';
+                document.body.classList.add('hovering-link');
               }
             });
             el.addEventListener('mouseleave', () => {
-              cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-              cursor.style.opacity = '1';
+              document.body.classList.remove('hovering-link');
             });
           });
         };
-        
+
         attachCursorHover();
         const observer = new MutationObserver(() => attachCursorHover());
         observer.observe(document.body, { childList: true, subtree: true });
