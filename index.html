@@ -251,11 +251,33 @@
     }
 
     @media (max-width: 767px) {
-      .world-stage { height: 80vh; }
-      .world-overlay { top: 4.5rem; left: 1rem; right: 1rem; }
-      .world-status, .world-help { left: 1.5rem; right: 1.5rem; bottom: 7.5rem; }
-      .world-mobile-controls { display: flex; bottom: 1.5rem; }
-      .world-joystick-wrap, .world-touch-actions { transform: scale(0.9); transform-origin: bottom; }
+      .world-stage {
+        height: 80vh;
+      }
+
+      .world-overlay {
+        top: 4.5rem;
+        left: 1rem;
+        right: 1rem;
+      }
+
+      .world-status,
+      .world-help {
+        left: 1.5rem;
+        right: 1.5rem;
+        bottom: 7.5rem;
+      }
+
+      .world-mobile-controls {
+        display: flex;
+        bottom: 1.5rem;
+      }
+
+      .world-joystick-wrap,
+      .world-touch-actions {
+        transform: scale(0.9);
+        transform-origin: bottom;
+      }
     }
 
     /* ── Hero & Photo Bleed (index-specific overrides) ── */
@@ -274,7 +296,7 @@
 
     .photo-bleed img {
       width: 100%;
-      height: 100%;
+      height: 70vh;
       display: block;
       object-fit: cover;
       transition: transform 3s var(--ease-out-expo);
@@ -314,7 +336,9 @@
     }
 
     @media (max-width: 767px) {
-      .day-section { padding: 2rem 0; }
+      .day-section {
+        padding: 2rem 0;
+      }
     }
 
     .day-shell {
@@ -467,7 +491,9 @@
     }
 
     @media (max-width: 767px) {
-      .album-entry { padding: 3rem 0; }
+      .album-entry {
+        padding: 3rem 0;
+      }
     }
 
     .home-card {
@@ -482,7 +508,9 @@
     }
 
     @media (min-width: 768px) {
-      .home-card { flex: unset; }
+      .home-card {
+        flex: unset;
+      }
     }
 
     .home-card:hover {
@@ -539,47 +567,49 @@
     <section id="world-lite" class="world-lite">
       <div class="world-stage">
         <canvas id="world-canvas" aria-label="3D 互動首屏"></canvas>
-          <div id="world-fallback" class="world-fallback" role="status" aria-live="polite">
-            <div class="world-panel">
-              <p class="text-[10px] uppercase tracking-widest text-neutral-400 font-mono">System Error</p>
-              <p class="mt-4 text-2xl font-bold text-neutral-900">WebGL Unavailable</p>
-              <p class="mt-4 text-sm text-neutral-500 font-mono">PLEASE SCROLL DOWN TO CONTINUE</p>
-            </div>
+        <div id="world-fallback" class="world-fallback" role="status" aria-live="polite">
+          <div class="world-panel">
+            <p class="text-[10px] uppercase tracking-widest text-neutral-400 font-mono">System Error</p>
+            <p class="mt-4 text-2xl font-bold text-neutral-900">WebGL Unavailable</p>
+            <p class="mt-4 text-sm text-neutral-500 font-mono">PLEASE SCROLL DOWN TO CONTINUE</p>
           </div>
+        </div>
 
-          <div class="world-overlay">
-            <button id="world-ui-toggle" type="button" class="world-ui-toggle" aria-controls="world-ui-panel" aria-expanded="false">Interface</button>
-            <div class="world-panel">
-              <div id="world-ui-panel">
+        <div class="world-overlay">
+          <button id="world-ui-toggle" type="button" class="world-ui-toggle" aria-controls="world-ui-panel"
+            aria-expanded="false">Interface</button>
+          <div class="world-panel">
+            <div id="world-ui-panel">
               <p class="text-[10px] uppercase tracking-widest text-neutral-400 font-mono">Navigation Control</p>
               <div class="world-actions">
                 <button id="world-reset" type="button" class="world-btn">Reset</button>
                 <button id="world-auto-jump-toggle" type="button" class="world-btn">Auto: ON</button>
                 <a href="#journey" class="world-btn primary">Enter Journey</a>
               </div>
-              </div>
-            </div>
-          </div>
-
-          <p id="world-status" class="world-status">System Initialized</p>
-          <p class="world-help">WASD / SPACE / SHIFT</p>
-
-          <div class="world-mobile-controls">
-            <div id="world-joystick" class="world-joystick-wrap">
-              <div class="world-joystick-base">
-                <div id="world-joystick-stick" class="world-joystick-stick"></div>
-              </div>
-            </div>
-            <div class="world-touch-actions">
-              <button id="world-touch-boost" type="button" class="world-touch-btn">BOOST</button>
-              <button id="world-touch-jump" type="button" class="world-touch-btn">JUMP</button>
             </div>
           </div>
         </div>
+
+        <p id="world-status" class="world-status">System Initialized</p>
+        <p class="world-help">WASD / SPACE / SHIFT</p>
+
+        <div class="world-mobile-controls">
+          <div id="world-joystick" class="world-joystick-wrap">
+            <div class="world-joystick-base">
+              <div id="world-joystick-stick" class="world-joystick-stick"></div>
+            </div>
+          </div>
+          <div class="world-touch-actions">
+            <button id="world-touch-boost" type="button" class="world-touch-btn">BOOST</button>
+            <button id="world-touch-jump" type="button" class="world-touch-btn">JUMP</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <div class="hero-photo">
-      <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/hero-nagoya.webp" alt="名古屋街景" loading="eager" />
+      <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/hero-nagoya.webp" alt="名古屋街景"
+        loading="eager" />
     </div>
 
     <div class="hero-intro">
@@ -604,7 +634,8 @@
         </article>
       </div>
       <div class="photo-bleed reveal">
-        <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/album/day1/day1-0011.webp" alt="第1天抵達名古屋" loading="lazy" />
+        <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/album/day1/day1-0011.webp" alt="第1天抵達名古屋"
+          loading="lazy" style="object-position: 50% 80%;" />
       </div>
     </section>
 
@@ -617,7 +648,8 @@
         </article>
       </div>
       <div class="photo-bleed reveal">
-        <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/day1-castle.webp" alt="第2天名古屋城" loading="lazy" />
+        <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/day1-castle.webp" alt="第2天名古屋城"
+          loading="lazy" />
       </div>
     </section>
 
@@ -630,7 +662,8 @@
         </article>
       </div>
       <div class="photo-bleed reveal">
-        <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/album/day3/day3-0103.webp" alt="第3天山景與夜景" loading="lazy" />
+        <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/album/day3/day3-0103.webp" alt="第3天山景與夜景"
+          loading="lazy" />
       </div>
     </section>
 
@@ -643,7 +676,8 @@
         </article>
       </div>
       <div class="photo-bleed reveal">
-        <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/day4-osu.webp" alt="第4天大須商店街" loading="lazy" />
+        <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/day4-osu.webp" alt="第4天大須商店街"
+          loading="lazy" />
       </div>
     </section>
 
@@ -656,7 +690,8 @@
         </article>
       </div>
       <div class="photo-bleed reveal">
-        <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/day5-tokugawa.webp" alt="第5天犬山城" loading="lazy" />
+        <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/day5-tokugawa.webp" alt="第5天犬山城"
+          loading="lazy" />
       </div>
     </section>
 
@@ -669,7 +704,8 @@
         </article>
       </div>
       <div class="photo-bleed reveal">
-        <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/day6-tower.webp" alt="第6天綠洲21與名古屋塔" loading="lazy" />
+        <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/day6-tower.webp" alt="第6天綠洲21與名古屋塔"
+          loading="lazy" />
       </div>
     </section>
 
@@ -682,7 +718,8 @@
         </article>
       </div>
       <div class="photo-bleed reveal">
-        <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/day7-departure.webp" alt="第7天賦歸" loading="lazy" />
+        <img src="https://pub-210057ec7a1c403a8c94ac8da5fd44ef.r2.dev/photos/day7-departure.webp" alt="第7天賦歸"
+          loading="lazy" />
       </div>
     </section>
   </main>
@@ -697,7 +734,9 @@
         <a href="./album.html#album" class="jump-btn">Explore Full Album</a>
       </div>
 
-      <div id="home-day-grid" class="mt-12 flex gap-6 overflow-x-auto pb-12 snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3"></div>
+      <div id="home-day-grid"
+        class="mt-12 flex gap-6 overflow-x-auto pb-12 snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3">
+      </div>
     </div>
   </section>
 
@@ -716,7 +755,9 @@
     </div>
   </footer>
 
-  <button id="back-top" class="back-top hidden-btn fixed bottom-8 right-8 z-30 w-14 h-14 flex items-center justify-center" aria-label="Scroll to top">
+  <button id="back-top"
+    class="back-top hidden-btn fixed bottom-8 right-8 z-30 w-14 h-14 flex items-center justify-center"
+    aria-label="Scroll to top">
     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 15l7-7 7 7" />
     </svg>
